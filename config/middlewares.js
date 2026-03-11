@@ -10,6 +10,7 @@
 import securityHeaders from '../middlewares/securityHeaders.js';
 import requestLogger from '../middlewares/requestLogger.js';
 import parsers from '../middlewares/parsers.js';
+import session from '../middlewares/session.js';
 import staticFiles from '../middlewares/staticFiles.js';
 
 export default function applyMiddlewares(app) {
@@ -21,6 +22,9 @@ export default function applyMiddlewares(app) {
 
 	// Parse incoming request bodies (JSON and URL-encoded form data)
 	parsers(app);
+
+	// Enable session support
+	session(app);
 
 	// Enable serving static files such as stylesheets, scripts, and images
 	staticFiles(app);

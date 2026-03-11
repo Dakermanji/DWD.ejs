@@ -36,6 +36,9 @@ const env = {
 
 	/** Sentry Data Source Name used for remote error monitoring */
 	SENTRY_DSN: process.env.SENTRY_DSN ?? '',
+
+	/** Secret used to sign session cookies */
+	SESSION_SECRET: process.env.SESSION_SECRET ?? 'development-secret',
 };
 
 export default env;
