@@ -8,8 +8,12 @@
  */
 
 import securityHeaders from '../middlewares/securityHeaders.js';
+import requestLogger from '../middlewares/requestLogger.js';
 
 export default function applyMiddlewares(app) {
-	// Security headers
+	// Apply security-related HTTP headers first
 	securityHeaders(app);
+
+	// Log all incoming HTTP requests
+	requestLogger(app);
 }
