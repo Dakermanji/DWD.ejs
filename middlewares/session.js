@@ -20,6 +20,9 @@ import env from '../config/dotenv.js';
 export default function configureSession(app) {
 	app.use(
 		session({
+			//Session name: default connect.sid
+			name: 'DWD.sid',
+
 			// Secret used to sign the session ID cookie
 			secret: env.SESSION_SECRET,
 
@@ -28,6 +31,9 @@ export default function configureSession(app) {
 
 			// Do not create empty sessions
 			saveUninitialized: false,
+
+			// Refreshes the session expiration on activity: active users keep their session alive
+			rolling: true,
 
 			cookie: {
 				// Prevent client-side JavaScript from accessing the cookie

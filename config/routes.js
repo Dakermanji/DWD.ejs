@@ -24,4 +24,20 @@ router.get('/', (req, res) => {
 	});
 });
 
+// Temporary Language switcher
+router.get('/language/:lang', (req, res) => {
+	const supportedLanguages = ['en', 'fr', 'ar'];
+	const { lang } = req.params;
+
+	if (supportedLanguages.includes(lang)) {
+		res.cookie('lang', lang, {
+			httpOnly: false,
+			sameSite: 'lax',
+			maxAge: 1000 * 60 * 60 * 24 * 30,
+		});
+	}
+
+	res.redirect(req.get('Referrer') || '/');
+});
+
 export default router;
