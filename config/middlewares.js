@@ -7,6 +7,9 @@
  * Keep this file as the central place for middleware composition.
  */
 
+import securityHeaders from '../middlewares/securityHeaders.js';
+
 export default function applyMiddlewares(app) {
-	// Global middlewares will be registered here.
+	// Security headers
+	securityHeaders(app);
 }
