@@ -1,0 +1,38 @@
+{
+	"name": "dwd.ejs",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.js",
+	"scripts": {
+		"dev": "node --watch server.js",
+		"run": "node server.js"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Dakermanji/DWD.ejs.git"
+	},
+	"keywords": [
+		"portfolio",
+		"web development",
+		"Node.js",
+		"Express",
+		"MySQL",
+		"JavaScript",
+		"EJS",
+		"Behnam Dakermanji",
+		"frontend",
+		"backend",
+		"fullstack",
+		"projects"
+	],
+	"author": "Behnam Dakermanji",
+	"license": "MIT",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/Dakermanji/DWD.ejs/issues"
+	},
+	"homepage": "https://github.com/Dakermanji/DWD.ejs"
+}
