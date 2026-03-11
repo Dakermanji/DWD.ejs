@@ -1,0 +1,9 @@
+<!--! views/error.ejs -->
+
+<h1><%= status %></h1>
+<h2><%= title %></h2>
+<p><%= message %></p>
+
+<% if (env === 'development' && stack) { %>
+    <pre><%= stack %></pre>
+<% } %>
