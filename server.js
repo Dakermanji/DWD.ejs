@@ -8,7 +8,8 @@
 
 import env from './config/dotenv.js';
 import app from './config/express.js';
+import logger from './config/logger.js';
 
 app.listen(env.PORT, () => {
-	console.log(`Server running on ${env.CLIENT_URL}`);
+	logger.success(`Server running on ${env.CLIENT_URL}`, { type: 'server' });
 });
