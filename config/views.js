@@ -11,6 +11,7 @@
  *
  * The project uses EJS (Embedded JavaScript Templates) to render
  * dynamic HTML pages on the server.
+ * express-ejs-layouts to provide layout support.
  *
  * Example usage inside routes:
  * res.render('home', { title: 'Home Page' });
@@ -18,6 +19,7 @@
 
 import path from 'path';
 import { fileURLToPath } from 'url';
+import expressLayouts from 'express-ejs-layouts';
 
 /**
  * Resolve the current file path in ES Modules.
@@ -33,14 +35,15 @@ const __dirname = path.dirname(__filename);
  * @param {import('express').Express} app - Express application instance
  */
 export default function configureViews(app) {
-	/**
-	 * Register EJS as the application's template engine.
-	 */
+	// Register EJS as the template engine
 	app.set('view engine', 'ejs');
 
-	/**
-	 * Define the directory where template files are located.
-	 * The path is resolved relative to the project root.
-	 */
+	// Define where template files are located
 	app.set('views', path.join(__dirname, '../views'));
+
+	// Enable layout support for EJS templates
+	app.use(expressLayouts);
+
+	// Define the default layout file
+	app.set('layout', 'layouts/main');
 }

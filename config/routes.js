@@ -19,7 +19,9 @@ const router = Router();
  * is running correctly.
  */
 router.get('/', (req, res) => {
-	res.send('DWD.ejs server running');
+	res.render('home', {
+		title: 'Home',
+	});
 });
 
 export default router;
