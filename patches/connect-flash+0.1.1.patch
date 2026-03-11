@@ -1,0 +1,89 @@
+diff --git a/node_modules/connect-flash/lib/flash.js b/node_modules/connect-flash/lib/flash.js
+index a278bc1..937ed06 100644
+--- a/node_modules/connect-flash/lib/flash.js
++++ b/node_modules/connect-flash/lib/flash.js
+@@ -2,8 +2,6 @@
+  * Module dependencies.
+  */
+ var format = require('util').format;
+-var isArray = require('util').isArray;
+-
+ 
+ /**
+  * Expose `flash()` function on requests.
+@@ -12,15 +10,17 @@ var isArray = require('util').isArray;
+  * @api public
+  */
+ module.exports = function flash(options) {
+-  options = options || {};
+-  var safe = (options.unsafe === undefined) ? true : !options.unsafe;
++	options = options || {};
++	var safe = options.unsafe === undefined ? true : !options.unsafe;
+ 
+-  return function(req, res, next) {
+-    if (req.flash && safe) { return next(); }
+-    req.flash = _flash;
+-    next();
+-  }
+-}
++	return function (req, res, next) {
++		if (req.flash && safe) {
++			return next();
++		}
++		req.flash = _flash;
++		next();
++	};
++};
+ 
+ /**
+  * Queue flash `msg` of the given `type`.
+@@ -57,26 +57,27 @@ module.exports = function flash(options) {
+  * @api public
+  */
+ function _flash(type, msg) {
+-  if (this.session === undefined) throw Error('req.flash() requires sessions');
+-  var msgs = this.session.flash = this.session.flash || {};
+-  if (type && msg) {
+-    // util.format is available in Node.js 0.6+
+-    if (arguments.length > 2 && format) {
+-      var args = Array.prototype.slice.call(arguments, 1);
+-      msg = format.apply(undefined, args);
+-    } else if (isArray(msg)) {
+-      msg.forEach(function(val){
+-        (msgs[type] = msgs[type] || []).push(val);
+-      });
+-      return msgs[type].length;
+-    }
+-    return (msgs[type] = msgs[type] || []).push(msg);
+-  } else if (type) {
+-    var arr = msgs[type];
+-    delete msgs[type];
+-    return arr || [];
+-  } else {
+-    this.session.flash = {};
+-    return msgs;
+-  }
++	if (this.session === undefined)
++		throw Error('req.flash() requires sessions');
++	var msgs = (this.session.flash = this.session.flash || {});
++	if (type && msg) {
++		// util.format is available in Node.js 0.6+
++		if (arguments.length > 2 && format) {
++			var args = Array.prototype.slice.call(arguments, 1);
++			msg = format.apply(undefined, args);
++		} else if (Array.isArray(msg)) {
++			msg.forEach(function (val) {
++				(msgs[type] = msgs[type] || []).push(val);
++			});
++			return msgs[type].length;
++		}
++		return (msgs[type] = msgs[type] || []).push(msg);
++	} else if (type) {
++		var arr = msgs[type];
++		delete msgs[type];
++		return arr || [];
++	} else {
++		this.session.flash = {};
++		return msgs;
++	}
+ }

@@ -36,6 +36,9 @@ export default function configureSession(app) {
 				// Only transmit cookie over HTTPS in production
 				secure: env.NODE_ENV === 'production',
 
+				// Helps protect against CSRF by restricting cross-site cookie usage
+				sameSite: 'lax',
+
 				// Cookie lifespan (1 day)
 				maxAge: 1000 * 60 * 60 * 24,
 			},
