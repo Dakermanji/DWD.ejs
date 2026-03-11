@@ -34,5 +34,8 @@
 	"bugs": {
 		"url": "https://github.com/Dakermanji/DWD.ejs/issues"
 	},
-	"homepage": "https://github.com/Dakermanji/DWD.ejs"
+	"homepage": "https://github.com/Dakermanji/DWD.ejs",
+	"dependencies": {
+		"express": "^5.2.1"
+	}
 }
