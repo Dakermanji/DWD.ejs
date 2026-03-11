@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "server.js",
 	"scripts": {
-		"dev": "node --watch server.js",
-		"run": "node server.js"
+		"dev": "node --import ./instrument.js --watch server.js",
+		"start": "node --import ./instrument.js server.js"
 	},
 	"engines": {
 		"node": ">=20"
@@ -36,6 +36,7 @@
 	},
 	"homepage": "https://github.com/Dakermanji/DWD.ejs",
 	"dependencies": {
+		"@sentry/node": "^10.43.0",
 		"dotenv": "^17.3.1",
 		"ejs": "^5.0.1",
 		"express": "^5.2.1",

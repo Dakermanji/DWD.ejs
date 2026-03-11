@@ -33,6 +33,9 @@ const env = {
 
 	/** Base URL used for server/client references */
 	CLIENT_URL: process.env.CLIENT_URL ?? 'http://localhost:3000',
+
+	/** Sentry Data Source Name used for remote error monitoring */
+	SENTRY_DSN: process.env.SENTRY_DSN ?? '',
 };
 
 export default env;
