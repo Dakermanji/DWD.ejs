@@ -1,1 +1,10 @@
-{ "title": "Bienvenue" }
+{
+	"title": "Bienvenue",
+	"nav": {
+		"toggle": "Basculer la navigation",
+		"about": "",
+		"services": "Services",
+		"portfolio": "Projets",
+		"contact": "Contact"
+	}
+}

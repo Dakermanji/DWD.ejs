@@ -1,1 +1,10 @@
-{ "title": "Welcome" }
+{
+	"title": "Welcome",
+	"nav": {
+		"toggle": "Toggle navigation",
+		"about": "About Me",
+		"services": "Services",
+		"portfolio": "Portfolio",
+		"contact": "Contact"
+	}
+}
