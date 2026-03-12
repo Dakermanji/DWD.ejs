@@ -1,1 +1,55 @@
 <!--! views/layouts/_navTheme.ejs -->
+<%
+	const themeItems = [
+		{ key: 'light', icon: 'bi-sun', label: t('theme.light') },
+		{ key: 'dark', icon: 'bi-moon-stars', label: t('theme.dark') },
+		{ key: 'system', icon: 'bi-circle-half', label: t('theme.system') },
+	];
+%>
+
+<% const themeTrigger = t('theme.trigger') %>
+<li class="nav-item dropdown">
+	<a
+		class="nav-link"
+		href="#"
+		id="themeDropdown"
+		role="button"
+		data-bs-toggle="dropdown"
+		aria-expanded="false"
+		aria-label="<%= themeTrigger %>"
+	>
+		<span
+			class="nav-icon"
+			data-bs-toggle="tooltip"
+			title="<%= themeTrigger %>"
+		>
+			<i class="bi bi-circle-half" aria-hidden="true"></i>
+		</span>
+		<span class="nav-text"><%= themeTrigger %></span>
+	</a>
+
+	<ul
+		class="dropdown-menu dropdown-menu-end"
+		aria-labelledby="themeDropdown"
+	>
+		<% themeItems.forEach((theme) => { %>
+			<li>
+				<button
+					type="button"
+					class="dropdown-item d-flex align-items-center justify-content-between"
+					data-theme-value="<%= theme.key %>"
+					aria-label="<%= theme.label %>"
+				>
+					<span class="d-flex align-items-center gap-2">
+						<i class="bi <%= theme.icon %>" aria-hidden="true"></i>
+						<span><%= theme.label %></span>
+					</span>
+
+					<span class="theme-check d-none" aria-hidden="true">
+						<i class="bi bi-check2"></i>
+					</span>
+				</button>
+			</li>
+		<% }) %>
+	</ul>
+</li>

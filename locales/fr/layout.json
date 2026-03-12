@@ -13,5 +13,11 @@
 		"dashboard": "Tableau de bord",
 		"social": "Social",
 		"langTrigger": "Changer la langue"
+	},
+	"theme": {
+		"trigger": "Thème",
+		"light": "Clair",
+		"dark": "Sombre",
+		"system": "Système"
 	}
 }

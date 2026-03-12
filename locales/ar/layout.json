@@ -13,5 +13,11 @@
 		"dashboard": "لوحة التحكم",
 		"social": "التواصل",
 		"langTrigger": "تغيير اللغة"
+	},
+	"theme": {
+		"trigger": "المظهر",
+		"light": "فاتح",
+		"dark": "داكن",
+		"system": "النظام"
 	}
 }

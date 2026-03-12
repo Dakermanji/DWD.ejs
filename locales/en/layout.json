@@ -13,5 +13,11 @@
 		"dashboard": "Dashboard",
 		"social": "Social",
 		"langTrigger": "Change language"
+	},
+	"theme": {
+		"trigger": "Theme",
+		"light": "Light",
+		"dark": "Dark",
+		"system": "System"
 	}
 }
