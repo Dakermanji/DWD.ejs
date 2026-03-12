@@ -1,15 +1,24 @@
 <!--! views/layouts/main.ejs -->
-
 <!DOCTYPE html>
 <html
 	lang="<%= currentLang %>"
 	dir="<%= currentLang === 'ar' ? 'rtl' : 'ltr' %>"
 >
-	<head>
-		<meta charset="UTF-8" />
-		<title><%= title %></title>
-	</head>
-	<body>
-		<%- body %>
+	<%- include('_head') %>
+
+	<body id="top">
+		<%- include('_flash') %>
+
+		<!-- Header -->
+		<%- include('_navbar') %>
+
+		<!-- Body (main contents) -->
+		<main class="container"><%- body %></main>
+
+		<!-- Footer (future partial) -->
+		<%- include('_footer') %>
+
+		<!-- Generic i18n strings for client-side scripts -->
+		<%- include('_i18n') %>
 	</body>
 </html>
