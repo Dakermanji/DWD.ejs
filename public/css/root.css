@@ -1,0 +1,91 @@
+/*! public/css/root.css */
+
+:root {
+	--color-primary: #ff7f27;
+	--color-primary-hover: #fa6806;
+
+	--color-text-body: #212529;
+	--color-bg-main: #ffffff;
+
+	--font-family-headers: 'Poppins', sans-serif;
+	--font-family-body: 'Roboto', sans-serif;
+}
+
+[data-theme='dark'] {
+	--color-text-body: #f8f9fa;
+	--color-bg-main: #121212;
+}
+
+/* Global Styles */
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--font-family-body);
+	font-weight: 400;
+	margin: 0;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
+	color: var(--color-text-body);
+	background-color: var(--color-bg-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-family-headers);
+	font-weight: 600;
+}
+
+/* Main Container */
+main.container {
+	flex: 1;
+	padding: 2rem;
+	margin-top: 3rem;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+/* Utility Classes */
+.brand-color {
+	color: var(--color-primary);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+	main.container {
+		padding: 1rem;
+	}
+}
+
+[dir='rtl'] .modal-header .modal-title {
+	text-align: right;
+	flex: 1;
+}
+
+/* Flash messages */
+.flash-message {
+	position: fixed;
+	top: 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1100;
+	width: min(80%, 600px);
+	text-align: center;
+	opacity: 0.95;
+	padding: 1rem;
+	font-size: 1rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+	display: none !important;
+}
