@@ -20,6 +20,12 @@ export default function configureLocals(app) {
 		// empty and define styles and scripts
 		res.locals.styles = [];
 		res.locals.scripts = [];
+
+		// navigation elemetns
+		res.locals.navbar = {};
+
+		// user
+		res.locals.user = null;
 		next();
 	});
 }
