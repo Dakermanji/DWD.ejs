@@ -1,5 +1,9 @@
 {
 	"title": "Welcome",
+	"home": {
+		"title": "Welcome",
+		"description": "Portfolio website"
+	},
 	"nav": {
 		"toggle": "Toggle navigation",
 		"about": "About Me",

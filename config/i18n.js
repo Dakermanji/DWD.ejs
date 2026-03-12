@@ -28,6 +28,7 @@ import { SUPPORTED_LANGUAGE_CODES } from './languages.js';
 // Recreate __dirname in ESM (not available by default)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const NAME_SPACES = ['layout', 'auth'];
 
 /**
  * Initialize i18next
@@ -53,8 +54,8 @@ await i18next
 		supportedLngs: SUPPORTED_LANGUAGE_CODES,
 
 		// Namespaces allow splitting translations into multiple files
-		ns: ['common', 'layout'],
-		defaultNS: 'common',
+		ns: NAME_SPACES,
+		defaultNS: 'layout',
 
 		// Translation file path pattern
 		backend: {

@@ -1,1 +1,21 @@
 <!--! views/layouts/_navNotUser.ejs -->
+<% const authTitle = `${t('auth:signin.title')} / ${t('auth:signup.title')}`; %>
+
+<li class="nav-item">
+	<a
+		href="#"
+		class="nav-link"
+		data-bs-toggle="modal"
+		data-bs-target="#authModal"
+		aria-label="<%= authTitle %>"
+	>
+		<i
+			data-bs-toggle="tooltip"
+			title="<%= authTitle %>"
+			class="bi bi-box-arrow-in-right nav-icon"
+			aria-hidden="true"
+		></i>
+
+		<span class="nav-text"><%= authTitle %></span>
+	</a>
+</li>
