@@ -11,6 +11,7 @@
 		"portfolio": "Portfolio",
 		"contact": "Contact",
 		"dashboard": "Dashboard",
-		"social": "Social"
+		"social": "Social",
+		"langTrigger": "Change language"
 	}
 }

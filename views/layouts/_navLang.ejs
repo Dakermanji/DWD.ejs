@@ -1,1 +1,49 @@
 <!--! views/layouts/_navLang.ejs -->
+<li class="nav-item dropdown">
+    <a
+    class="nav-link"
+    href="#"
+    id="langDropdown"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    aria-label="<%= t('nav.langTrigger') %>"
+    >
+        <% const currentLangItem = languages.find(lang => lang.code === currentLang); %>
+        <img
+        src="/images/flags/<%= currentLangItem?.flag || 'ca' %>.svg"
+        alt="<%= currentLang.toUpperCase() %>"
+        width="20"
+        height="15"
+        class="mx-1"
+        />
+        <%= currentLang === 'ar' ? 'عربي' : currentLang.toUpperCase() %>
+    </a>
+
+    <ul
+    class="lang dropdown-menu <%= currentLang === 'ar' ? 'dropdown-menu-start' : 'dropdown-menu-end' %>"
+    aria-labelledby="langDropdown"
+    >
+        <% languages.forEach(lang => { %>
+            <li class="lang">
+                <% const isCurrent = currentLang === lang.code; %>
+                <a
+                class="dropdown-item d-flex justify-content-between <%= isCurrent ? 'active pe-none' : '' %>"
+                href="<%= isCurrent ? '#' : `/language/${lang.code}?returnTo=${encodeURIComponent(currentUrl)}` %>"
+                aria-current="<%= isCurrent ? 'true' : 'false' %>"
+                >
+                    <span>
+                        <img
+                        src="/images/flags/<%= lang.flag %>.svg"
+                        alt="<%= lang.code.toUpperCase() %>"
+                        width="20"
+                        height="15"
+                        class="me-1"
+                        />
+                    </span>
+                    <span><%= lang.name %></span>
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</li>
