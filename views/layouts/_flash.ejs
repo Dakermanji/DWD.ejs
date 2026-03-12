@@ -1,1 +1,23 @@
 <!--! views/layouts/_flash.ejs -->
+
+<%
+const types = ['error', 'success', 'info', 'warning'];
+
+const bootstrapClassByType = {
+    error: 'danger',
+    success: 'success',
+    info: 'info',
+    warning: 'warning',
+};
+%>
+
+<% types.forEach((type) => { %>
+    <% const msgs = locals[type] || []; %>
+    <% const bs = bootstrapClassByType[type]; %>
+
+    <% msgs.forEach((key) => { %>
+        <div class="flash-message alert alert-<%= bs %> mb-0 rounded-0" role="alert">
+            <%= t(key) %>
+        </div>
+    <% }) %>
+<% }) %>
