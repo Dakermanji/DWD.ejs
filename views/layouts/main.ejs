@@ -1,7 +1,10 @@
 <!--! views/layouts/main.ejs -->
 
 <!DOCTYPE html>
-<html lang="<%= currentLang %>">
+<html
+	lang="<%= currentLang %>"
+	dir="<%= currentLang === 'ar' ? 'rtl' : 'ltr' %>"
+>
 	<head>
 		<meta charset="UTF-8" />
 		<title><%= title %></title>

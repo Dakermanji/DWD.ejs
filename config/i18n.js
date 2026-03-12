@@ -8,9 +8,7 @@
  * - language detection middleware for Express
  *
  * Supported languages:
- *   - English (en)
- *   - French (fr)
- *   - Arabic (ar)
+ *   languages are dynamically imported with en as default
  *
  * Translation files must follow this structure:
  *   /locales/{lng}/{namespace}.json
@@ -24,6 +22,8 @@ import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { SUPPORTED_LANGUAGE_CODES } from './languages.js';
 
 // Recreate __dirname in ESM (not available by default)
 const __filename = fileURLToPath(import.meta.url);
@@ -47,10 +47,10 @@ await i18next
 		fallbackLng: 'en',
 
 		// Preload languages at startup (improves performance)
-		preload: ['en', 'fr', 'ar'],
+		preload: SUPPORTED_LANGUAGE_CODES,
 
 		// Allowed languages
-		supportedLngs: ['en', 'fr', 'ar'],
+		supportedLngs: SUPPORTED_LANGUAGE_CODES,
 
 		// Namespaces allow splitting translations into multiple files
 		ns: ['common'],

@@ -10,6 +10,8 @@
 
 import { Router } from 'express';
 
+import { SUPPORTED_LANGUAGE_SET } from '../config/languages.js';
+
 const router = Router();
 
 /**
@@ -26,10 +28,9 @@ router.get('/', (req, res) => {
 
 // Temporary Language switcher
 router.get('/language/:lang', (req, res) => {
-	const supportedLanguages = ['en', 'fr', 'ar'];
 	const { lang } = req.params;
 
-	if (supportedLanguages.includes(lang)) {
+	if (SUPPORTED_LANGUAGE_SET.has(lang)) {
 		res.cookie('lang', lang, {
 			httpOnly: false,
 			sameSite: 'lax',

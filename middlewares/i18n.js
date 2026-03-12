@@ -14,6 +14,7 @@
  */
 
 import { i18next, i18nextMiddleware } from '../config/i18n.js';
+import { SUPPORTED_LANGUAGES } from '../config/languages.js';
 
 const i18nextMiddlewares = (app) => {
 	/**
@@ -33,6 +34,7 @@ const i18nextMiddlewares = (app) => {
 	app.use((req, res, next) => {
 		res.locals.t = req.t;
 		res.locals.currentLang = req.language || req.resolvedLanguage || 'en';
+		res.locals.languages = SUPPORTED_LANGUAGES;
 		next();
 	});
 };
