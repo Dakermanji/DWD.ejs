@@ -4,21 +4,33 @@
 		"dotenv.js",
 		"errorHandlers.js",
 		"express.js",
+		"i18n.js",
+		"languages.js",
 		"logger.js",
 		"middlewares.js",
 		"process.js",
 		"routes.js",
 		"views.js"
 	],
+	"locales": {
+		"ar": ["common.json"],
+		"en": ["common.json"],
+		"fr": ["common.json"]
+	},
 	"middlewares": [
 		"errorHandler.js",
+		"flash.js",
+		"i18n.js",
+		"locals.js",
 		"notFound.js",
 		"parsers.js",
 		"requestLogger.js",
 		"securityHeaders.js",
+		"session.js",
 		"staticFiles.js"
 	],
 	"node_modules": [],
+	"patches": ["connect-flash+0.1.1.patch"],
 	"views": {
 		"layouts": ["main.ejs"],
 		"~": ["error.ejs", "home.ejs"]
