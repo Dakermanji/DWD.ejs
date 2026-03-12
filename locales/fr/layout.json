@@ -19,5 +19,9 @@
 		"light": "Clair",
 		"dark": "Sombre",
 		"system": "Système"
+	},
+	"footer": {
+		"rights": "Tous droits réservés.",
+		"backToTop": "Retour en haut"
 	}
 }

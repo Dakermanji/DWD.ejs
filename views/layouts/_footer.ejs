@@ -1,1 +1,21 @@
 <!--! views/layouts/_footer.ejs -->
+<footer class='footer fixed-bottom ui-bar' role="contentinfo">
+	<div class="container text-center">
+		<p class="mb-0">
+			&copy; <%= new Date().getFullYear() %> <%- include('_company_name')
+			%>. <%= t('footer.rights') %>
+		</p>
+        <% const backToTop = t('footer.backToTop') %>
+		<a
+			href="#top"
+			class="d-block mt-2"
+			id="back-to-top"
+			aria-label="<%= backToTop %>"
+            data-bs-toggle="tooltip"
+            title="<%= backToTop %>"
+		>
+			<i class="bi bi-arrow-up-circle" aria-hidden="true"></i>
+			<%= backToTop %>
+		</a>
+	</div>
+</footer>
