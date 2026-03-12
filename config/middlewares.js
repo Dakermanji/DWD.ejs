@@ -15,6 +15,7 @@ import flash from '../middlewares/flash.js';
 import locals from '../middlewares/locals.js';
 import i18nextMiddlewares from '../middlewares/i18n.js';
 import staticFiles from '../middlewares/staticFiles.js';
+import { navbarMiddleware } from '../middlewares/navBar.js';
 
 export default function applyMiddlewares(app) {
 	// Apply security-related HTTP headers first
@@ -32,11 +33,14 @@ export default function applyMiddlewares(app) {
 	// Flash messages
 	flash(app);
 
+	// Register i18next middleware (language detection + view helpers)
+	i18nextMiddlewares(app);
+
 	// Pass Global locals including Flash
 	locals(app);
 
-	// Register i18next middleware (language detection + view helpers)
-	i18nextMiddlewares(app);
+	// Resolve and inject navigation items for the current route
+	navbarMiddleware(app);
 
 	// Enable serving static files such as stylesheets, scripts, and images
 	staticFiles(app);

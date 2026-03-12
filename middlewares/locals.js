@@ -2,11 +2,7 @@
 
 /**
  * Locals Middleware
- *
  * Exposes commonly used variables to all views.
- * This allows templates to access flash messages
- * and other shared values without passing them
- * manually in every route.
  */
 
 export default function configureLocals(app) {
@@ -20,9 +16,6 @@ export default function configureLocals(app) {
 		// empty and define styles and scripts
 		res.locals.styles = [];
 		res.locals.scripts = [];
-
-		// navigation elemetns
-		res.locals.navbar = {};
 
 		// user
 		res.locals.user = null;
