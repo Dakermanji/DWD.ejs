@@ -53,7 +53,7 @@ await i18next
 		supportedLngs: SUPPORTED_LANGUAGE_CODES,
 
 		// Namespaces allow splitting translations into multiple files
-		ns: ['common'],
+		ns: ['common', 'layout'],
 		defaultNS: 'common',
 
 		// Translation file path pattern

@@ -21,8 +21,8 @@ const router = Router();
  * is running correctly.
  */
 router.get('/', (req, res) => {
-	res.render('home', {
-		title: 'Home',
+	res.render('home/main', {
+		titleKey: 'common:title',
 	});
 });
 
