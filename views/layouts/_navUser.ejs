@@ -1,1 +1,62 @@
 <!--! views/layouts/_navUser.ejs -->
+<% const keys = {
+	dashboard: t('nav.dashboard'),
+	social: t('nav.social'),
+	signout: t('auth:signout.title')
+}; %>
+
+<li class="nav-item">
+	<a
+		class="nav-link <%= currentRoute === '/dashboard' ? 'active' : '' %>"
+		id="dashboard"
+		href="/dashboard"
+		aria-label="<%= keys.dashboard %>"
+	>
+		<span
+			class="nav-icon"
+			data-bs-toggle="tooltip"
+			title="<%= keys.dashboard %>"
+		>
+			<i class="bi bi-person-circle" aria-hidden="true"></i>
+		</span>
+		<span class="nav-text"><%= keys.dashboard %></span>
+	</a>
+</li>
+
+<li class="nav-item">
+	<a
+		href="#"
+		class="nav-link"
+		id="socialToggle"
+		aria-label="<%= keys.social %>"
+	>
+		<span
+			class="nav-icon"
+			data-bs-toggle="tooltip"
+			title="<%= keys.social %>"
+		>
+			<i class="bi bi-people-fill" aria-hidden="true"></i>
+		</span>
+		<span class="nav-text"><%= keys.social %></span>
+	</a>
+</li>
+
+<li class="nav-item">
+	<form action="/auth/signout" method="POST" class="d-inline">
+		<%- include('../partials/_csrf') %>
+		<button
+			type="submit"
+			class="btn btn-link nav-link"
+			aria-label="<%= keys.signout %>"
+		>
+            <span
+                class="nav-icon"
+                data-bs-toggle="tooltip"
+                title="<%= keys.signout %>"
+            >
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+            </span>
+            <span class="nav-text"><%= keys.signout %></span>
+		</button>
+	</form>
+</li>
