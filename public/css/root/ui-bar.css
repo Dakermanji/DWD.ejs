@@ -1,5 +1,13 @@
 /*! public/css/root/ui-bar.css */
 
+nav .brand {
+	font-size: 1.3rem;
+}
+
+.nav-text {
+	display: none;
+}
+
 .ui-bar {
 	background-color: var(--ui-bar-bg);
 	color: var(--ui-bar-text);
@@ -59,4 +67,44 @@ footer.ui-bar {
 .ui-bar .nav-link.show {
 	color: var(--color-primary);
 	background-color: transparent;
+}
+
+footer p {
+	margin-top: 4px;
+}
+
+footer a {
+	text-decoration: none;
+	transition: color var(--transition-time-method);
+}
+
+footer a:hover {
+	color: var(--color-primary);
+}
+
+@media (max-width: 991px) {
+	nav .nav-link {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+	.nav-text {
+		display: inline-block;
+	}
+
+	#back-to-top .bi {
+		position: absolute;
+		inset-inline-end: 0.5rem;
+		bottom: 2.25rem;
+		font-size: 2rem;
+	}
+
+	#back-to-top .text {
+		display: none;
+	}
+}
+
+@media (max-width: 380px) {
+	#rights {
+		font-size: 0.8rem;
+	}
 }

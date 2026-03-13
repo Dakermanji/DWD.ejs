@@ -1,7 +1,7 @@
 <!--! views/layouts/_footer.ejs -->
 <footer class='footer fixed-bottom ui-bar' role="contentinfo">
 	<div class="container text-center">
-		<p class="mb-0">
+		<p id='rights' class="mb-0">
 			&copy; <%= new Date().getFullYear() %> <%- include('_company_name')
 			%>. <%= t('footer.rights') %>
 		</p>
@@ -15,7 +15,7 @@
             title="<%= backToTop %>"
 		>
 			<i class="bi bi-arrow-up-circle" aria-hidden="true"></i>
-			<%= backToTop %>
+			<span class='text'><%= backToTop %></span>
 		</a>
 	</div>
 </footer>
