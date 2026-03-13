@@ -1,0 +1,61 @@
+/*! public/css/root/base.css */
+
+/* Global Styles */
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--font-family-body);
+	font-weight: 400;
+	margin: 0;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
+	color: var(--color-text-body);
+	background-color: var(--color-bg-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-family-headers);
+	font-weight: 600;
+}
+
+/* Utility Classes */
+.brand-color {
+	color: var(--color-primary);
+}
+
+.brand-color-secondary {
+	color: var(--color-secondary);
+	transition: color var(--transition-time-method);
+}
+
+.brand-color-secondary:hover {
+	color: var(--color-secondary-hover);
+}
+
+/* Flash messages */
+.flash-message {
+	position: fixed;
+	top: 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1100;
+	width: min(80%, 600px);
+	text-align: center;
+	opacity: 0.95;
+	padding: 1rem;
+	font-size: 1rem;
+	box-shadow: 0 4px 6px #0000001a;
+}
+
+.hidden {
+	display: none !important;
+}

@@ -1,0 +1,24 @@
+/*! public/css/root/layout.css */
+
+[dir='rtl'] .modal-header .modal-title {
+	text-align: right;
+	flex: 1;
+}
+
+/* Main Container */
+main.container {
+	flex: 1;
+	padding: 2rem;
+	margin-top: 3rem;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+	main.container {
+		padding: 1rem;
+	}
+}

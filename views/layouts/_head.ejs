@@ -58,9 +58,9 @@
     />
 
     <!-- Static Styles -->
-    <% const staticStyles = ['root', 'ui-bar'] %>
+    <% const staticStyles = ['tokens','base', 'layout', 'ui-bar'] %>
     <% staticStyles.forEach((style) => { %>
-    <link rel="stylesheet" href="/css/<%= style %>.css" />
+    <link rel="stylesheet" href="/css/root/<%= style %>.css" />
     <% }) %>
 
     <!-- Static Scripts -->

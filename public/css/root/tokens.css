@@ -1,0 +1,45 @@
+/*! public/css/root/tokens.css */
+
+:root {
+	--color-primary: #ff7f27;
+	--color-primary-hover: #eead7f;
+
+	--color-secondary: #3446c9;
+	--color-secondary-hover: #1d32ce;
+
+	--color-text-body: #212529;
+	--color-bg-main: #ffffff;
+
+	--font-family-headers: 'Poppins', sans-serif;
+	--font-family-body: 'Roboto', sans-serif;
+
+	--bg-main: #f5f7fb;
+	--bg-section: #ffffff;
+	--bg-subsection: #eef2f7;
+
+	--ui-bar-bg: #dfe6ee;
+	--ui-bar-border: #00000014;
+	--ui-bar-text: #111827;
+	--ui-bar-muted: #5b6472;
+
+	--transition-time-method: 0.3s ease;
+}
+
+[data-theme='dark'] {
+	--color-primary-hover: #e96c14;
+
+	--color-secondary: #1d32ce;
+	--color-secondary-hover: #3446c9;
+
+	--color-text-body: #f8f9fa;
+	--color-bg-main: #121212;
+
+	--bg-main: #12161d;
+	--bg-section: #181d25;
+	--bg-subsection: #202632;
+
+	--ui-bar-bg: #0c1117;
+	--ui-bar-border: #ffffff14;
+	--ui-bar-text: #f3f6fb;
+	--ui-bar-muted: #a7b0bf;
+}
