@@ -19,13 +19,15 @@
 		aria-label="<%= themeTrigger %>"
 	>
 		<span
-			class="nav-icon"
-			data-bs-toggle="tooltip"
-			title="<%= themeTrigger %>"
+		class="nav-icon"
+		data-bs-toggle="tooltip"
+		title="<%= themeTrigger %>"
 		>
-			<i class="bi bi-circle-half" aria-hidden="true"></i>
+			<i class="bi bi-circle-half" data-theme-trigger-icon aria-hidden="true"></i>
 		</span>
-		<span class="nav-text"><%= themeTrigger %></span>
+		<span class="nav-text" data-theme-trigger-text>
+			<%= themeTrigger %>
+		</span>
 	</a>
 
 	<ul
@@ -42,7 +44,7 @@
 				>
 					<span class="d-flex align-items-center gap-2">
 						<i class="bi <%= theme.icon %>" aria-hidden="true"></i>
-						<span><%= theme.label %></span>
+						<span class="theme-label"><%= theme.label %></span>
 					</span>
 
 					<span class="theme-check d-none" aria-hidden="true">
