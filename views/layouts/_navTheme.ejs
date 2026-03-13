@@ -10,26 +10,20 @@
 <% const themeTrigger = t('theme.trigger') %>
 <li class="nav-item dropdown">
 	<a
-		class="nav-link"
+		class="nav-link has-tooltip"
 		href="#"
 		id="themeDropdown"
 		role="button"
 		data-bs-toggle="dropdown"
 		aria-expanded="false"
 		aria-label="<%= themeTrigger %>"
+		data-bs-title="<%= themeTrigger %>"
 	>
-		<span
-		class="nav-icon"
-		data-bs-toggle="tooltip"
-		title="<%= themeTrigger %>"
-		>
+		<span class="nav-icon">
 			<i class="bi bi-circle-half" data-theme-trigger-icon aria-hidden="true"></i>
-		</span>
-		<span class="nav-text" data-theme-trigger-text>
-			<%= themeTrigger %>
+			<span class="nav-text" data-theme-trigger-text></span>
 		</span>
 	</a>
-
 	<ul
 		class="dropdown-menu <%= currentLang === 'ar' ? 'dropdown-menu-start' : 'dropdown-menu-end' %>"
 		aria-labelledby="themeDropdown"

@@ -8,11 +8,10 @@
         <% const backToTop = t('footer.backToTop') %>
 		<a
 			href="#top"
-			class="d-block mt-2"
+			class="d-block mt-2 has-tooltip"
 			id="back-to-top"
 			aria-label="<%= backToTop %>"
-            data-bs-toggle="tooltip"
-            title="<%= backToTop %>"
+            data-bs-title="<%= backToTop %>"
 		>
 			<i class="bi bi-arrow-up-circle" aria-hidden="true"></i>
 			<span class='text'><%= backToTop %></span>

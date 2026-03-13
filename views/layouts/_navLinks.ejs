@@ -3,14 +3,16 @@
 	<% navbar.forEach(nav => { %>
 		<li class="nav-item">
 			<a
-            class="nav-link"
+            class="nav-link has-tooltip"
 			<%= nav.id ? `id="${nav.id}"` : '' %>
 			href="<%= nav.link %>"
-			aria-label="<%= t(nav.label) %>">
-				<span class="nav-icon" data-bs-toggle="tooltip" title="<%= t(nav.label) %>">
+			aria-label="<%= t(nav.label) %>"
+			data-bs-title="<%= t(nav.label) %>"
+			>
+				<span class="nav-icon">
 					<i class="bi <%= nav.icon %>"></i>
+					<span class="nav-text"><%= t(nav.label) %></span>
 				</span>
-				<span class="nav-text"><%= t(nav.label) %></span>
 			</a>
 		</li>
 	<% }) %>

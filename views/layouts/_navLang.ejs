@@ -1,23 +1,27 @@
 <!--! views/layouts/_navLang.ejs -->
+<% const langTrigger = t('nav.langTrigger') %>
 <li class="nav-item dropdown">
     <a
-    class="nav-link"
+    class="nav-link has-tooltip"
     href="#"
     id="langDropdown"
     role="button"
     data-bs-toggle="dropdown"
+    data-bs-title="<%= langTrigger %>"
     aria-expanded="false"
-    aria-label="<%= t('nav.langTrigger') %>"
+    aria-label="<%= langTrigger %>"
     >
-        <% const currentLangItem = languages.find(lang => lang.code === currentLang); %>
-        <img
-        src="/images/flags/<%= currentLangItem?.flag || 'ca' %>.svg"
-        alt="<%= currentLang.toUpperCase() %>"
-        width="20"
-        height="15"
-        class="mx-1"
-        />
-        <%= currentLang === 'ar' ? 'عربي' : currentLang.toUpperCase() %>
+        <span class="nav-icon">
+            <% const currentLangItem = languages.find(lang => lang.code === currentLang); %>
+            <img
+            src="/images/flags/<%= currentLangItem?.flag || 'ca' %>.svg"
+            alt="<%= currentLang.toUpperCase() %>"
+            width="20"
+            height="15"
+            class="mx-1"
+            />
+            <%= currentLang === 'ar' ? 'عربي' : currentLang.toUpperCase() %>
+        </span>
     </a>
 
     <ul
