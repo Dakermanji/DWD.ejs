@@ -64,7 +64,10 @@
     <% }) %>
 
     <!-- Static Scripts -->
-    <script src='/js/theme.js' defer></script>
+    <% const staticScripts = ['theme', 'dropdownMenu'] %>
+    <% staticScripts.forEach((script) => { %>
+    <script src="/js/root/<%= script %>.js" defer></script>
+    <% }) %>
 
     <!-- Dynamic page styles -->
     <% styles.forEach((style) => { %>

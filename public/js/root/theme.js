@@ -1,4 +1,4 @@
-//! public/js/theme.js
+//! public/js/root/theme.js
 
 /**
  * Theme Controller
