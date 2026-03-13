@@ -1,0 +1,62 @@
+/*! public/css/ui-bar.css */
+
+.ui-bar {
+	background-color: var(--ui-bar-bg);
+	color: var(--ui-bar-text);
+}
+
+.ui-bar a,
+.ui-bar .nav-link,
+.ui-bar .btn {
+	color: inherit;
+	transition: color var(--transition-time-method);
+}
+
+.ui-bar .text-muted,
+.ui-bar .nav-link-muted {
+	color: var(--ui-bar-muted);
+}
+
+.ui-bar .nav-link {
+	border-radius: 0.375rem;
+}
+
+.navbar.ui-bar {
+	border-bottom: 1px solid var(--ui-bar-border);
+}
+
+footer.ui-bar {
+	border-top: 1px solid var(--ui-bar-border);
+}
+
+.ui-bar .dropdown-menu {
+	background-color: var(--bg-section);
+	color: var(--ui-bar-text);
+	border: 1px solid var(--ui-bar-border);
+}
+
+.ui-bar .dropdown-item {
+	color: var(--ui-bar-text);
+	transition:
+		background-color var(--transition-time-method),
+		color var(--transition-time-method);
+}
+
+.ui-bar .dropdown-item.active {
+	background-color: var(--color-primary);
+	color: #ffffff;
+}
+
+.ui-bar .dropdown-item:hover {
+	background-color: var(--color-primary-hover);
+}
+
+.ui-bar .nav-link:hover {
+	background-color: var(--color-primary-hover);
+	color: var(--ui-bar-text);
+}
+
+.ui-bar .nav-link.show {
+	color: var(--color-primary);
+	background-color: transparent;
+}

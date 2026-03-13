@@ -58,7 +58,10 @@
     />
 
     <!-- Static Styles -->
-    <link rel="stylesheet" href="/css/root.css" />
+    <% const staticStyles = ['root', 'ui-bar'] %>
+    <% staticStyles.forEach((style) => { %>
+    <link rel="stylesheet" href="/css/<%= style %>.css" />
+    <% }) %>
 
     <!-- Static Scripts -->
     <script src='/js/theme.js' defer></script>
