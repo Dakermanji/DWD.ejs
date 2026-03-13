@@ -1,5 +1,30 @@
 /*! public/css/root/base.css */
 
+/* Too small screen blocker */
+#screen-too-small {
+	position: fixed;
+	inset: 0;
+	display: none;
+	z-index: 9999;
+	padding: 1.5rem;
+	background: var(--bg-main);
+	color: var(--color-text-body);
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+@media (max-width: 319px), (max-height: 479px) {
+	#app-shell {
+		display: none !important;
+	}
+
+	#screen-too-small {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
 /* Global Styles */
 html {
 	scroll-behavior: smooth;

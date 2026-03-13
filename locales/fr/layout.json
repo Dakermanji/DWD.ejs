@@ -23,5 +23,9 @@
 	"footer": {
 		"rights": "Tous droits réservés.",
 		"backToTop": "Retour en haut"
+	},
+	"tooSmall": {
+		"title": "Écran trop petit",
+		"description": "Ce site nécessite au minimum 320 px de largeur et 480 px de hauteur."
 	}
 }
