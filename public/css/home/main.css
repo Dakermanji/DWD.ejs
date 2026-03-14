@@ -1,0 +1,34 @@
+/*! public/css/home/main.css */
+
+.home-page {
+	position: relative;
+	isolation: isolate;
+	--image-overlay: url('/images/home/overlay.png');
+}
+
+#home-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background-image:
+		linear-gradient(
+			to bottom,
+			rgba(255, 255, 255, 0.38),
+			rgba(255, 255, 255, 0.72)
+		),
+		var(--image-overlay);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+[data-theme='dark'] #home-overlay {
+	background-image:
+		linear-gradient(
+			to bottom,
+			rgba(8, 12, 24, 0.52),
+			rgba(8, 12, 24, 0.78)
+		),
+		var(--image-overlay);
+}

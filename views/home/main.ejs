@@ -1,17 +1,21 @@
 <!--! views/home/main.ejs -->
-<!-- Hero Section -->
-<%- include('_hero') %>
+<div id="home-page" class="home-page">
+	<div id="home-overlay" aria-hidden="true"></div>
 
-<!-- About Section -->
-<%- include('_about') %>
+	<!-- Hero Section -->
+	<%- include('./_hero') %>
 
-<!-- Services Section -->
-<%- include('_services') %>
+	<!-- About Section -->
+	<%- include('./_about') %>
 
-<!-- Portfolio Section -->
-<%- include('_portfolio') %>
+	<!-- Services Section -->
+	<%- include('./_services') %>
 
-<!-- Contact Section -->
-<%- include('_contact') %>
+	<!-- Portfolio Section -->
+	<%- include('./_portfolio') %>
 
-<!-- MODALS -->
+	<!-- Contact Section -->
+	<%- include('./_contact') %>
+</div>
+
+<!-- Modals -->

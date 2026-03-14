@@ -18,5 +18,6 @@
 export function renderHome(req, res) {
 	res.render('home/main', {
 		titleKey: 'home:title',
+		styles: ['home/main'],
 	});
 }
