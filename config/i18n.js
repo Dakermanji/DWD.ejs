@@ -28,7 +28,7 @@ import { SUPPORTED_LANGUAGE_CODES } from './languages.js';
 // Recreate __dirname in ESM (not available by default)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const NAME_SPACES = ['layout', 'auth'];
+const NAME_SPACES = ['layout', 'auth', 'home'];
 
 /**
  * Initialize i18next
