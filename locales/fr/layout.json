@@ -1,6 +1,7 @@
 {
 	"title": "Bienvenue",
 	"nav": {
+		"home": "Accueil",
 		"toggle": "Basculer la navigation",
 		"about": "À propos de moi",
 		"services": "Services",
