@@ -13,10 +13,11 @@
 		"routes.js",
 		"views.js"
 	],
+	"controllers": { "~": ["home.js", "lang.js"] },
 	"locales": {
-		"ar": ["common.json", "layout.json"],
-		"en": ["common.json", "layout.json"],
-		"fr": ["common.json", "layout.json"]
+		"ar": ["common.json", "home.json", "layout.json"],
+		"en": ["common.json", "home.json", "layout.json"],
+		"fr": ["common.json", "home.json", "layout.json"]
 	},
 	"middlewares": [
 		"errorHandler.js",
@@ -35,6 +36,7 @@
 	"patches": ["connect-flash+0.1.1.patch"],
 	"public": {
 		"css": {
+			"home": ["main.css"],
 			"root": ["base.css", "layout.css", "tokens.css", "ui-bar.css"]
 		},
 		"favicons": [
@@ -47,11 +49,25 @@
 			"favicon.ico",
 			"site.webmanifest"
 		],
-		"images": { "flags": ["ca.svg", "qc.svg", "sy.svg"] },
-		"js": { "root": ["dropdownMenu.js", "theme.js", "tooltips.js"] }
+		"images": {
+			"flags": ["ca.svg", "qc.svg", "sy.svg"],
+			"home": ["overlay.png"]
+		},
+		"js": {
+			"home": ["mouseTrailAndFollower.js"],
+			"root": ["dropdownMenu.js", "theme.js", "tooltips.js"]
+		}
 	},
+	"routes": ["home.js", "lang.js"],
 	"views": {
-		"Home": ["main.ejs"],
+		"Home": [
+			"_about.ejs",
+			"_contact.ejs",
+			"_hero.ejs",
+			"_portfolio.ejs",
+			"services_.ejs",
+			"main.ejs"
+		],
 		"layouts": [
 			"_company_name.ejs",
 			"_flash.ejs",
