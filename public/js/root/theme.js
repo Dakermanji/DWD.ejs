@@ -107,14 +107,9 @@ function updateThemeUI(preference) {
 
 	themeButtons.forEach((button) => {
 		const isActive = button.dataset.themeValue === preference;
-		const check = button.querySelector('.theme-check');
 
 		button.classList.toggle('active', isActive);
 		button.setAttribute('aria-pressed', String(isActive));
-
-		if (check) {
-			check.classList.toggle('d-none', !isActive);
-		}
 
 		if (isActive) {
 			activeLabel =

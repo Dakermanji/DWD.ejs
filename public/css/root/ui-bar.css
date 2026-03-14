@@ -4,6 +4,10 @@ nav .brand {
 	font-size: 1.3rem;
 }
 
+.nav-item {
+	margin-inline-end: 10px;
+}
+
 .nav-text {
 	display: none;
 }
@@ -69,6 +73,14 @@ footer.ui-bar {
 	background-color: transparent;
 }
 
+.dropdown-item .nav-icon {
+	padding-inline-end: 10px;
+}
+
+nav img {
+	margin-inline-end: 4px;
+}
+
 footer p {
 	margin-top: 4px;
 }
@@ -82,11 +94,27 @@ footer a:hover {
 	color: var(--color-primary);
 }
 
+#back-to-top .text {
+	margin-inline-start: 0.5rem;
+}
+
 @media (max-width: 991px) {
 	nav .nav-link {
 		padding-left: 1rem;
 		padding-right: 1rem;
 	}
+
+	nav .dropdown-item,
+	.has-tooltip {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.nav-icon {
+		width: 50px;
+		text-align: start;
+	}
+
 	.nav-text {
 		display: inline-block;
 	}

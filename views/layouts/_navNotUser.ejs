@@ -2,20 +2,17 @@
 <% const authTitle = `${t('auth:signin.title')} / ${t('auth:signup.title')}`; %>
 
 <li class="nav-item">
-	<span >
-		<a
-			href="#"
-			class="nav-link has-tooltip"
-			data-bs-toggle="modal"
-			data-bs-target="#authModal"
-			aria-label="<%= authTitle %>"
-			data-bs-title="<%= authTitle %>"
-		>
-			<i
-				class="bi bi-box-arrow-in-right nav-icon"
-				aria-hidden="true"
-			></i>
-			<span class="nav-text"><%= authTitle %></span>
-		</a>
-	</span>
+	<a
+		href="#"
+		class="nav-link has-tooltip"
+		data-bs-toggle="modal"
+		data-bs-target="#authModal"
+		aria-label="<%= authTitle %>"
+		data-bs-title="<%= authTitle %>"
+	>
+		<span class='nav-icon'>
+			<i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+		</span>
+		<span class="nav-text"><%= authTitle %></span>
+	</a>
 </li>

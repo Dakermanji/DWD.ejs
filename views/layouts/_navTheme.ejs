@@ -10,17 +10,18 @@
 <% const themeTrigger = t('theme.trigger') %>
 <li class="nav-item dropdown">
 	<a
-		class="nav-link has-tooltip"
+		class="nav-link"
 		href="#"
 		id="themeDropdown"
 		role="button"
 		data-bs-toggle="dropdown"
 		aria-expanded="false"
 		aria-label="<%= themeTrigger %>"
-		data-bs-title="<%= themeTrigger %>"
 	>
-		<span class="nav-icon">
-			<i class="bi bi-circle-half" data-theme-trigger-icon aria-hidden="true"></i>
+		<span class='has-tooltip' data-bs-title="<%= themeTrigger %>">
+			<span class="nav-icon">
+				<i class="bi bi-circle-half" data-theme-trigger-icon aria-hidden="true"></i>
+			</span>
 			<span class="nav-text" data-theme-trigger-text></span>
 		</span>
 	</a>
@@ -32,18 +33,14 @@
 			<li>
 				<button
 					type="button"
-					class="dropdown-item d-flex align-items-center justify-content-between"
+					class="dropdown-item align-items-center"
 					data-theme-value="<%= theme.key %>"
 					aria-label="<%= theme.label %>"
 				>
-					<span class="d-flex align-items-center gap-2">
+					<span class='nav-icon'>
 						<i class="bi <%= theme.icon %>" aria-hidden="true"></i>
-						<span class="theme-label"><%= theme.label %></span>
 					</span>
-
-					<span class="theme-check d-none" aria-hidden="true">
-						<i class="bi bi-check2"></i>
-					</span>
+					<span class="theme-label"><%= theme.label %></span>
 				</button>
 			</li>
 		<% }) %>
