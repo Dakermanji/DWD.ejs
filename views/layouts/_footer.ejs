@@ -5,16 +5,14 @@
 			&copy; <%= new Date().getFullYear() %> <%- include('_company_name')
 			%>. <%= t('footer.rights') %>
 		</p>
-        <% const backToTop = t('footer.backToTop') %>
 		<a
 			href="#top"
-			class="d-block mt-2 has-tooltip"
+			class="d-block mt-2"
 			id="back-to-top"
-			aria-label="<%= backToTop %>"
-            data-bs-title="<%= backToTop %>"
+			aria-label="<%= t('footer.backToTop') %>"
 		>
 			<i class="bi bi-arrow-up-circle" aria-hidden="true"></i>
-			<span class='text'><%= backToTop %></span>
+			<span class='text'><%= t('footer.backToTop') %></span>
 		</a>
 	</div>
 </footer>
