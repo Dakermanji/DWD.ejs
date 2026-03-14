@@ -1,9 +1,5 @@
 {
 	"title": "Bienvenue",
-	"home": {
-		"title": "Bienvenue",
-		"description": "Site portfolio"
-	},
 	"nav": {
 		"toggle": "Basculer la navigation",
 		"about": "À propos de moi",
