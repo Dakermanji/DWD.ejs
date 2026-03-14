@@ -8,20 +8,22 @@
 		"languages.js",
 		"logger.js",
 		"middlewares.js",
+		"navbar",
 		"process.js",
 		"routes.js",
 		"views.js"
 	],
 	"locales": {
-		"ar": ["common.json"],
-		"en": ["common.json"],
-		"fr": ["common.json"]
+		"ar": ["common.json", "layout.json"],
+		"en": ["common.json", "layout.json"],
+		"fr": ["common.json", "layout.json"]
 	},
 	"middlewares": [
 		"errorHandler.js",
 		"flash.js",
 		"i18n.js",
 		"locals.js",
+		"navbar.js",
 		"notFound.js",
 		"parsers.js",
 		"requestLogger.js",
@@ -31,9 +33,42 @@
 	],
 	"node_modules": [],
 	"patches": ["connect-flash+0.1.1.patch"],
+	"public": {
+		"css": {
+			"root": ["base.css", "layout.css", "tokens.css", "ui-bar.css"]
+		},
+		"favicons": [
+			"about.txt",
+			"android-chrome-192x192.png",
+			"android-chrome-512x512.png",
+			"apple-touch-icon.png",
+			"favicon-16x16.png",
+			"favicon-32x32.png",
+			"favicon.ico",
+			"site.webmanifest"
+		],
+		"images": { "flags": ["ca.svg", "qc.svg", "sy.svg"] },
+		"js": { "root": ["dropdownMenu.js", "theme.js", "tooltips.js"] }
+	},
 	"views": {
-		"layouts": ["main.ejs"],
-		"~": ["error.ejs", "home.ejs"]
+		"Home": ["main.ejs"],
+		"layouts": [
+			"_company_name.ejs",
+			"_flash.ejs",
+			"_footer.ejs",
+			"_header.ejs",
+			"_i18n.ejs",
+			"_navbar.ejs",
+			"_navBrand.ejs",
+			"_navLang.ejs",
+			"_navLinks.ejs",
+			"_navNotUser.ejs",
+			"_navTheme.ejs",
+			"_navUser.ejs",
+			"main.ejs"
+		],
+		"partials": ["_csrf"],
+		"~": ["error.ejs"]
 	},
 	"~": [
 		".env",
