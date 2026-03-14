@@ -9,7 +9,7 @@
 /**
  * Render the homepage.
  *
- * Uses the home/main view and passes the layout title translation key.
+ * Uses the home/main view.
  *
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
@@ -19,5 +19,6 @@ export function renderHome(req, res) {
 	res.render('home/main', {
 		titleKey: 'home:title',
 		styles: ['home/main'],
+		scripts: ['home/mouseTrailAndFollower'],
 	});
 }
