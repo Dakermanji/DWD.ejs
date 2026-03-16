@@ -39,7 +39,7 @@ h1 {
 	border-radius: var(--radius-sm);
 }
 
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
 	.hero-content {
 		max-width: 70%;
 	}

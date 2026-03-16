@@ -12,8 +12,13 @@
 	box-shadow: var(--shadow-card);
 }
 
+.image-wraper {
+	padding-top: 5rem;
+	padding-inline-end: 5rem;
+}
+
 .about-col-1 img {
-	width: min(100%, 320px);
+	width: min(100%, 600px);
 	height: auto;
 	display: inline-block;
 	filter: drop-shadow(var(--shadow-mascot));
@@ -131,6 +136,9 @@
 }
 
 @media (max-width: 991.98px) {
+	.image-wraper {
+		padding-inline-end: 0;
+	}
 	.about-background {
 		padding: 1.5rem;
 	}
