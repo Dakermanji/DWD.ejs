@@ -78,6 +78,9 @@ await i18next
 		interpolation: {
 			escapeValue: false,
 		},
+
+		// Enable returning objects
+		returnObjects: true,
 	});
 
 // Export initialized instances

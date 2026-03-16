@@ -51,7 +51,7 @@
 		],
 		"images": {
 			"flags": ["ca.svg", "qc.svg", "sy.svg"],
-			"home": ["canada-flag.png", "overlay.png"]
+			"home": ["canada-flag.png", "maple-coder-about.png", "overlay.png"]
 		},
 		"js": {
 			"home": ["mouseTrailAndFollower.js"],
