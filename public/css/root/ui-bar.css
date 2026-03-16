@@ -30,7 +30,7 @@ nav .brand {
 }
 
 .ui-bar .nav-link {
-	border-radius: 0.375rem;
+	border-radius: var(--radius-sm);
 }
 
 .navbar.ui-bar {

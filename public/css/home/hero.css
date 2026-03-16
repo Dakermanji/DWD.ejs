@@ -12,7 +12,7 @@
 
 .hero-content {
 	max-width: min(35%, 700px);
-	text-shadow: 1px 1px 3px var(--color-secondary-alpha);
+	text-shadow: var(--shadow-text-soft);
 	display: flex;
 	flex-direction: column;
 	gap: 1.5rem;
@@ -23,7 +23,7 @@
 	font-weight: 300;
 	text-transform: uppercase;
 	letter-spacing: 2px;
-	text-shadow: 1px 1px 10px var(--color-metalic-gold);
+	text-shadow: var(--shadow-text-brand);
 }
 
 h1 {
@@ -36,7 +36,7 @@ h1 {
 	height: 2.5rem;
 	vertical-align: middle;
 	margin-inline-start: 5px;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 }
 
 @media (max-width: 991px) {

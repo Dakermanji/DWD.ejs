@@ -5,6 +5,10 @@
 	flex: 1;
 }
 
+[dir='rtl'] img {
+	transform: scaleX(-1);
+}
+
 /* Main Container */
 main.container {
 	flex: 1;

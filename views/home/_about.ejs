@@ -24,80 +24,86 @@
 					const tabTitles = t('home:about.tabs.titles');
 					const tabsOrder = ['experience', 'skills', 'education'];
 				%>
+				<div>
+					<ul class="nav nav-tabs mb-4" role="tablist">
+						<% tabsOrder.forEach((tab, i) => { %>
+							<li class="nav-item" role="presentation">
+								<button
+									class="nav-link <%= i === 0 ? 'active' : '' %>"
+									id="tab-<%= tab %>"
+									data-bs-toggle="tab"
+									data-bs-target="#panel-<%= tab %>"
+									type="button"
+									role="tab"
+									aria-controls="panel-<%= tab %>"
+									aria-selected="<%= i === 0 ? 'true' : 'false' %>"
+								>
+									<%= tabTitles[tab] %>
+								</button>
+							</li>
+						<% }) %>
+					</ul>
 
-				<div class="tab-titles" role="tablist" aria-label="<%= t('home:about.title') %>">
-					<% tabsOrder.forEach((tab) => { %>
-						<button
-							type="button"
-							id="tab-<%= tab %>"
-							class="tab-links <%= tab === 'experience' ? 'active' : '' %>"
-							data-tab="<%= tab %>"
-							role="tab"
-							aria-selected="<%= tab === 'experience' ? 'true' : 'false' %>"
-							aria-controls="panel-<%= tab %>"
-						>
-							<%= tabTitles[tab] %>
-						</button>
-					<% }) %>
-				</div>
+					<div class="tab-content">
+						<% tabsOrder.forEach((tab, i) => { %>
+							<% const contents = t('home:about.tabs.' + tab); %>
 
-				<% tabsOrder.forEach((tab) => { %>
-					<% const contents = t('home:about.tabs.' + tab); %>
+							<div
+								class="tab-pane fade <%= i === 0 ? 'show active' : '' %>"
+								id="panel-<%= tab %>"
+								role="tabpanel"
+								aria-labelledby="tab-<%= tab %>"
+								tabindex="0"
+							>
+								<h3 class="visually-hidden"><%= tabTitles[tab] %></h3>
 
-					<div
-						id="panel-<%= tab %>"
-						class="tab-contents <%= tab === 'experience' ? 'active-tab' : '' %>"
-						role="tabpanel"
-						aria-labelledby="tab-<%= tab %>"
-						<%- tab === 'experience' ? '' : 'hidden' %>
-					>
-						<h3 class="visually-hidden"><%= tabTitles[tab] %></h3>
+								<% if (tab === 'experience') { %>
+									<ul class="about-list about-list-experience">
+										<% contents.forEach((item) => { %>
+											<li>
+												<span><%= item.period %></span><br />
+												<%- item.role_company %><br />
 
-						<% if (tab === 'experience') { %>
-							<ul class="about-list about-list-experience">
-								<% contents.forEach((item) => { %>
-									<li>
-										<span><%= item.period %></span><br />
-										<%- item.role_company %><br />
+												<% if (item.location) { %>
+													<p class="about-meta"><%= item.location %></p>
+												<% } %>
 
-										<% if (item.location) { %>
-											<p class="about-meta"><%= item.location %></p>
-										<% } %>
+												<% if (item.website) { %>
+													<p>
+														<a href="<%= item.website %>" target="_blank" rel="noopener noreferrer">
+															<%= item.website %>
+														</a>
+													</p>
+												<% } %>
+											</li>
+										<% }) %>
+									</ul>
 
-										<% if (item.website) { %>
-											<p>
-												<a href="<%= item.website %>" target="_blank" rel="noopener noreferrer">
-													<%= item.website %>
-												</a>
-											</p>
-										<% } %>
-									</li>
-								<% }) %>
-							</ul>
+								<% } else if (tab === 'skills') { %>
+									<ul class="about-list about-list-skills">
+										<% contents.forEach((skill) => { %>
+											<li>
+												<span><%= skill.name %></span><br />
+												<%= skill.description %>
+											</li>
+										<% }) %>
+									</ul>
 
-						<% } else if (tab === 'skills') { %>
-							<ul class="about-list about-list-skills">
-								<% contents.forEach((skill) => { %>
-									<li>
-										<span><%= skill.name %></span><br />
-										<%= skill.description %>
-									</li>
-								<% }) %>
-							</ul>
-
-						<% } else if (tab === 'education') { %>
-							<ul class="about-list about-list-education">
-								<% contents.forEach((edu) => { %>
-									<li>
-										<span><%= edu.year %></span><br />
-										<%= edu.title %><br />
-										<p class="about-meta"><%= edu.institution %></p>
-									</li>
-								<% }) %>
-							</ul>
-						<% } %>
+								<% } else if (tab === 'education') { %>
+									<ul class="about-list about-list-education">
+										<% contents.forEach((edu) => { %>
+											<li>
+												<span><%= edu.year %></span><br />
+												<%= edu.title %><br />
+												<p class="about-meta"><%= edu.institution %></p>
+											</li>
+										<% }) %>
+									</ul>
+								<% } %>
+							</div>
+						<% }) %>
 					</div>
-				<% }) %>
+				</div>
 			</div>
 		</div>
 	</div>
