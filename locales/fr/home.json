@@ -4,5 +4,107 @@
 		"canadaFlag": "Drapeau du Canada",
 		"intro": "Bonjour, je suis Behnam <span class='brand-color'>D</span>akermanji du Canada",
 		"role": "<span class='brand-color'>D</span>éveloppeur <span class='brand-color'>W</span>eb Full Stack"
+	},
+	"about": {
+		"title": "À propos de moi",
+		"image": "Développeur web travaillant sur un ordinateur",
+		"description": [
+			"Bonjour, je m'appelle Behnam Dakermanji, développeur web basé à Montréal, Canada. Mon parcours dans le domaine technologique est loin d'être traditionnel. J'ai initialement étudié la médecine et exercé comme médecin en Syrie, mais ma passion de longue date pour la programmation m'a finalement conduit à me réorienter vers le développement web après mon arrivée au Canada en 2019.",
+			"Depuis, j'ai développé mes compétences grâce à un apprentissage continu, des formations en ligne et des études formelles, obtenant plusieurs diplômes en programmation web à l'Université Concordia. J'aime créer des expériences web pratiques et centrées sur l'utilisateur, tout en résolvant des problèmes concrets avec des solutions propres et efficaces.",
+			"Sur le plan professionnel, j'ai travaillé comme consultant informatique, contribué à plusieurs projets freelance et acquis une expérience précieuse dans différents rôles. Je m'intéresse particulièrement à la création d'applications fiables, accessibles et bien structurées, combinant des fonctionnalités solides avec une expérience utilisateur fluide."
+		],
+		"tabs": {
+			"titles": {
+				"experience": "Expérience",
+				"skills": "Compétences",
+				"education": "Formation"
+			},
+			"experience": [
+				{
+					"period": "2026 - Présent",
+					"role_company": "Consultant IT E-Commerce pour <strong><em>Chiens Royaux</em></strong>",
+					"website": "https://chiensroyaux.com/"
+				},
+				{
+					"period": "2021 - Présent",
+					"role_company": "Consultant IT pour <strong><em>Ecole De Conduite Expertise</em></strong>",
+					"website": "https://expertise-pro.ca/",
+					"location": "Montréal, QC, Canada"
+				},
+				{
+					"period": "2019 - Présent",
+					"role_company": "Développeur web freelance pour <strong><em>petites entreprises et projets indépendants</em></strong>"
+				}
+			],
+			"skills": [
+				{
+					"name": "HTML & CSS",
+					"description": "Solide maîtrise de HTML5 et CSS3 pour créer des interfaces propres, accessibles et responsives."
+				},
+				{
+					"name": "JavaScript",
+					"description": "Bonne expérience avec JavaScript moderne pour développer des applications web interactives."
+				},
+				{
+					"name": "Développement Frontend",
+					"description": "Expérience avec des outils frontend tels que EJS, React, Angular et Vue.js selon les besoins des projets."
+				},
+				{
+					"name": "Développement Backend",
+					"description": "Expérience dans le développement côté serveur avec Node.js et Express, ainsi que des connaissances en PHP, Java et Python."
+				},
+				{
+					"name": "Gestion de bases de données",
+					"description": "Expérience pratique avec MySQL, MongoDB et PostgreSQL pour la modélisation et la gestion efficace des données."
+				},
+				{
+					"name": "Responsive Design",
+					"description": "Conception d'interfaces adaptatives fonctionnant efficacement sur ordinateur, tablette et mobile."
+				},
+				{
+					"name": "Contrôle de version",
+					"description": "Maîtrise de Git et des workflows collaboratifs sur des plateformes comme GitHub et Bitbucket."
+				},
+				{
+					"name": "Intégration d'API",
+					"description": "Expérience dans l'intégration de services tiers et d'API REST dans des applications web."
+				},
+				{
+					"name": "Tests et débogage",
+					"description": "Compétences en diagnostic et résolution de problèmes à l'aide d'outils de développement modernes."
+				},
+				{
+					"name": "Excel et gestion des données",
+					"description": "Utilisation d'Excel pour organiser les données, créer des rapports et gérer des informations structurées."
+				}
+			],
+			"education": [
+				{
+					"year": "2023",
+					"title": "Diplôme en programmation web",
+					"institution": "Université Concordia, Canada"
+				},
+				{
+					"year": "2022",
+					"title": "Diplôme en développement d'applications PHP/MySQL",
+					"institution": "Université Concordia, Canada"
+				},
+				{
+					"year": "2021",
+					"title": "Diplôme en développement de programmation web",
+					"institution": "Université Concordia, Canada"
+				},
+				{
+					"year": "2021",
+					"title": "Certificat en bases de la programmation avec Java",
+					"institution": "Université Concordia, Canada"
+				},
+				{
+					"year": "2015",
+					"title": "Doctorat en médecine (MD)",
+					"institution": "Université de Kalamoon, Syrie"
+				}
+			]
+		}
 	}
 }

@@ -4,5 +4,107 @@
 		"canadaFlag": "Flag of Canada",
 		"intro": "Hi, I'm Behnam <span class='brand-color'>D</span>akermanji from Canada",
 		"role": "Full Stack <span class='brand-color'>W</span>eb <span class='brand-color'>D</span>eveloper"
+	},
+	"about": {
+		"title": "About Me",
+		"image": "Web developer working at a computer",
+		"description": [
+			"Hello, I'm Behnam Dakermanji, a web developer based in Montreal, Canada. My journey into tech has been anything but traditional. I originally studied medicine and worked as a doctor in Syria, but my long-standing passion for programming eventually led me to fully transition into web development after moving to Canada in 2019.",
+			"Since then, I have built my skills through continuous learning, online courses, and formal studies, earning multiple diplomas in web programming from Concordia University. I enjoy building practical, user-focused web experiences and solving real problems with clean, thoughtful solutions.",
+			"Professionally, I have worked as an IT consultant, contributed to small freelance projects, and gained valuable industry experience in different roles. I am especially interested in creating reliable, accessible, and well-structured applications that combine strong functionality with a smooth user experience."
+		],
+		"tabs": {
+			"titles": {
+				"experience": "Experience",
+				"skills": "Skills",
+				"education": "Education"
+			},
+			"experience": [
+				{
+					"period": "2026 - Present",
+					"role_company": "E-Commerce IT Consultant for <strong><em>Chiens Royaux</em></strong>",
+					"website": "https://chiensroyaux.com/"
+				},
+				{
+					"period": "2021 - Present",
+					"role_company": "IT Consultant for <strong><em>Ecole De Conduite Expertise</em></strong>",
+					"website": "https://expertise-pro.ca/",
+					"location": "Montreal, QC, Canada"
+				},
+				{
+					"period": "2019 - Present",
+					"role_company": "Freelance Web Developer for <strong><em>small business and independent projects</em></strong>"
+				}
+			],
+			"skills": [
+				{
+					"name": "HTML & CSS",
+					"description": "Strong knowledge of HTML5 and CSS3 for building clean, accessible, and responsive user interfaces."
+				},
+				{
+					"name": "JavaScript",
+					"description": "Solid experience with modern JavaScript for creating interactive web applications and dynamic user experiences."
+				},
+				{
+					"name": "Frontend Development",
+					"description": "Comfortable working with tools and libraries such as EJS, React, Angular, and Vue.js depending on project needs."
+				},
+				{
+					"name": "Backend Development",
+					"description": "Experienced in building server-side applications with Node.js and Express, with additional familiarity in PHP, Java, and Python."
+				},
+				{
+					"name": "Database Management",
+					"description": "Hands-on experience with MySQL, MongoDB, and PostgreSQL for efficient data modeling, storage, and retrieval."
+				},
+				{
+					"name": "Responsive Design",
+					"description": "Focused on creating layouts that work smoothly across desktops, tablets, and mobile devices."
+				},
+				{
+					"name": "Version Control",
+					"description": "Proficient with Git and collaborative workflows using platforms such as GitHub and Bitbucket."
+				},
+				{
+					"name": "API Integration",
+					"description": "Experienced in working with third-party services and integrating REST APIs into web applications."
+				},
+				{
+					"name": "Testing & Debugging",
+					"description": "Skilled in debugging, troubleshooting, and improving application reliability using modern browser and developer tools."
+				},
+				{
+					"name": "Excel & Data Handling",
+					"description": "Comfortable using Excel for organizing data, reporting, and handling structured information efficiently."
+				}
+			],
+			"education": [
+				{
+					"year": "2023",
+					"title": "Diploma in Web Programming",
+					"institution": "Concordia University, Canada"
+				},
+				{
+					"year": "2022",
+					"title": "Diploma in PHP/MySQL Applications Development",
+					"institution": "Concordia University, Canada"
+				},
+				{
+					"year": "2021",
+					"title": "Diploma in Web Programming Development",
+					"institution": "Concordia University, Canada"
+				},
+				{
+					"year": "2021",
+					"title": "Certificate in Programming Fundamentals with Java",
+					"institution": "Concordia University, Canada"
+				},
+				{
+					"year": "2015",
+					"title": "Doctor of Medicine (MD)",
+					"institution": "University of Kalamoon, Syria"
+				}
+			]
+		}
 	}
 }
