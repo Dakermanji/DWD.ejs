@@ -131,7 +131,7 @@ footer a:hover {
 	}
 }
 
-@media (max-width: 380px) {
+@media (max-width: 395px) {
 	#rights {
 		font-size: 0.8rem;
 	}

@@ -6,9 +6,11 @@
 
 	--color-secondary: #3446c9;
 	--color-secondary-hover: #1d32ce;
+	--color-secondary-alpha: #3446c9a0;
 
 	--color-text-body: #212529;
 	--color-bg-main: #ffffff;
+	--color-metalic-gold: #d3af37;
 
 	--font-family-headers: 'Poppins', sans-serif;
 	--font-family-body: 'Roboto', sans-serif;
@@ -30,6 +32,7 @@
 
 	--color-secondary: #1d32ce;
 	--color-secondary-hover: #3446c9;
+	--color-secondary-alpha: #1d32cea0;
 
 	--color-text-body: #f8f9fa;
 	--color-bg-main: #121212;

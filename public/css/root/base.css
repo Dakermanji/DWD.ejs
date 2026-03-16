@@ -57,13 +57,13 @@ h6 {
 	color: var(--color-primary);
 }
 
-.brand-color-secondary {
-	color: var(--color-secondary);
-	transition: color var(--transition-time-method);
+.brand-text {
+	color: var(--color-text-body);
+	transition: text-shadow var(--transition-time-method);
 }
 
-.brand-color-secondary:hover {
-	color: var(--color-secondary-hover);
+.brand-text:hover {
+	text-shadow: 1px 1px 10px var(--color-metalic-gold);
 }
 
 /* Flash messages */

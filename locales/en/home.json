@@ -1,3 +1,8 @@
 {
-	"title": "Home"
+	"title": "Home",
+	"hero": {
+		"canadaFlag": "Flag of Canada",
+		"intro": "Hi, I'm Behnam <span class='brand-color'>D</span>akermanji from Canada",
+		"role": "Full Stack <span class='brand-color'>W</span>eb <span class='brand-color'>D</span>eveloper"
+	}
 }

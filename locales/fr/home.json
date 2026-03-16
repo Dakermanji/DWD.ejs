@@ -1,3 +1,8 @@
 {
-	"title": "Accueil"
+	"title": "Accueil",
+	"hero": {
+		"canadaFlag": "Drapeau du Canada",
+		"intro": "Bonjour, je suis Behnam <span class='brand-color'>D</span>akermanji du Canada",
+		"role": "<span class='brand-color'>D</span>éveloppeur <span class='brand-color'>W</span>eb Full Stack"
+	}
 }

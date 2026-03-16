@@ -1,3 +1,8 @@
 {
-	"title": "الرئيسية"
+	"title": "الرئيسية",
+	"hero": {
+		"canadaFlag": "علم كندا",
+		"intro": "مرحباً، أنا بهنام <span class='brand-color'>د</span>كرمنجي من كندا",
+		"role": "<span class='brand-color'>م</span>طور <span class='brand-color'>و</span>يب شامل"
+	}
 }

@@ -16,6 +16,10 @@ main.container {
 	position: relative;
 }
 
+.container {
+	max-width: 100%;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
 	main.container {

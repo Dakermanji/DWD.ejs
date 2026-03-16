@@ -1,0 +1,52 @@
+/*! public/css/home/hero.css */
+
+.hero-section {
+	min-height: calc(100vh - 7rem);
+	position: relative;
+	margin: 0;
+	padding: 10vw;
+	padding-inline-start: 5%;
+	display: flex;
+	align-items: center;
+}
+
+.hero-content {
+	max-width: min(35%, 700px);
+	text-shadow: 1px 1px 3px var(--color-secondary-alpha);
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.role {
+	font-size: 1.25rem;
+	font-weight: 300;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-shadow: 1px 1px 10px var(--color-metalic-gold);
+}
+
+h1 {
+	line-height: 1.5;
+	font-size: clamp(2rem, 4vw, 2.8rem);
+}
+
+.flag-icon {
+	width: auto;
+	height: 2.5rem;
+	vertical-align: middle;
+	margin-inline-start: 5px;
+	border-radius: 5px;
+}
+
+@media (max-width: 991px) {
+	.hero-content {
+		max-width: 70%;
+	}
+}
+
+@media (max-width: 395px) {
+	.hero-content {
+		max-width: 85%;
+	}
+}
