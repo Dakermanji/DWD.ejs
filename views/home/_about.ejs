@@ -1,7 +1,7 @@
 <!--! views/home/_about.ejs -->
 <section id="about">
 	<div class="container">
-		<h2 class="text-center mb-5"><%= t('home:about.title') %></h2>
+		<h2 class="text-center brand-color mb-5"><%= t('home:about.title') %></h2>
 
 		<div class="row align-items-center g-4">
 			<div class="col-12 col-lg-4 about-col-1 text-center">
@@ -14,7 +14,7 @@
 			</div>
 
 			<div class="col-12 col-lg-8 about-col-2 about-background">
-				<div class="about-intro">
+				<div class="about-intro pb-5">
 					<% t('home:about.description').forEach((paragraph) => { %>
 						<p><%= paragraph %></p>
 					<% }) %>
@@ -70,7 +70,7 @@
 
 												<% if (item.website) { %>
 													<p>
-														<a href="<%= item.website %>" target="_blank" rel="noopener noreferrer">
+														<a href="<%= item.website %>" target="_blank" rel="noopener noreferrer" dir='ltr'>
 															<%= item.website %>
 														</a>
 													</p>

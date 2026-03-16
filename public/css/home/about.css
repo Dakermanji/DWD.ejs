@@ -7,7 +7,7 @@
 .about-background {
 	padding: 2rem;
 	border-radius: var(--radius-xl);
-	background: var(--bg-card);
+	background: var(--color-secondary-beta);
 	border: 1px solid var(--border-subtle);
 	box-shadow: var(--shadow-card);
 }
@@ -32,6 +32,10 @@
 .about-intro p:first-child {
 	font-size: 1.05rem;
 	color: var(--color-text-heading);
+}
+
+.about-intro p {
+	text-indent: 1.5rem;
 }
 
 #about .nav-tabs {
@@ -90,6 +94,14 @@
 	border-radius: var(--radius-lg);
 	background: var(--bg-card-muted);
 	border: 1px solid var(--border-subtle);
+	transition:
+		background-color var(--transition-time-method),
+		transform var(--transition-time-method);
+}
+
+.about-list li:hover {
+	background: var(--bg-card);
+	transform: translateY(-1px);
 }
 
 .about-list li > span {

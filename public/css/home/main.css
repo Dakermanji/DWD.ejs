@@ -38,6 +38,7 @@
 	position: fixed;
 	inset: 0 auto auto 0;
 	pointer-events: none;
+	z-index: 9999;
 }
 
 #home-mouse-trail {
@@ -51,10 +52,9 @@
 	margin-left: -0.375rem;
 	margin-top: -0.375rem;
 	border-radius: 50%;
-	background-color: var(--color-primary);
-	box-shadow: 0 0 12px var(--color-primary);
+	background-color: var(--color-primary-alpha);
+	box-shadow: 0 0 12px var(--color-primary-alpha);
 	opacity: 0.75;
-	z-index: 1;
 	transition:
 		transform 160ms ease,
 		opacity 160ms ease;
@@ -72,12 +72,18 @@
 	margin-left: -0.175rem;
 	margin-top: -0.175rem;
 	border-radius: 50%;
-	background-color: var(--color-primary);
+	background-color: var(--color-primary-alpha);
 	opacity: 0.8;
-	box-shadow: 0 0 8px var(--color-primary);
+	box-shadow: 0 0 8px var(--color-primary-alpha);
 	animation: mouse-dot-fade 700ms ease-out forwards;
 	will-change: transform, opacity;
 	pointer-events: none;
+	z-index: 9999;
+}
+
+h2 {
+	text-shadow: var(--shadow-text-hard);
+	font-size: 3rem;
 }
 
 @keyframes mouse-dot-fade {

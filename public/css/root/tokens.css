@@ -3,10 +3,12 @@
 :root {
 	--color-primary: #ff7f27;
 	--color-primary-hover: #eead7f;
+	--color-primary-alpha: #e96c14b0;
 
 	--color-secondary: #3446c9;
 	--color-secondary-hover: #1d32ce;
 	--color-secondary-alpha: #3446c9a0;
+	--color-secondary-beta: #3446c950;
 
 	--color-text-body: #212529;
 	--color-bg-main: #ffffff;
@@ -47,11 +49,13 @@
 	--radius-pill: 999px;
 
 	--shadow-text-soft: 1px 1px 3px var(--color-secondary-alpha);
+	--shadow-text-hard: 1px 1px 6px var(--color-secondary);
 	--shadow-text-brand: 1px 1px 10px var(--color-metalic-gold);
 }
 
 [data-theme='dark'] {
 	--color-primary-hover: #e96c14;
+	--color-primary-alpha: #eead7fb0;
 
 	--color-secondary: #1d32ce;
 	--color-secondary-hover: #3446c9;
