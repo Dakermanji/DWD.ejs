@@ -92,6 +92,8 @@
 	list-style: none;
 	display: grid;
 	gap: 1rem;
+	color: var(--color-text-muted);
+	transition: color var(--transition-time-method);
 }
 
 .about-list li {
@@ -105,6 +107,7 @@
 }
 
 .about-list li:hover {
+	color: var(--color-text-body);
 	background: var(--bg-card);
 	transform: translateY(-1px);
 }

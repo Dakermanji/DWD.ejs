@@ -43,8 +43,8 @@
 	--shadow-brand: 0 8px 18px rgba(52, 70, 201, 0.25);
 	--shadow-mascot: 0 12px 24px rgba(0, 0, 0, 0.12);
 
-	--radius-xl: 1.5rem;
-	--radius-lg: 1rem;
+	--radius-xl: 30px;
+	--radius-lg: 20px;
 	--radius-sm: 0.3125rem;
 	--radius-pill: 999px;
 
