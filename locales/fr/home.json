@@ -106,5 +106,23 @@
 				}
 			]
 		}
+	},
+	"services": {
+		"title": "Services",
+		"api": {
+			"icon": "bi-diagram-3",
+			"title": "Développement et intégration d’API",
+			"description": "Conception et intégration d’API permettant à vos applications de communiquer de manière fiable avec des services et systèmes externes. Des API REST personnalisées aux intégrations de services tiers."
+		},
+		"database": {
+			"icon": "bi-database-check",
+			"title": "Conception et gestion de bases de données",
+			"description": "Création et maintenance de bases de données structurées, sécurisées et optimisées. Cela inclut la conception, l’optimisation des performances et la maintenance continue."
+		},
+		"backend": {
+			"icon": "bi-braces-asterisk",
+			"title": "Développement Backend",
+			"description": "Développement d’applications côté serveur évolutives et maintenables avec une architecture propre, des API efficaces et une logique métier fiable."
+		}
 	}
 }
