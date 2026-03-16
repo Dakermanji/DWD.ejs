@@ -84,6 +84,7 @@
 h2 {
 	text-shadow: var(--shadow-text-hard);
 	font-size: 3rem;
+	color: var(--color-primary);
 }
 
 @keyframes mouse-dot-fade {
