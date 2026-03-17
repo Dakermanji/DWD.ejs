@@ -159,7 +159,8 @@
 		},
 		"under_construction": {
 			"title": "Under Construction",
-			"alt": "Cute construction worker illustration with an under construction sign"
+			"alt": "Cute construction worker illustration with an under construction sign",
+			"soon": "Coming soon"
 		},
 		"see_more_btn": "See More"
 	}

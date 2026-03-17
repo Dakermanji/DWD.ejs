@@ -1,1 +1,111 @@
 <!--! views/home/_portfolio.ejs -->
+<% const portfolio = t('home:portfolio', { returnObjects: true }) %>
+
+<section id="portfolio" class="py-5">
+	<div class="container">
+		<div class="portfolio-background">
+			<div class="row g-4 align-items-stretch">
+				<div class="col-12">
+					<h2 class="mb-4 text-center"><%= portfolio.title %></h2>
+				</div>
+
+				<% Object.keys(portfolio.items || {}).forEach((key) => { %>
+					<%
+						const item = portfolio.items[key];
+						if (!item) return;
+
+						const images = Array.isArray(item.images) && item.images.length
+							? item.images
+							: ['main'];
+					%>
+
+					<div class="col-12 col-md-6">
+						<article
+							class="card h-100 portfolio-card border-0"
+							data-project="<%= key %>"
+							data-images-count="<%= images.length %>"
+						>
+							<div
+								class="portfolio-media position-relative overflow-hidden"
+								data-slides="<%= images.length %>"
+								data-interval="2200"
+							>
+								<% images.forEach((imageName, index) => { %>
+									<img
+										src="/images/home/portfolio/<%= key %>/<%= imageName %>_<%= currentLang %>.jpg"
+										class="portfolio-image <%= index === 0 ? 'active' : '' %>"
+										alt="<%= item.title %> - <%= imageName.replaceAll('_', ' ') %>"
+										loading="lazy"
+										<%= index === 0 ? '' : 'aria-hidden="true"' %>
+									/>
+								<% }) %>
+
+								<% if (images.length > 1) { %>
+									<div class="portfolio-dots" aria-hidden="true">
+										<% images.forEach((_, index) => { %>
+											<span
+												class="portfolio-dot <%= index === 0 ? 'active' : '' %>"
+												data-slide-index="<%= index %>"
+											></span>
+										<% }) %>
+									</div>
+								<% } %>
+							</div>
+
+							<div class="card-body d-flex flex-column">
+								<h3 class="card-title h4 mb-3"><%= item.title %></h3>
+
+								<p class="card-text mb-3">
+									<%= item.description %>
+								</p>
+
+								<% if (Array.isArray(item.tech) && item.tech.length) { %>
+									<ul class="list-inline mb-4 portfolio-tech-list">
+										<% item.tech.forEach((tech) => { %>
+											<li class="list-inline-item portfolio-tech-badge">
+												<%= tech %>
+											</li>
+										<% }) %>
+									</ul>
+								<% } %>
+
+								<div class="mt-auto mx-auto">
+									<a
+										href="/<%= item.link %>"
+										class="btn btn-primary portfolio-btn"
+										aria-label="<%= `${portfolio.see_more_btn} - ${item.title}` %>"
+									>
+										<%= portfolio.see_more_btn %>
+									</a>
+								</div>
+							</div>
+						</article>
+					</div>
+				<% }) %>
+
+                <div class="col-12 col-md-6">
+	                <article class="card h-100 portfolio-card border-0 portfolio-card--placeholder">
+		                <div class="portfolio-media position-relative overflow-hidden">
+                            <img
+                                src="/images/home/portfolio/under_construction/<%= currentLang %>.png"
+                                class="portfolio-image active"
+                                alt="<%= portfolio.under_construction.alt %>"
+                                loading="lazy"
+                            />
+                        </div>
+
+                        <div class="card-body d-flex flex-column justify-content-center text-center">
+                            <h3 class="card-title h4 mb-3">
+                                <%= portfolio.under_construction.title %>
+                            </h3>
+
+                            <p class="card-text text-muted mb-0">
+                                <%= portfolio.under_construction.soon %>
+                            </p>
+                        </div>
+	                </article>
+                </div>
+			</div>
+		</div>
+	</div>
+</section>

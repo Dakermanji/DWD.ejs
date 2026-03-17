@@ -159,7 +159,8 @@
 		},
 		"under_construction": {
 			"title": "En Construction",
-			"alt": "Illustration d’un ouvrier avec un panneau en construction"
+			"alt": "Illustration d’un ouvrier avec un panneau en construction",
+			"soon": "Bientôt disponible"
 		},
 		"see_more_btn": "Voir Plus"
 	}
