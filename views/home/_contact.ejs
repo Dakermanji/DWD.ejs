@@ -1,1 +1,60 @@
 <!--! views/home/_contact.ejs -->
+<% const contact = t('home:contact') %>
+<section id="contact" class="contact-section section-spacing">
+	<div class="container">
+		<div class="section-heading text-center mb-4">
+			<h2><%= contact.title %></h2>
+			<p class="contact-intro"><%= contact.description %></p>
+		</div>
+
+		<% if (!user) { %>
+			<div class="contact-guest-message text-center div-1">
+				<p class="mb-3"><%= contact.guest_message %></p>
+
+				<a
+					href="mailto:<%= email %>"
+					class="btn btn-action"
+					aria-label="<%= contact.email.aria %>"
+				>
+					<i class="bi bi-envelope-at"></i>
+					<%= contact.email.label %>
+				</a>
+			</div>
+		<% } else { %>
+			<form id="contact-form" class="contact-form div-1" method="post" action="/contact">
+				<div class="col-12 div-2">
+					<label for="subject" class="form-label"><%= contact.form.subject.label %></label>
+					<input
+						type="text"
+						class="form-control"
+						id="subject"
+						name="subject"
+						placeholder="<%= contact.form.subject.placeholder %>"
+						required
+						maxlength="150"
+					>
+				</div>
+
+				<div class="col-12 div-2">
+					<label for="message" class="form-label"><%= contact.form.message.label %></label>
+					<textarea
+						class="form-control"
+						id="message"
+						name="message"
+						rows="6"
+						placeholder="<%= contact.form.message.placeholder %>"
+						required
+						maxlength="2000"
+					></textarea>
+				</div>
+
+				<div class="col-12 text-center">
+					<button type="submit" class="btn btn-action" aria-label="<%= contact.form.submit %>">
+						<i class="bi bi-send"></i>
+						<%= contact.form.submit %>
+					</button>
+				</div>
+			</form>
+		<% } %>
+	</div>
+</section>

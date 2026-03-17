@@ -1,0 +1,82 @@
+/* public/css/home/contact.css */
+
+.contact-section .section-heading {
+	max-width: 42rem;
+	margin-inline: auto;
+}
+
+.contact-intro {
+	color: var(--color-text-muted);
+	font-size: 2rem;
+}
+
+.contact-guest-message,
+.contact-form {
+	max-width: 46rem;
+	margin-inline: auto;
+}
+
+.contact-guest-message {
+	display: grid;
+	gap: 1rem;
+	justify-items: center;
+	text-align: center;
+}
+
+.contact-form {
+	display: grid;
+	gap: 1rem;
+}
+
+.contact-form .form-label {
+	display: inline-block;
+	margin-bottom: 0.5rem;
+	color: var(--color-text-heading);
+	font-weight: 600;
+}
+
+.contact-form .form-control {
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--border-subtle);
+	background: transparent;
+	color: var(--color-text-body);
+	box-shadow: none;
+	transition:
+		border-color var(--transition-time-method),
+		box-shadow var(--transition-time-method),
+		background-color var(--transition-time-method);
+}
+
+.contact-form .form-control::placeholder {
+	color: var(--color-text-muted);
+}
+
+.contact-form .form-control:focus {
+	border-color: var(--color-primary);
+	background-color: var(--bg-card);
+	box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.08);
+}
+
+.contact-form textarea.form-control {
+	resize: vertical;
+	min-height: 10rem;
+}
+
+.contact-form .text-center {
+	margin-top: 0.5rem;
+}
+
+@media (max-width: 575.98px) {
+	.contact-guest-message,
+	.contact-form {
+		max-width: 100%;
+	}
+
+	.contact-section .div-1 {
+		padding: 1.25rem;
+	}
+
+	.contact-section .div-2 {
+		padding: 0.9rem;
+	}
+}

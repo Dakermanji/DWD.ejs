@@ -164,5 +164,25 @@
 		},
 		"view": "Voir",
 		"see_more_btn": "Voir Plus"
+	},
+	"contact": {
+		"title": "Contactez-moi",
+		"description": "Vous avez une question, une idée ou un projet en tête ? Je serai ravi de vous lire.",
+		"guest_message": "Veuillez vous connecter pour envoyer le formulaire. Vous pouvez aussi me contacter directement par e-mail.",
+		"email": {
+			"label": "Envoyer un e-mail",
+			"aria": "Envoyer un e-mail à Dakermanji"
+		},
+		"form": {
+			"subject": {
+				"label": "Sujet",
+				"placeholder": "Entrez le sujet"
+			},
+			"message": {
+				"label": "Message",
+				"placeholder": "Écrivez votre message"
+			},
+			"submit": "Envoyer le message"
+		}
 	}
 }

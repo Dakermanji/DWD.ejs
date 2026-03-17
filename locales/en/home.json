@@ -164,5 +164,25 @@
 		},
 		"view": "View",
 		"see_more_btn": "See More"
+	},
+	"contact": {
+		"title": "Contact Me",
+		"description": "Have a question, an idea, or a project in mind? I’d be happy to hear from you.",
+		"guest_message": "Please log in to send a form. You can also contact me directly by email.",
+		"email": {
+			"label": "Send an Email",
+			"aria": "Send an email to Dakermanji"
+		},
+		"form": {
+			"subject": {
+				"label": "Subject",
+				"placeholder": "Enter the subject"
+			},
+			"message": {
+				"label": "Message",
+				"placeholder": "Write your message"
+			},
+			"submit": "Send Message"
+		}
 	}
 }

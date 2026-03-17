@@ -1,5 +1,7 @@
 //! middlewares/locals.js
 
+import env from '../config/dotenv.js';
+
 /**
  * Locals Middleware
  *
@@ -26,6 +28,9 @@ export default function configureLocals(app) {
 
 		// Full URL including query params
 		res.locals.currentUrl = req.originalUrl;
+
+		// Passing email for consistency
+		res.locals.email = env.EMAIL;
 
 		next();
 	});

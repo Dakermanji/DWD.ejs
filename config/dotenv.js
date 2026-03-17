@@ -39,6 +39,9 @@ const env = {
 
 	/** Secret used to sign session cookies */
 	SESSION_SECRET: process.env.SESSION_SECRET ?? 'development-secret',
+
+	/** Admin Email */
+	EMAIL: process.env.EMAIL,
 };
 
 export default env;

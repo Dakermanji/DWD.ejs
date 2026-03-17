@@ -38,6 +38,7 @@
 		"css": {
 			"home": [
 				"about.css",
+				"contact.css",
 				"hero.css",
 				"main.css",
 				"portfolio.css",
@@ -87,7 +88,7 @@
 			}
 		},
 		"js": {
-			"home": ["mouseTrailAndFollower.js", "portfolio.css"],
+			"home": ["mouseTrailAndFollower.js", "portfolio.js"],
 			"root": ["dropdownMenu.js", "theme.js", "tooltips.js"]
 		}
 	},
