@@ -51,7 +51,34 @@
 		],
 		"images": {
 			"flags": ["ca.svg", "qc.svg", "sy.svg"],
-			"home": ["canada-flag.png", "maple-coder-about.png", "overlay.png"]
+			"home": {
+				"portfolio": {
+					"book_reviews": [
+						"main_ar.jpg",
+						"main_en.jpg",
+						"main_fr.jpg"
+					],
+					"chat_app": ["main_ar.jpg", "main_en.jpg", "main_fr.jpg"],
+					"visited_countries": [
+						"main_ar.jpg",
+						"main_en.jpg",
+						"main_fr.jpg"
+					],
+					"weather": [
+						"main_ar.jpg",
+						"main_en.jpg",
+						"main_fr.jpg",
+						"test_1_ar.jpg",
+						"test_1_en.jpg",
+						"test_1_fr.jpg",
+						"test_2_ar.jpg",
+						"test_2_en.jpg",
+						"test_2_fr.jpg"
+					],
+					"under_construction": ["ar.png", "en.png", "fr.png"]
+				},
+				"~": ["canada-flag.png", "maple-coder-about.png", "overlay.png"]
+			}
 		},
 		"js": {
 			"home": ["mouseTrailAndFollower.js"],
