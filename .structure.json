@@ -87,7 +87,7 @@
 			}
 		},
 		"js": {
-			"home": ["mouseTrailAndFollower.js"],
+			"home": ["mouseTrailAndFollower.js", "portfolio.css"],
 			"root": ["dropdownMenu.js", "theme.js", "tooltips.js"]
 		}
 	},

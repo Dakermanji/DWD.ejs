@@ -1,9 +1,15 @@
 /*! public/css/home/portfolio.css  */
 
+#portfolio .portfolio-item.is-hidden {
+	display: none;
+}
+
 #portfolio .portfolio-card {
 	border-radius: var(--radius-lg);
 	overflow: hidden;
 	background-color: var(--color-secondary-beta);
+	max-width: min(100%, 420px);
+	margin-inline: auto;
 	transition:
 		transform var(--transition-time-method),
 		box-shadow var(--transition-time-method);
@@ -108,4 +114,11 @@
 #portfolio .portfolio-card--placeholder:hover {
 	transform: none;
 	box-shadow: none;
+}
+
+@media (max-width: 767.98px) {
+	#portfolio .portfolio-card {
+		max-width: min(100%, 420px);
+		margin-inline: auto;
+	}
 }
