@@ -124,5 +124,43 @@
 			"title": "تطوير الأنظمة الخلفية",
 			"description": "تطوير أنظمة Backend قابلة للتوسع وسهلة الصيانة، مع التركيز على بنية نظيفة وواجهات API فعالة ومنطق أعمال موثوق."
 		}
+	},
+	"portfolio": {
+		"title": "أعمالي",
+		"items": {
+			"weather": {
+				"title": "تطبيق الطقس",
+				"description": "توقعات الطقس في الوقت الحقيقي باستخدام واجهات برمجة خارجية.",
+				"tech": ["Express", "EJS", "Weather API"],
+				"images": ["main", "test_1", "test_2"],
+				"link": "weather"
+			},
+			"chat_app": {
+				"title": "تطبيق الدردشة",
+				"description": "مراسلة فورية مع نظام تسجيل دخول واستخدام WebSockets.",
+				"tech": ["Express", "Socket.io", "MySQL", "Bcrypt"],
+				"images": ["main"],
+				"link": "chat_app"
+			},
+			"visited_countries": {
+				"title": "الدول التي زرتها",
+				"description": "تتبع وإدارة الدول التي تمت زيارتها مع حسابات المستخدمين.",
+				"tech": ["Express", "MySQL", "Bcrypt", "Nodemailer"],
+				"images": ["main"],
+				"link": "visited_countries"
+			},
+			"book_reviews": {
+				"title": "مراجعات الكتب",
+				"description": "البحث عن الكتب وكتابتها مراجعات باستخدام واجهات برمجة خارجية.",
+				"tech": ["MySQL", "OpenLibrary API"],
+				"images": ["main"],
+				"link": "books"
+			}
+		},
+		"under_construction": {
+			"title": "قيد الإنشاء",
+			"alt": "رسم توضيحي لعامل بناء مع لافتة قيد الإنشاء"
+		},
+		"see_more_btn": "عرض المزيد"
 	}
 }

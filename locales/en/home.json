@@ -124,5 +124,43 @@
 			"title": "Backend Development",
 			"description": "Developing scalable and maintainable server-side applications."
 		}
+	},
+	"portfolio": {
+		"title": "My Work",
+		"items": {
+			"weather": {
+				"title": "Weather App",
+				"description": "Real-time weather forecasts using external APIs.",
+				"tech": ["Express", "EJS", "Weather API"],
+				"images": ["main", "test_1", "test_2"],
+				"link": "weather"
+			},
+			"chat_app": {
+				"title": "Chat App",
+				"description": "Real-time messaging with authentication and sockets.",
+				"tech": ["Express", "Socket.io", "MySQL", "Bcrypt"],
+				"images": ["main"],
+				"link": "chat_app"
+			},
+			"visited_countries": {
+				"title": "Visited Countries",
+				"description": "Track and manage visited countries with user accounts.",
+				"tech": ["Express", "MySQL", "Bcrypt", "Nodemailer"],
+				"images": ["main"],
+				"link": "visited_countries"
+			},
+			"book_reviews": {
+				"title": "Book Reviews",
+				"description": "Search and review books using external APIs.",
+				"tech": ["MySQL", "OpenLibrary API"],
+				"images": ["main"],
+				"link": "books"
+			}
+		},
+		"under_construction": {
+			"title": "Under Construction",
+			"alt": "Cute construction worker illustration with an under construction sign"
+		},
+		"see_more_btn": "See More"
 	}
 }
