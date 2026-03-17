@@ -18,7 +18,13 @@
 export function renderHome(req, res) {
 	res.render('home/main', {
 		titleKey: 'home:title',
-		styles: ['home/main', 'home/hero', 'home/about', 'home/services'],
+		styles: [
+			'home/main',
+			'home/hero',
+			'home/about',
+			'home/services',
+			'home/portfolio',
+		],
 		scripts: ['home/mouseTrailAndFollower'],
 	});
 }

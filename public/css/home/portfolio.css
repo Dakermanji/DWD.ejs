@@ -1,0 +1,111 @@
+/*! public/css/home/portfolio.css  */
+
+#portfolio .portfolio-card {
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	background-color: var(--color-secondary-beta);
+	transition:
+		transform var(--transition-time-method),
+		box-shadow var(--transition-time-method);
+}
+
+#portfolio .portfolio-card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--shadow-card);
+}
+
+#portfolio .portfolio-media {
+	position: relative;
+	aspect-ratio: 16 / 10;
+	background-color: var(--color-bg-soft);
+}
+
+#portfolio .portfolio-image {
+	display: block;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0;
+	transform: scale(1.02);
+	transition:
+		opacity 320ms ease,
+		transform 320ms ease;
+}
+
+#portfolio .portfolio-image.active {
+	opacity: 1;
+	transform: scale(1);
+}
+
+#portfolio .portfolio-dots {
+	position: absolute;
+	left: 50%;
+	bottom: 0.9rem;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 0.45rem;
+	z-index: 2;
+}
+
+#portfolio .portfolio-dot {
+	width: 0.65rem;
+	height: 0.65rem;
+	border-radius: 50%;
+	background-color: var(--color-secondary);
+	backdrop-filter: blur(4px);
+	transition:
+		transform 180ms ease,
+		background-color 180ms ease,
+		opacity 180ms ease;
+	opacity: 0.9;
+}
+
+#portfolio .portfolio-dot.active {
+	background-color: var(--color-primary);
+	transform: scale(1.1);
+}
+
+#portfolio .portfolio-card .card-body {
+	gap: 0.5rem;
+	padding: 1.25rem;
+}
+
+#portfolio .portfolio-card .card-title {
+	font-weight: 700;
+}
+
+#portfolio .portfolio-card .card-text {
+	color: var(--color-text-body);
+}
+
+#portfolio .portfolio-tech-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+#portfolio .portfolio-tech-list .list-inline-item {
+	margin: 0;
+}
+
+#portfolio .portfolio-tech-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.35rem 0.75rem;
+	border-radius: var(--radius-pill);
+	background-color: var(--bg-subsection);
+	color: var(--color-text-muted);
+	font-size: 0.9rem;
+	border: 1px solid var(--color-border-soft);
+}
+
+#portfolio .portfolio-card--placeholder .portfolio-image {
+	opacity: 0.92;
+}
+
+#portfolio .portfolio-card--placeholder:hover {
+	transform: none;
+	box-shadow: none;
+}
