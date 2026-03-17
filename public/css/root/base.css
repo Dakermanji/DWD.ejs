@@ -98,3 +98,46 @@ h6 {
 	--bs-tooltip-bg: #ffffff;
 	--bs-tooltip-color: var(--color-secondary-hover);
 }
+
+.btn-action,
+.btn-action-outline,
+.btn-action-secondary {
+	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	transition: background-color var(--transition-time-method);
+}
+
+.btn-action {
+	color: var(--color-text-body);
+	background: var(--color-primary);
+}
+
+.btn-action:hover,
+.btn-action:focus {
+	background: var(--color-primary-hover);
+}
+
+.btn-action-outline {
+	color: var(--color-primary);
+	border: 1px solid var(--color-primary);
+}
+
+.btn-action-outline:hover,
+.btn-action-outline:focus {
+	color: var(--color-text-body);
+	border-color: var(--color-primary-hover);
+	background-color: var(--color-primary-hover);
+}
+
+.btn-action-secondary {
+	color: var(--color-text-body);
+	background: var(--color-secondary);
+}
+
+.btn-action-secondary:hover,
+.btn-action-secondary:focus {
+	background: var(--color-secondary-hover);
+}
