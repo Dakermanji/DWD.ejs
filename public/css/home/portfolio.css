@@ -109,11 +109,21 @@
 
 #portfolio .portfolio-card--placeholder .portfolio-image {
 	opacity: 0.92;
+	transform: scale(1);
+	transition: transform var(--transition-time-method);
+}
+
+#portfolio .portfolio-card--placeholder:hover .portfolio-image {
+	transform: scale(1.03);
 }
 
 #portfolio .portfolio-card--placeholder:hover {
 	transform: none;
 	box-shadow: none;
+}
+
+#portfolio .portfolio-card--placeholder .portfolio-media {
+	aspect-ratio: 1 / 1;
 }
 
 @media (max-width: 767.98px) {
