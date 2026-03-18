@@ -1,23 +1,5 @@
 /*! public/css/home/services.css */
 
-#services .container {
-	background: var(--color-secondary-beta);
-	border-radius: var(--radius-xl);
-	box-shadow: var(--shadow-card);
-	border: 1px solid var(--border-subtle);
-	padding: 2rem;
-}
-
-#services .card {
-	border-radius: var(--radius-lg);
-	transition: transform var(--transition-time-method);
-}
-
-#services .card:hover {
-	transform: translateY(-6px);
-	box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
-}
-
 #services .card i {
 	color: var(--color-primary);
 	transition:
@@ -28,16 +10,6 @@
 #services .card:hover i {
 	transform: scale(1.15);
 	text-shadow: 0 0 12px var(--color-primary);
-}
-
-#services .card-body {
-	border-radius: var(--radius-lg);
-	background-color: var(--bg-card-muted);
-	transition: background-color var(--transition-time-method);
-}
-
-#services .card:hover .card-body {
-	background-color: var(--bg-card);
 }
 
 #services .card-title {
