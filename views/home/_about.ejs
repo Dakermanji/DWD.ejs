@@ -1,7 +1,7 @@
 <!--! views/home/_about.ejs -->
 <section id="about">
 	<div class="container">
-		<h2 class="text-center mb-5"><%= t('home:about.title') %></h2>
+		<h2 class="text-center"><%= t('home:about.title') %></h2>
 
 		<div class="row align-items-center g-4">
 			<div class="image-wraper col-12 col-lg-4 about-col-1 text-center align-self-start">
@@ -13,7 +13,7 @@
 				/>
 			</div>
 
-			<div class="col-12 col-lg-8 about-col-2 about-background">
+			<div class="col-12 col-lg-8 about-col-2 div-1">
 				<div class="about-intro pb-5">
 					<% t('home:about.description').forEach((paragraph) => { %>
 						<p><%= paragraph %></p>
@@ -60,7 +60,7 @@
 								<% if (tab === 'experience') { %>
 									<ul class="about-list about-list-experience">
 										<% contents.forEach((item) => { %>
-											<li>
+											<li class='div-2'>
 												<span><%= item.period %></span><br />
 												<%- item.role_company %><br />
 
@@ -82,7 +82,7 @@
 								<% } else if (tab === 'skills') { %>
 									<ul class="about-list about-list-skills">
 										<% contents.forEach((skill) => { %>
-											<li>
+											<li class='div-2'>
 												<span><%= skill.name %></span><br />
 												<%= skill.description %>
 											</li>
@@ -92,7 +92,7 @@
 								<% } else if (tab === 'education') { %>
 									<ul class="about-list about-list-education">
 										<% contents.forEach((edu) => { %>
-											<li>
+											<li class='div-2'>
 												<span><%= edu.year %></span><br />
 												<%= edu.title %><br />
 												<p class="about-meta"><%= edu.institution %></p>

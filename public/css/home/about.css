@@ -1,17 +1,5 @@
 /*! public/css/home/about.css */
 
-#about {
-	padding: 5rem 0;
-}
-
-.about-background {
-	padding: 2rem;
-	border-radius: var(--radius-xl);
-	background: var(--color-secondary-beta);
-	border: 1px solid var(--border-subtle);
-	box-shadow: var(--shadow-card);
-}
-
 .image-wraper {
 	padding-top: 5rem;
 	padding-inline-end: 5rem;
@@ -96,22 +84,6 @@
 	transition: color var(--transition-time-method);
 }
 
-.about-list li {
-	padding: 1rem 1.1rem;
-	border-radius: var(--radius-lg);
-	background: var(--bg-card-muted);
-	border: 1px solid var(--border-subtle);
-	transition:
-		background-color var(--transition-time-method),
-		transform var(--transition-time-method);
-}
-
-.about-list li:hover {
-	color: var(--color-text-body);
-	background: var(--bg-card);
-	transform: translateY(-1px);
-}
-
 .about-list li > span {
 	display: inline-block;
 	margin-bottom: 0.35rem;
@@ -120,8 +92,12 @@
 }
 
 .about-meta {
-	margin: 0.4rem 0 0;
-	font-size: 0.95rem;
+	font-style: italic;
+	color: var(--color-text-muted);
+	transition: color var(--transition-time-method);
+}
+
+.div-2:hover .about-meta {
 	color: var(--color-text-muted);
 }
 
