@@ -1,0 +1,14 @@
+/*! public/css/modals/main.css */
+
+.modal-content {
+	padding: 1rem;
+	border-radius: var(--radius-xl);
+	background: var(--bg-section);
+	border: 1px solid var(--border-subtle);
+	box-shadow: var(--shadow-card);
+	color: var(--color-text-body);
+}
+
+[data-theme='dark'] .btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+}

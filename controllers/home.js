@@ -25,6 +25,7 @@ export function renderHome(req, res) {
 			'home/services',
 			'home/portfolio',
 			'home/contact',
+			'modals/main',
 		],
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio'],
 	});
