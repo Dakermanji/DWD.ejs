@@ -1,1 +1,37 @@
 <!--! views/modals/auth/_authTabs.ejs -->
+<div
+	class="modal fade"
+	id="authModal"
+	tabindex="-1"
+	aria-labelledby="authModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="authModalLabel">
+					<%= t('common:account') %>
+				</h5>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="<%= t('common:close') %>"
+				></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="d-grid gap-2 mb-3">
+					<%# include('../../partials/_google') %>
+					<%# include('../../partials/_github') %>
+				</div>
+				<div class="auth-separator mb-3">
+					<span class="auth-separator__text">
+						<%= t('common:or') %>
+					</span>
+				</div>
+				<%# include('./_authTabs_tabs') %>
+			</div>
+		</div>
+	</div>
+</div>
