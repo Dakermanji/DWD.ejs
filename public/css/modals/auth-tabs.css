@@ -1,0 +1,23 @@
+/*! public/css/modals/auth-tabs.css */
+
+.auth-separator {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	color: var(--color-text-muted);
+	font-size: 0.875rem;
+}
+
+.auth-separator::before,
+.auth-separator::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background-color: var(--border-subtle);
+	opacity: 0.5;
+}
+
+.auth-separator__text {
+	white-space: nowrap;
+	opacity: 0.8;
+}

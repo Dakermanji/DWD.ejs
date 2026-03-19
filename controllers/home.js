@@ -26,6 +26,7 @@ export function renderHome(req, res) {
 			'home/portfolio',
 			'home/contact',
 			'modals/main',
+			'modals/auth-tabs',
 		],
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio'],
 	});
