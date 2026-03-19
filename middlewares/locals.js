@@ -21,7 +21,7 @@ export default function configureLocals(app) {
 		res.locals.scripts = [];
 
 		// Temporary authenticated user placeholder
-		res.locals.user = true;
+		res.locals.user = null;
 
 		// Current route path for active navbar state
 		res.locals.currentRoute = req.path;

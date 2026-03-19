@@ -21,3 +21,7 @@
 </div>
 
 <!-- Modals -->
+<!-- Guest -->
+<% if (!user) { %>
+	<%- include('../modals/auth/_authTabs') %>
+<% } %>
