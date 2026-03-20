@@ -27,6 +27,7 @@ export function renderHome(req, res) {
 			'home/contact',
 			'modals/main',
 			'modals/auth-tabs',
+			'partials/brands',
 		],
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio'],
 	});
