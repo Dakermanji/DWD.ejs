@@ -1,0 +1,39 @@
+<!--! views/modals/auth/_authTabs_tabs.ejs -->
+<ul class="nav nav-tabs" id="authTabs" role="tablist">
+	<li class="nav-item" role="presentation">
+		<button
+			class="nav-link active"
+			id="auth-signin-tab"
+			data-bs-toggle="tab"
+			data-bs-target="#auth-signin"
+			type="button"
+			role="tab"
+			aria-controls="auth-signin"
+			aria-selected="true"
+		>
+			<%= t('auth:signin.title') %>
+		</button>
+	</li>
+
+	<li class="nav-item" role="presentation">
+		<button
+			class="nav-link"
+			id="auth-signup-tab"
+			data-bs-toggle="tab"
+			data-bs-target="#auth-signup"
+			type="button"
+			role="tab"
+			aria-controls="auth-signup"
+			aria-selected="false"
+		>
+			<%= t('auth:signup.title') %>
+		</button>
+	</li>
+</ul>
+<div class="tab-content pt-3">
+	<!-- signin -->
+	<%# include('_authTabs_tabs_signin') %>
+
+	<!-- signup (EMAIL-FIRST) -->
+	<%# include('_authTabs_tabs_signup') %>
+</div>

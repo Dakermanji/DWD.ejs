@@ -21,3 +21,18 @@
 	white-space: nowrap;
 	opacity: 0.8;
 }
+
+#authTabs.nav-tabs {
+	border-color: var(--color-primary);
+}
+
+#authTabs .nav-link {
+	color: var(--color-primary);
+	background-color: var(--color-bg);
+	border-color: var(--color-primary);
+}
+
+#authTabs .nav-link.active {
+	color: var(--color-text-inverse);
+	background-color: var(--color-primary);
+}
