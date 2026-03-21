@@ -42,6 +42,14 @@ const env = {
 
 	/** Admin Email */
 	EMAIL: process.env.EMAIL,
+
+	// PostgreSQL
+	DB_HOST: process.env.DB_HOST ?? '127.0.0.1',
+	DB_PORT: Number(process.env.DB_PORT ?? 5432),
+	DB_NAME: process.env.DB_NAME ?? 'dwd_ejs',
+	DB_USER: process.env.DB_USER ?? 'postgres',
+	DB_PASSWORD: process.env.DB_PASSWORD ?? '',
+	DB_SSL: process.env.DB_SSL === 'true',
 };
 
 export default env;
