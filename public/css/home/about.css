@@ -103,15 +103,17 @@
 
 .about-list a {
 	color: var(--color-secondary);
-	text-decoration: none;
+	text-decoration-color: transparent;
 	font-weight: 500;
 	word-break: break-word;
-	transition: color var(--transition-time-method);
+	transition:
+		color var(--transition-time-method),
+		text-decoration-color var(--transition-time-method);
 }
 
 .about-list a:hover {
-	color: var(--color-primary);
-	text-decoration: underline;
+	color: var(--color-secondary-hover);
+	text-decoration-color: var(--color-secondary-hover);
 }
 
 @media (max-width: 991.98px) {
