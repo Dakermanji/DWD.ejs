@@ -96,7 +96,12 @@
 		}
 	},
 	"routes": ["home.js", "lang.js"],
-	"sql": ["01_session.sql", "02_users.sql"],
+	"sql": [
+		"01_session.sql",
+		"02_users.sql",
+		"03_user_providers.sql",
+		"04_auth_tokens.sql"
+	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
 		"Home": [
