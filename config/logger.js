@@ -1,3 +1,5 @@
+//! config/logger.js
+
 /**
  * Application Logger
  *
@@ -18,7 +20,7 @@
  * Example output:
  * 2026-03-11 10:00:00 ✅ 🚀 [SERVER] Server running on http://localhost:3000
  * 2026-03-11 10:00:02 ✅ 🗄️ [DATABASE] Database connected successfully
- * 2026-03-11 10:00:05 ❌ 🔐 [AUTH] Invalid login attempt
+ * 2026-03-11 10:00:05 ❌ 🔐 [AUTH] Invalid sign in attempt
  */
 
 import winston from 'winston';
