@@ -15,9 +15,9 @@
 	],
 	"controllers": { "~": ["home.js", "lang.js"] },
 	"locales": {
-		"ar": ["common.json", "home.json", "layout.json"],
-		"en": ["common.json", "home.json", "layout.json"],
-		"fr": ["common.json", "home.json", "layout.json"]
+		"ar": ["authjson", "common.json", "home.json", "layout.json"],
+		"en": ["authjson", "common.json", "home.json", "layout.json"],
+		"fr": ["authjson", "common.json", "home.json", "layout.json"]
 	},
 	"middlewares": [
 		"errorHandler.js",
@@ -44,6 +44,8 @@
 				"portfolio.css",
 				"services.css"
 			],
+			"modals": ["auth-tabs.json", "main.css"],
+			"partials": ["brands"],
 			"root": ["base.css", "layout.css", "tokens.css", "ui-bar.css"]
 		},
 		"favicons": [
@@ -117,7 +119,15 @@
 			"_navUser.ejs",
 			"main.ejs"
 		],
-		"partials": ["_csrf"],
+		"modals": {
+			"auth": [
+				"_authTabs_tabs_signin.ejs",
+				"_authTabs_tabs_signup.ejs",
+				"_authTabs_tabs.ejs",
+				"_authTabs.ejs"
+			]
+		},
+		"partials": ["_csrf", "_github.ejs", "_google.ejs"],
 		"~": ["error.ejs"]
 	},
 	"~": [
