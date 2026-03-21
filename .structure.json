@@ -96,6 +96,8 @@
 		}
 	},
 	"routes": ["home.js", "lang.js"],
+	"sql": ["01_session.sql"],
+	"utils": { "config": ["dotenv.js"] },
 	"views": {
 		"Home": [
 			"_about.ejs",

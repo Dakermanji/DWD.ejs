@@ -1,4 +1,4 @@
-//! utils/dotenv.js
+//! utils/config/dotenv.js
 
 /**
  * Environment variable helpers
@@ -16,7 +16,7 @@
  */
 
 import dotenv from 'dotenv';
-import logger from '../config/logger.js';
+import logger from '../../config/logger.js';
 
 // Load variables from .env file into process.env
 dotenv.config({ quiet: true });

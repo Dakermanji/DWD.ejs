@@ -19,7 +19,7 @@
  * - Type normalization (e.g. number / boolean) should happen here
  */
 
-import { requireEnv, optionalEnv } from '../utils/dotenv.js';
+import { requireEnv, optionalEnv } from '../utils/config/dotenv.js';
 
 /**
  * Application environment configuration
