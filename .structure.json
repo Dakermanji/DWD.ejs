@@ -1,19 +1,25 @@
 {
 	".private": [],
-	"config": [
-		"database.js",
-		"dotenv.js",
-		"errorHandlers.js",
-		"express.js",
-		"i18n.js",
-		"languages.js",
-		"logger.js",
-		"middlewares.js",
-		"navbar",
-		"process.js",
-		"routes.js",
-		"views.js"
-	],
+	"config": {
+		"passport": {
+			"strategies": ["local.js", "google.js", "github.js", "discord.js"],
+			"~": ["index.js", "serializeUser.js"]
+		},
+		"~": [
+			"database.js",
+			"dotenv.js",
+			"errorHandlers.js",
+			"express.js",
+			"i18n.js",
+			"languages.js",
+			"logger.js",
+			"middlewares.js",
+			"navbar",
+			"process.js",
+			"routes.js",
+			"views.js"
+		]
+	},
 	"controllers": { "~": ["home.js", "lang.js"] },
 	"locales": {
 		"ar": ["authjson", "common.json", "home.json", "layout.json"],
