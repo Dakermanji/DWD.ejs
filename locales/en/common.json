@@ -1,5 +1,8 @@
 {
 	"or": "or",
 	"account": "Account",
-	"close": "Close"
+	"close": "Close",
+	"identifier": "Username or email",
+	"password": "Password",
+	"email": "Email"
 }

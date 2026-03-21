@@ -1,5 +1,8 @@
 {
 	"or": "ou",
 	"account": "Compte",
-	"close": "Fermer"
+	"close": "Fermer",
+	"identifier": "Nom d’utilisateur ou e-mail",
+	"password": "Mot de passe",
+	"email": "E-mail"
 }

@@ -1,0 +1,53 @@
+<!--! views/modals/auth/_authTabs_tabs_signin.ejs -->
+<div
+	class="tab-pane fade show active"
+	id="auth-signin"
+	role="tabpanel"
+	aria-labelledby="auth-signin-tab"
+>
+	<form action="/auth/signin" method="POST" novalidate>
+		<%- include('../../partials/_csrf') %>
+		<div class="mb-3">
+			<label for="authsignin-identifier" class="form-label">
+				<%= t('common:identifier') %>
+			</label>
+			<input
+				id="authsignin-identifier"
+				name="identifier"
+				type="text"
+				class="form-control"
+				autocomplete="username"
+				required
+			/>
+		</div>
+
+		<div class="mb-3">
+			<label for="authsignin-password" class="form-label">
+				<%= t('common:password') %>
+			</label>
+			<input
+				id="authsignin-password"
+				name="password"
+				type="password"
+				class="form-control"
+				autocomplete="current-password"
+				required
+			/>
+		</div>
+
+		<div class="d-grid gap-2">
+			<button type="submit" class="btn btn-action">
+				<%= t('auth:signin.submit') %>
+			</button>
+		</div>
+		<div class='modal-footer-container'>
+			<a
+				href="#"
+				class="modal-footer-link"
+				data-auth-open="recovery"
+			>
+				<%= t('auth:signin.needHelp') %>
+			</a>
+		</div>
+	</form>
+</div>

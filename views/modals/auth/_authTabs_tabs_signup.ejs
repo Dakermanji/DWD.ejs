@@ -1,0 +1,33 @@
+<!--! views/modals/auth/_authTabs_tabs_signup.ejs -->
+<div
+	class="tab-pane fade"
+	id="auth-signup"
+	role="tabpanel"
+	aria-labelledby="auth-signup-tab"
+>
+	<form action="/auth/signup" method="POST" novalidate>
+		<%- include('../../partials/_csrf') %>
+		<div class="mb-3">
+			<label for="authsignup-email" class="form-label">
+				<%= t('common:email') %>
+			</label>
+			<input
+				id="authsignup-email"
+				name="email"
+				type="email"
+				class="form-control"
+				autocomplete="email"
+				required
+			/>
+			<div class="form-text">
+				<%= t('auth:signup.emailFirstHint') %>
+			</div>
+		</div>
+
+		<div class="d-grid gap-2">
+			<button type="submit" class="btn btn-action">
+				<%= t('auth:signup.submit') %>
+			</button>
+		</div>
+	</form>
+</div>
