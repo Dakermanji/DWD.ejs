@@ -3,14 +3,28 @@
 /**
  * Session Middleware
  *
- * Configures session management for the application.
- * Sessions allow storing temporary data between requests,
- * such as authentication state, language preferences,
- * and flash messages.
+ * Responsibilities:
+ * - Configure Express session management
+ * - Persist sessions in PostgreSQL instead of memory
+ * - Define cookie security and expiration behavior
+ *
+ * Why this file exists:
+ * - Centralizes session configuration in one place
+ * - Keeps authentication/session logic out of the app bootstrap
+ * - Ensures sessions survive server restarts
+ *
+ * Notes:
+ * - Uses `connect-pg-simple` as the PostgreSQL session store
+ * - Uses the shared PostgreSQL pool from `config/database.js`
+ * - Expects the session table to exist before the app starts
  */
 
 import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
 import env from '../config/dotenv.js';
+import pool from '../config/database.js';
+
+const PgStore = connectPgSimple(session);
 
 /**
  * Registers the session middleware.
@@ -20,32 +34,72 @@ import env from '../config/dotenv.js';
 export default function configureSession(app) {
 	app.use(
 		session({
-			//Session name: default connect.sid
+			/**
+			 * Session store
+			 *
+			 * Stores sessions in PostgreSQL instead of the default
+			 * in-memory store, which is not suitable for production.
+			 */
+			store: new PgStore({
+				pool,
+				tableName: 'session',
+				createTableIfMissing: false,
+			}),
+
+			/**
+			 * Session cookie name
+			 *
+			 * Custom name avoids the default `connect.sid`
+			 * and makes the app cookie easier to identify.
+			 */
 			name: 'DWD.sid',
 
-			// Secret used to sign the session ID cookie
+			/**
+			 * Secret used to sign the session ID cookie
+			 */
 			secret: env.SESSION_SECRET,
 
-			// Do not save session if it was never modified
+			/**
+			 * Do not save the session back to the store
+			 * if it was not modified during the request.
+			 */
 			resave: false,
 
-			// Do not create empty sessions
+			/**
+			 * Do not create session records for unauthenticated
+			 * or otherwise empty sessions.
+			 */
 			saveUninitialized: false,
 
-			// Refreshes the session expiration on activity: active users keep their session alive
+			/**
+			 * Refresh cookie expiration on every response.
+			 *
+			 * This keeps active users signed in as long as
+			 * they continue interacting with the app.
+			 */
 			rolling: true,
 
 			cookie: {
-				// Prevent client-side JavaScript from accessing the cookie
+				/**
+				 * Prevent client-side JavaScript
+				 * from accessing the cookie.
+				 */
 				httpOnly: true,
 
-				// Only transmit cookie over HTTPS in production
+				/**
+				 * Only send cookie over HTTPS in production.
+				 */
 				secure: env.NODE_ENV === 'production',
 
-				// Helps protect against CSRF by restricting cross-site cookie usage
+				/**
+				 * Helps reduce CSRF risk while keeping
+				 * normal same-site navigation working.
+				 */
 				sameSite: 'lax',
 
-				// Cookie lifespan (1 day)
+				/**
+				 * Session cookie lifespan: 1 day
+				 */
 				maxAge: 1000 * 60 * 60 * 24,
 			},
 		}),
