@@ -11,11 +11,12 @@ import securityHeaders from '../middlewares/securityHeaders.js';
 import requestLogger from '../middlewares/requestLogger.js';
 import parsers from '../middlewares/parsers.js';
 import session from '../middlewares/session.js';
+import passport from '../middlewares/passport.js';
 import flash from '../middlewares/flash.js';
 import locals from '../middlewares/locals.js';
 import i18nextMiddlewares from '../middlewares/i18n.js';
 import staticFiles from '../middlewares/staticFiles.js';
-import { navbarMiddleware } from '../middlewares/navBar.js';
+import { navbarMiddleware } from '../middlewares/navbar.js';
 
 export default function applyMiddlewares(app) {
 	// Apply security-related HTTP headers first
@@ -29,6 +30,9 @@ export default function applyMiddlewares(app) {
 
 	// Enable session support
 	session(app);
+
+	// Initialize Passport and restore session user
+	passport(app);
 
 	// Flash messages
 	flash(app);

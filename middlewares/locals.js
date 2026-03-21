@@ -9,9 +9,9 @@ import env from '../config/dotenv.js';
  *
  * Notes:
  * - `styles` and `scripts` are page-level asset arrays consumed by the layout.
- * - `user` is currently a temporary placeholder for navbar/auth UI testing.
+ * - `user` is populated from Passport when a session is authenticated.
  * - `currentRoute` is used to mark active navigation items.
- * - `currentRoute` is used for redirects and return to.
+ * - `currentUrl` is used for redirects and return-to flows.
  */
 
 export default function configureLocals(app) {
@@ -20,8 +20,9 @@ export default function configureLocals(app) {
 		res.locals.styles = [];
 		res.locals.scripts = [];
 
-		// Temporary authenticated user placeholder
-		res.locals.user = null;
+		// Authenticated user from Passport session
+		res.locals.user = req.user ?? null;
+		res.locals.isAuthenticated = req.isAuthenticated?.() ?? false;
 
 		// Current route path for active navbar state
 		res.locals.currentRoute = req.path;

@@ -34,6 +34,7 @@
 		"navbar.js",
 		"notFound.js",
 		"parsers.js",
+		"passport.js",
 		"requestLogger.js",
 		"securityHeaders.js",
 		"session.js",
