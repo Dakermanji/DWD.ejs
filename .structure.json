@@ -1,6 +1,7 @@
 {
 	".private": [],
 	"config": [
+		"database.js",
 		"dotenv.js",
 		"errorHandlers.js",
 		"express.js",
