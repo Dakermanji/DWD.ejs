@@ -36,3 +36,7 @@
 	color: var(--color-text-inverse);
 	background-color: var(--color-primary);
 }
+
+#authModal .form-text {
+	color: var(--color-text-muted);
+}

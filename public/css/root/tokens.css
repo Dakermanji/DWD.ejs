@@ -51,15 +51,16 @@
 	--shadow-text-soft: 1px 1px 3px var(--color-secondary-alpha);
 	--shadow-text-hard: 1px 1px 6px var(--color-secondary);
 	--shadow-text-brand: 1px 1px 10px var(--color-metalic-gold);
+	--shadow-box-brand: 0 0 0 0.25rem var(--color-primary);
 }
 
 [data-theme='dark'] {
-	--color-primary-hover: #e96c14;
+	--color-primary-hover: #dd6012;
 	--color-primary-alpha: #eead7fb0;
 
-	--color-secondary: #1d32ce;
-	--color-secondary-hover: #3446c9;
-	--color-secondary-alpha: #1d32cea0;
+	--color-secondary: #309cf5;
+	--color-secondary-hover: #62b4f8;
+	--color-secondary-alpha: #309cf5a0;
 
 	--color-text-body: #f8f9fa;
 	--color-bg-main: #121212;

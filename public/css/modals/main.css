@@ -12,3 +12,28 @@
 [data-theme='dark'] .btn-close {
 	filter: invert(1) grayscale(100%) brightness(200%);
 }
+
+.modal-content .form-control:focus,
+.modal-content .form-control:focus-visible,
+.modal-content .form-control:active {
+	border-color: var(--color-primary);
+	box-shadow: var(--shadow-box-brand);
+}
+
+.modal-footer-container {
+	margin-top: 1.5rem;
+	text-align: center;
+}
+
+.modal-footer-link {
+	color: var(--color-secondary);
+	text-decoration-color: transparent;
+	transition:
+		color var(--transition-time-method),
+		text-decoration-color var(--transition-time-method);
+}
+
+.modal-footer-link:hover {
+	color: var(--color-secondary-hover);
+	text-decoration-color: var(--color-secondary-hover);
+}
