@@ -127,7 +127,7 @@
 				"_authTabs.ejs"
 			]
 		},
-		"partials": ["_csrf", "_github.ejs", "_google.ejs"],
+		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],
 		"~": ["error.ejs"]
 	},
 	"~": [
