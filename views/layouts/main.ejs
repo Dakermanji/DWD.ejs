@@ -23,6 +23,9 @@
 			<h1><%= t('tooSmall.title') %></h1>
 			<p><%= t('tooSmall.description') %></p>
 		</div>
+		<% if (modal) { %>
+			<%- include('_modalStates') %>
+		<% } %>
 		<!-- Generic i18n strings for client-side scripts -->
 		<%- include('_i18n') %>
 	</body>

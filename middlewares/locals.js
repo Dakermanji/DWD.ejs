@@ -33,6 +33,9 @@ export default function configureLocals(app) {
 		// Passing email for consistency
 		res.locals.email = env.EMAIL;
 
+		// Flash locals:
+		res.locals.modal = req.flash('modal')[0] || null;
+
 		next();
 	});
 }
