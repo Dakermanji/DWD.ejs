@@ -10,6 +10,7 @@
 import { Router } from 'express';
 import homeRoutes from '../routes/home.js';
 import langRoutes from '../routes/lang.js';
+import authRoutes from '../routes/auth.js';
 
 const router = Router();
 
@@ -17,6 +18,9 @@ const router = Router();
 router.use('/', homeRoutes);
 
 // Language switcher routes
-router.use('/', langRoutes);
+router.use('/language', langRoutes);
+
+// Auth routes
+router.use('/auth', authRoutes);
 
 export default router;

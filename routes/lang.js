@@ -15,6 +15,6 @@ const router = Router();
  * GET /language/:lang
  * Update the active language cookie and redirect back.
  */
-router.get('/language/:lang', changeLanguage);
+router.get('/:lang', changeLanguage);
 
 export default router;

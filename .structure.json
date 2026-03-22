@@ -20,7 +20,7 @@
 			"views.js"
 		]
 	},
-	"controllers": { "~": ["home.js", "lang.js"] },
+	"controllers": { "auth": "signupLocal.js", "~": ["home.js", "lang.js"] },
 	"locales": {
 		"ar": ["authjson", "common.json", "home.json", "layout.json"],
 		"en": ["authjson", "common.json", "home.json", "layout.json"],
@@ -103,7 +103,7 @@
 			"root": ["dropdownMenu.js", "theme.js", "tooltips.js"]
 		}
 	},
-	"routes": ["home.js", "lang.js"],
+	"routes": ["auth.js", "home.js", "lang.js"],
 	"sql": [
 		"01_session.sql",
 		"02_users.sql",
