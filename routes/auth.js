@@ -17,6 +17,7 @@
  */
 
 import { Router } from 'express';
+import { validateSignupEmail } from '../middlewares/validators/auth.js';
 import { signupLocal } from '../controllers/auth/signupLocal.js';
 
 const router = Router();
@@ -29,6 +30,6 @@ const router = Router();
  * - Start with email-only submission
  * - Later generate a completion token and send email
  */
-router.post('/signup', signupLocal);
+router.post('/signup', validateSignupEmail, signupLocal);
 
 export default router;
