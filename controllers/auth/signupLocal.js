@@ -1,33 +1,64 @@
 //! controllers/auth/signupLocal.js
 
 /**
- * Local signup Controller
+ * Local signup controller
+ * -----------------------
+ * Handles the first step of local registration.
  *
- * Responsibilities:
- * - Handle the first step of local signup
- * - Accept email-only signup requests
- * - Later trigger token creation and signup completion email
+ * Flow:
+ * - receives validated and normalized email
+ * - checks whether a user already exists
+ * - always returns the same success response
  *
- * Why this file exists:
- * - Keeps local signup logic isolated from route definitions
- * - Prepares the project for the email-first signup flow
+ * Why the response is generic:
+ * - prevents email enumeration
  *
- * Planned flow:
- * 1. Read and normalize email from request body
- * 2. Validate email
- * 3. Check whether the email can start signup
- * 4. Create or reuse pending user record
- * 5. Create signup completion token
- * 6. Send completion email
+ * Future:
+ * - create a signup token
+ * - send verification or completion email
+ */
+
+import logger from '../../config/logger.js';
+// import UserModel from '../../models/User.js';
+
+/**
+ * Handle local signup step 1.
  *
- * Notes:
- * - This is intentionally an empty scaffold for now
- * - Real logic will be added step-by-step
+ * Expected input:
+ * - req.body.email must already be validated by middleware
+ *
+ * Current behavior:
+ * - if the email does not exist, placeholder for token/email flow
+ * - if the email already exists, do not reveal that to the user
+ * - always flash the same success message on normal flow
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * @returns {Promise<import('express').Response>}
  */
-export default async function signupLocal(req, res, next) {
-	// Local signup logic will be added later.
+export async function signupLocal(req, res) {
+	const { email } = req.body;
+
+	try {
+		// const existingUser = await UserModel.findByEmailBasic(email);
+
+		// Only continue the signup flow for emails not already registered.
+		// The response stays the same either way to avoid enumeration.
+		if (!existingUser) {
+			// TODO: create signup token
+			// TODO: send signup email
+		}
+
+		req.flash('success', 'auth:success.signup_email_sent');
+		return res.redirect('/');
+	} catch (err) {
+		logger.error(err.message, {
+			type: 'auth',
+			controller: 'signupLocal',
+			email,
+		});
+
+		req.flash('error', 'auth:error.generic');
+		return res.redirect('/');
+	}
 }
