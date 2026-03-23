@@ -16,11 +16,34 @@ export async function findByEmailBasic(emailNormalized) {
 		FROM users
 		WHERE email_normalized = $1
 		LIMIT 1
-		`;
-	const rows = await queryRows(q, [emailNormalized]);
-	console.log(rows);
+	`;
 
+	const rows = await queryRows(q, [emailNormalized]);
 	return rows[0] || null;
 }
 
-export default { findByEmailBasic };
+/**
+ * Create a local pending user.
+ *
+ * Used during the first local signup step before
+ * password and username are completed.
+ *
+ * @param {string} email
+ * @param {string} emailNormalized
+ * @returns {Promise<{ id: string, email: string, is_verified: boolean, created_at: Date } | null>}
+ */
+export async function createLocalPendingUser(email, emailNormalized) {
+	const q = `
+		INSERT INTO users (email, email_normalized)
+		VALUES ($1, $2)
+		RETURNING id, email, is_verified, created_at
+	`;
+
+	const rows = await queryRows(q, [email, emailNormalized]);
+	return rows[0] || null;
+}
+
+export default {
+	findByEmailBasic,
+	createLocalPendingUser,
+};
