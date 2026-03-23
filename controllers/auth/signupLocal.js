@@ -2,6 +2,7 @@
 
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
+import tokens from '../../utils/auth/tokens.js';
 
 /**
  * Handle local signup step 1.
@@ -29,7 +30,8 @@ export async function signupLocal(req, res) {
 		if (!existingUser) {
 			await UserModel.createLocalPendingUser(email, email);
 
-			// TODO: create signup token
+			const rawToken = tokens.createAuthToken();
+			const tokenHash = tokens.hashAuthToken(rawToken);
 			// TODO: send signup email
 		}
 

@@ -113,7 +113,7 @@
 		"03_user_providers.sql",
 		"04_auth_tokens.sql"
 	],
-	"utils": { "config": ["dotenv.js"] },
+	"utils": { "config": ["dotenv.js"], "auth": ["tokens.js"] },
 	"views": {
 		"Home": [
 			"_about.ejs",
