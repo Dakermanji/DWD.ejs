@@ -19,7 +19,7 @@
  */
 
 import logger from '../../config/logger.js';
-// import UserModel from '../../models/User.js';
+import UserModel from '../../models/User.js';
 
 /**
  * Handle local signup step 1.
@@ -40,7 +40,7 @@ export async function signupLocal(req, res) {
 	const { email } = req.body;
 
 	try {
-		// const existingUser = await UserModel.findByEmailBasic(email);
+		const existingUser = await UserModel.findByEmailBasic(email);
 
 		// Only continue the signup flow for emails not already registered.
 		// The response stays the same either way to avoid enumeration.
