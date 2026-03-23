@@ -20,6 +20,7 @@ CREATE TABLE
         "username_normalized" TEXT NULL,
         "hashed_password" TEXT NULL,
         "is_verified" BOOLEAN NOT NULL DEFAULT FALSE,
+        "locale" VARCHAR(10) NOT NULL DEFAULT 'en',
         "last_signin_at" TIMESTAMPTZ NULL,
         "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW (),
         "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW (),
