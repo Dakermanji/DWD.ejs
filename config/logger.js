@@ -1,26 +1,24 @@
-//! config/logger.js
-
 /**
- * Application Logger
- *
+ * Application logger
+ * ------------------
  * Centralized logging system built with Winston.
  *
  * Why this file exists:
- * - Keeps all logging behavior in one place
- * - Standardizes log levels, formatting, colors, and icons
- * - Makes logs easier to read during development
- * - Prepares the project for future file logging and external monitoring
+ * - keeps logging behavior in one place
+ * - standardizes levels, colors, icons, and formatting
+ * - makes terminal logs easier to read during development
  *
  * Current features:
- * - Custom log levels
- * - Custom colors per log level
- * - Icons for both log level and log type
- * - Timestamped console output
+ * - custom log levels
+ * - custom colors per level
+ * - icons for both level and log type
+ * - timestamped console output
+ * - optional meta logging for extra context
  *
  * Example output:
  * 2026-03-11 10:00:00 ✅ 🚀 [SERVER] Server running on http://localhost:3000
  * 2026-03-11 10:00:02 ✅ 🗄️ [DATABASE] Database connected successfully
- * 2026-03-11 10:00:05 ❌ 🔐 [AUTH] Invalid sign in attempt
+ * 2026-03-11 10:00:05 ❌ 🔐 [AUTH] Invalid sign in attempt {"controller":"signupLocal"}
  */
 
 import winston from 'winston';
@@ -88,10 +86,32 @@ const typeIcons = {
 };
 
 /**
+ * Safely stringify extra logger metadata.
+ *
+ * Notes:
+ * - keeps log output compact
+ * - ignores empty metadata
+ * - falls back safely if JSON serialization fails
+ *
+ * @param {Object} meta
+ * @returns {string}
+ */
+function formatMeta(meta) {
+	if (!meta || Object.keys(meta).length === 0) {
+		return '';
+	}
+
+	try {
+		return ` ${JSON.stringify(meta)}`;
+	} catch {
+		return ' {"meta":"[unserializable]"}';
+	}
+}
+
+/**
  * Custom console formatter
  *
- * Builds the final log line shown in the terminal.
- * It combines:
+ * Output structure:
  * - timestamp
  * - level icon
  * - type icon
@@ -101,21 +121,20 @@ const typeIcons = {
  * If no type is provided, it falls back to "system".
  */
 const loggerFormat = winston.format.printf(
-	({ level, message, timestamp, type = 'system' }) => {
+	({ level, message, timestamp, type = 'system', ...meta }) => {
 		const levelIcon = levelIcons[level] ?? '🟠';
 		const typeIcon = typeIcons[type] ?? '📦';
 		const upperType = String(type).toUpperCase();
+		const metaString = formatMeta(meta);
 
-		return `${timestamp} ${levelIcon} ${typeIcon} [${upperType}] ${message}`;
+		return `${timestamp} ${levelIcon} ${typeIcon} [${upperType}] ${message}${metaString}`;
 	},
 );
 
 /**
  * Central logger instance
  *
- * Default level is set to "debug" so all messages are visible
- * during development. This can later be adjusted based on
- * environment (development vs production).
+ * Default level is set to "debug" so all messages are visible during development.
  */
 const logger = winston.createLogger({
 	levels: customLevels.levels,
