@@ -2,6 +2,7 @@
 
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
+import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
 
 /**
@@ -12,6 +13,7 @@ import tokens from '../../utils/auth/tokens.js';
  *
  * Current behavior:
  * - if the email does not exist, create a pending local user
+ * - create an email verification token for that user
  * - if the email already exists, do not reveal that to the user
  * - always flash the same success message on normal flow
  *
@@ -28,11 +30,19 @@ export async function signupLocal(req, res) {
 		// Only continue the signup flow for emails not already registered.
 		// The response stays the same either way to avoid enumeration.
 		if (!existingUser) {
-			await UserModel.createLocalPendingUser(email, email);
+			const user = await UserModel.createLocalPendingUser(email, email);
 
 			const rawToken = tokens.createAuthToken();
 			const tokenHash = tokens.hashAuthToken(rawToken);
-			// TODO: send signup email
+			const expiresAt = new Date(Date.now() + tokens.AUTH_EXPIRY_TIME);
+
+			await AuthTokenModel.createEmailVerificationToken({
+				userId: user.id,
+				tokenHash,
+				expiresAt,
+			});
+
+			// TODO: send signup email with rawToken
 		}
 
 		req.flash('success', 'auth:success.signup_email_sent');

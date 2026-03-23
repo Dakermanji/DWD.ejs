@@ -2,6 +2,8 @@
 
 import crypto from 'node:crypto';
 
+export const AUTH_EXPIRY_TIME = 1000 * 60 * 60; // unit is ms, result is 1 hour
+
 /**
  * Create a secure random token for auth flows.
  *
