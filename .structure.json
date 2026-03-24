@@ -13,6 +13,7 @@
 			"i18n.js",
 			"languages.js",
 			"logger.js",
+			"mailer.js",
 			"middlewares.js",
 			"navbar",
 			"process.js",
@@ -107,6 +108,7 @@
 		}
 	},
 	"routes": ["auth.js", "home.js", "lang.js"],
+	"services": { "auth": ["email.js", "emailContent.js"] },
 	"sql": [
 		"01_session.sql",
 		"02_users.sql",

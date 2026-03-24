@@ -31,7 +31,7 @@ export default function configureLocals(app) {
 		res.locals.currentUrl = req.originalUrl;
 
 		// Passing email for consistency
-		res.locals.email = env.EMAIL;
+		res.locals.email = env.EMAIL_ADMIN;
 
 		// Flash locals:
 		res.locals.modal = req.flash('modal')[0] || null;
