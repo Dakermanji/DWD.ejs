@@ -1,9 +1,11 @@
 //! controllers/auth/signupLocal.js
 
+import { SUPPORTED_LANGUAGE_CODES } from '../../config/languages.js';
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
+// import emailService from '../../services/auth/email.js';
 
 /**
  * Handle local signup step 1.
@@ -23,6 +25,10 @@ import tokens from '../../utils/auth/tokens.js';
  */
 export async function signupLocal(req, res) {
 	const { email } = req.body;
+	const rawLocale = req.locale || 'en';
+	const locale = SUPPORTED_LANGUAGE_CODES.includes(rawLocale)
+		? rawLocale
+		: 'en';
 
 	try {
 		const existingUser = await UserModel.findByEmailBasic(email);
@@ -30,8 +36,11 @@ export async function signupLocal(req, res) {
 		// Only continue the signup flow for emails not already registered.
 		// The response stays the same either way to avoid enumeration.
 		if (!existingUser) {
-			const user = await UserModel.createLocalPendingUser(email, email);
-
+			const user = await UserModel.createLocalPendingUser(
+				email,
+				email,
+				locale,
+			);
 			const rawToken = tokens.createAuthToken();
 			const tokenHash = tokens.hashAuthToken(rawToken);
 			const expiresAt = new Date(Date.now() + tokens.AUTH_EXPIRY_TIME);
@@ -42,7 +51,11 @@ export async function signupLocal(req, res) {
 				expiresAt,
 			});
 
-			// TODO: send signup email with rawToken
+			// await emailService.sendSignupEmail(
+			// 	user.email,
+			// 	rawToken,
+			// 	user.locale,
+			// );
 		}
 
 		req.flash('success', 'auth:success.signup_email_sent');

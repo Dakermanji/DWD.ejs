@@ -30,16 +30,16 @@ export async function findByEmailBasic(emailNormalized) {
  *
  * @param {string} email
  * @param {string} emailNormalized
- * @returns {Promise<{ id: string, email: string, is_verified: boolean, created_at: Date } | null>}
+ * @returns {Promise<{ id: string, email: string, locale: string, is_verified: boolean, created_at: Date } | null>}
  */
-export async function createLocalPendingUser(email, emailNormalized) {
+export async function createLocalPendingUser(email, emailNormalized, locale) {
 	const q = `
-		INSERT INTO users (email, email_normalized)
-		VALUES ($1, $2)
-		RETURNING id, email, is_verified, created_at
+		INSERT INTO users (email, email_normalized, locale)
+		VALUES ($1, $2, $3)
+		RETURNING id, email, locale, is_verified, created_at
 	`;
 
-	const rows = await queryRows(q, [email, emailNormalized]);
+	const rows = await queryRows(q, [email, emailNormalized, locale]);
 	return rows[0] || null;
 }
 
