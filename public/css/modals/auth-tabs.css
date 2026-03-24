@@ -40,3 +40,11 @@
 #authModal .form-text {
 	color: var(--color-text-muted);
 }
+
+.oauth-tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+}
