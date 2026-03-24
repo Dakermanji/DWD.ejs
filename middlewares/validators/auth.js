@@ -59,3 +59,35 @@ export function validateSignupEmail(req, res, next) {
 
 	next();
 }
+
+/**
+ * Validate verify-email query parameters.
+ *
+ * Intended route:
+ * - GET /auth/verify-email
+ *
+ * Responsibilities:
+ * - Ensure the verification token exists
+ * - Ensure the token has a valid basic format
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export function validateVerifyEmailQuery(req, res, next) {
+	const { token } = req.query;
+
+	// Token must exist and be a string
+	if (!token || typeof token !== 'string') {
+		req.flash('error', 'auth:signup.verify_email_invalid_link');
+		return res.redirect('/');
+	}
+
+	// Ensure expected token length (prevents malformed input)
+	if (token.length !== 64) {
+		req.flash('error', 'auth:signup.verify_email_invalid_link');
+		return res.redirect('/');
+	}
+
+	next();
+}

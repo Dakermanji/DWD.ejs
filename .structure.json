@@ -21,7 +21,10 @@
 			"views.js"
 		]
 	},
-	"controllers": { "auth": "signupLocal.js", "~": ["home.js", "lang.js"] },
+	"controllers": {
+		"auth": ["signupLocal.js", "verifyEmail.js"],
+		"~": ["home.js", "lang.js"]
+	},
 	"locales": {
 		"ar": ["authjson", "common.json", "home.json", "layout.json"],
 		"en": ["authjson", "common.json", "home.json", "layout.json"],
