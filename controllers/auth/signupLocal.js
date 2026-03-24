@@ -5,7 +5,7 @@ import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
-// import emailService from '../../services/auth/email.js';
+import emailService from '../../services/auth/email.js';
 
 /**
  * Handle local signup step 1.
@@ -51,11 +51,11 @@ export async function signupLocal(req, res) {
 				expiresAt,
 			});
 
-			// await emailService.sendSignupEmail(
-			// 	user.email,
-			// 	rawToken,
-			// 	user.locale,
-			// );
+			await emailService.sendSignupEmail(
+				user.email,
+				rawToken,
+				user.locale,
+			);
 		}
 
 		req.flash('success', 'auth:success.signup_email_sent');
