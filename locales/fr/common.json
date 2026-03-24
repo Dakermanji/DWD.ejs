@@ -3,7 +3,7 @@
 	"account": "Compte",
 	"close": "Fermer",
 	"identifier": "Nom d’utilisateur ou e-mail",
-	"password": "Mot de passe",
+	"username": "Username",
 	"email": "E-mail",
 	"error_generic": "Une erreur s’est produite. Veuillez réessayer."
 }

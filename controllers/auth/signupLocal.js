@@ -67,11 +67,7 @@ export async function signupLocal(req, res) {
 				'email_verification',
 			);
 
-			await emailService.sendSignupEmail(
-				user.email,
-				rawToken,
-				user.locale,
-			);
+			emailService.sendSignupEmail(user.email, rawToken, user.locale);
 		}
 
 		req.flash('success', 'auth:signup.success_email_sent');

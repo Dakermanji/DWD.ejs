@@ -150,7 +150,8 @@
 				"_authTabs_tabs_signin.ejs",
 				"_authTabs_tabs_signup.ejs",
 				"_authTabs_tabs.ejs",
-				"_authTabs.ejs"
+				"_authTabs.ejs",
+				"_complete_signup.ejs"
 			]
 		},
 		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],

@@ -29,6 +29,8 @@
 	const MODALS = {
 		signup: { id: 'authModal', tab: 'auth-signup-tab' },
 		signin: { id: 'authModal', tab: 'auth-signin-tab' },
+		complete_signup_local: { id: 'completeSignUpModal' },
+		complete_signup_oath: { id: 'completeSignUpModal' },
 	};
 
 	const target = MODALS[modalName];

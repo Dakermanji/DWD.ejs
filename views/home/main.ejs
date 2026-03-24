@@ -25,3 +25,6 @@
 <% if (!user) { %>
 	<%- include('../modals/auth/_authTabs') %>
 <% } %>
+<% if (modal === 'complete_signup_local' || modal === 'complete_signup_oauth' ) { %>
+	<%- include('../modals/auth/_complete_signup') %>
+<% } %>

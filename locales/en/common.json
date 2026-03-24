@@ -3,7 +3,7 @@
 	"account": "Account",
 	"close": "Close",
 	"identifier": "Username or email",
-	"password": "Password",
+	"username": "Username",
 	"email": "Email",
 	"error_generic": "Something went wrong. Please try again."
 }
