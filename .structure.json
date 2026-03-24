@@ -111,7 +111,9 @@
 		}
 	},
 	"routes": ["auth.js", "home.js", "lang.js"],
-	"services": { "auth": ["email.js", "emailContent.js"] },
+	"services": {
+		"auth": ["email.js", "emailContent.js", "verifyEmailToken.js"]
+	},
 	"sql": [
 		"01_session.sql",
 		"02_users.sql",

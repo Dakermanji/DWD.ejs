@@ -60,11 +60,12 @@ export async function signupLocal(req, res) {
 			const tokenHash = tokens.hashAuthToken(rawToken);
 			const expiresAt = new Date(Date.now() + tokens.AUTH_EXPIRY_TIME);
 
-			await AuthTokenModel.createEmailVerificationToken({
-				userId: user.id,
+			await AuthTokenModel.createToken(
+				user.id,
 				tokenHash,
 				expiresAt,
-			});
+				'email_verification',
+			);
 
 			await emailService.sendSignupEmail(
 				user.email,
