@@ -4,5 +4,6 @@
 	"close": "Fermer",
 	"identifier": "Nom d’utilisateur ou e-mail",
 	"password": "Mot de passe",
-	"email": "E-mail"
+	"email": "E-mail",
+	"error_generic": "Une erreur s’est produite. Veuillez réessayer."
 }

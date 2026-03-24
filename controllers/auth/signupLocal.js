@@ -10,14 +10,23 @@ import emailService from '../../services/auth/email.js';
 /**
  * Handle local signup step 1.
  *
- * Expected input:
- * - req.body.email must already be validated by middleware
+ * Flow:
+ * - receives a validated and normalized email
+ * - resolves a supported locale for the pending user
+ * - checks whether the email is already registered
+ * - if not registered:
+ *   - creates a pending local user
+ *   - creates an email verification token
+ *   - sends the signup email
+ * - always returns the same success response on normal flow
  *
- * Current behavior:
- * - if the email does not exist, create a pending local user
- * - create an email verification token for that user
- * - if the email already exists, do not reveal that to the user
- * - always flash the same success message on normal flow
+ * Why the response is generic:
+ * - prevents email enumeration
+ *
+ * Notes:
+ * - this step does not complete registration yet
+ * - password and username are collected later
+ * - locale is stored now so auth emails can match the user's language
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -25,6 +34,9 @@ import emailService from '../../services/auth/email.js';
  */
 export async function signupLocal(req, res) {
 	const { email } = req.body;
+
+	// Keep only supported application languages.
+	// Fallback to English for anything unknown or missing.
 	const rawLocale = req.locale || 'en';
 	const locale = SUPPORTED_LANGUAGE_CODES.includes(rawLocale)
 		? rawLocale
@@ -33,14 +45,17 @@ export async function signupLocal(req, res) {
 	try {
 		const existingUser = await UserModel.findByEmailBasic(email);
 
-		// Only continue the signup flow for emails not already registered.
-		// The response stays the same either way to avoid enumeration.
+		// Continue the signup flow only for emails that are not yet registered.
+		// The success response stays identical either way to avoid enumeration.
 		if (!existingUser) {
 			const user = await UserModel.createLocalPendingUser(
 				email,
 				email,
 				locale,
 			);
+
+			// Store only the token hash in the database.
+			// The raw token is sent to the user by email.
 			const rawToken = tokens.createAuthToken();
 			const tokenHash = tokens.hashAuthToken(rawToken);
 			const expiresAt = new Date(Date.now() + tokens.AUTH_EXPIRY_TIME);
@@ -58,7 +73,7 @@ export async function signupLocal(req, res) {
 			);
 		}
 
-		req.flash('success', 'auth:success.signup_email_sent');
+		req.flash('success', 'auth:signup.success_email_sent');
 		return res.redirect('/');
 	} catch (err) {
 		logger.error(err.message, {
@@ -67,7 +82,7 @@ export async function signupLocal(req, res) {
 			email,
 		});
 
-		req.flash('error', 'auth:error.generic');
+		req.flash('error', 'common:error_generic');
 		return res.redirect('/');
 	}
 }

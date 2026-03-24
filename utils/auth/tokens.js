@@ -29,4 +29,5 @@ export function hashAuthToken(token) {
 export default {
 	createAuthToken,
 	hashAuthToken,
+	AUTH_EXPIRY_TIME,
 };

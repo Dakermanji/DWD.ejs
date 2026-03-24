@@ -4,5 +4,6 @@
 	"close": "Close",
 	"identifier": "Username or email",
 	"password": "Password",
-	"email": "Email"
+	"email": "Email",
+	"error_generic": "Something went wrong. Please try again."
 }
