@@ -43,7 +43,29 @@ export async function createLocalPendingUser(email, emailNormalized, locale) {
 	return rows[0] || null;
 }
 
+/**
+ * Update the verified state of a user by id.
+ *
+ * @param {string} userId
+ * @param {boolean} isVerified
+ * @returns {Promise<boolean>}
+ */
+export async function updateIsVerifiedById(userId, isVerified) {
+	const q = `
+		UPDATE users
+		SET
+			is_verified = $1,
+			updated_at = NOW()
+		WHERE id = $2
+		RETURNING id;
+	`;
+
+	const rows = await queryRows(q, [isVerified, userId]);
+	return rows.length > 0;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
+	updateIsVerifiedById,
 };
