@@ -63,6 +63,8 @@ export async function updateIsVerifiedById(userId, isVerified) {
 	const rows = await queryRows(q, [isVerified, userId]);
 	return rows.length > 0;
 }
+// Placeholder function for usernameExists
+export async function usernameExists(username) {}
 
 export default {
 	findByEmailBasic,

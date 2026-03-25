@@ -31,7 +31,7 @@
 		"fr": ["authjson", "common.json", "home.json", "layout.json"]
 	},
 	"middlewares": {
-		"validators": ["auth.js", "common.js"],
+		"validators": ["auth.js", "common.js", "token.js"],
 		"~": [
 			"errorHandler.js",
 			"flash.js",

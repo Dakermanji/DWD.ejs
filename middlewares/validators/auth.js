@@ -12,6 +12,7 @@
  */
 
 import { isSafeEmail, isValidEmail, normalizeEmail, fail } from './common.js';
+import { isValidToken, normalizeToken } from './token.js';
 
 /**
  * Namespace for auth validation flash keys.
@@ -61,34 +62,29 @@ export function validateSignupEmail(req, res, next) {
 }
 
 /**
- * Validate verify-email query parameters.
+ * Validate the email-verification token from the query string.
  *
  * Intended route:
  * - GET /auth/verify-email
  *
  * Responsibilities:
- * - Ensure the verification token exists
- * - Ensure the token has a valid basic format
+ * - ensure the token exists in the query string
+ * - ensure the token matches the expected public format
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
+ * @returns {void | import('express').Response}
  */
 export function validateVerifyEmailQuery(req, res, next) {
 	const { token } = req.query;
 
-	// Token must exist and be a string
-	if (!token || typeof token !== 'string') {
+	if (!isValidToken(token)) {
 		req.flash('error', 'auth:signup.verify_email_invalid_link');
 		return res.redirect('/');
 	}
 
-	// Ensure expected token length (prevents malformed input)
-	if (token.length !== 64) {
-		req.flash('error', 'auth:signup.verify_email_invalid_link');
-		return res.redirect('/');
-	}
-
+	req.query.token = normalizeToken(token);
 	next();
 }
 
@@ -98,19 +94,45 @@ export function validateVerifyEmailQuery(req, res, next) {
  * Intended route:
  * - POST /auth/complete-local-signup
  *
- * Temporary behavior:
- * - placeholder middleware so the route is wired safely
- *
- * Future rules:
- * - validate token
- * - validate username
+ * Responsibilities:
+ * - validate token format
+ * - validate username format
  * - validate password strength
  * - validate password confirmation
+ * - normalize safe fields before the controller runs
+ *
+ * Notes:
+ * - this middleware validates request shape only
+ * - username availability must be checked later in the controller/service
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
+ * @returns {void | import('express').Response}
  */
 export function validateCompleteLocalSignup(req, res, next) {
+	const { token, username, password, confirmPassword } = req.body;
+	const errors = [];
+
+	if (!isValidToken(token)) {
+		errors.push('auth:signup.verify_email_invalid_link');
+	}
+
+	if (!isValidUsername(username)) {
+		errors.push('auth:error.username_invalid');
+	}
+
+	if (!isValidPassword(password)) {
+		errors.push('auth:error.password_weak');
+	}
+
+	if (password !== confirmPassword) {
+		errors.push('auth:error.password_mismatch');
+	}
+
+	req.body.token = normalizeToken(token);
+	req.body.username = normalizeUsername(username);
+	req.validationErrors = errors;
+
 	next();
 }

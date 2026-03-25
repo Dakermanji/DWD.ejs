@@ -1,6 +1,7 @@
 //! controllers/auth/completeLocalSignup.js
 
 import logger from '../../config/logger.js';
+import UserModel from '../../models/User.js';
 
 /**
  * Handle local signup completion.
@@ -20,9 +21,29 @@ import logger from '../../config/logger.js';
  * @returns {Promise<void>}
  */
 export async function completeLocalSignup(req, res) {
+	const errors = [...(req.validationErrors || [])];
+	const { username } = req.body;
+
 	try {
-		req.flash('info', 'CompleteLocalSignup');
-		return res.redirect('/');
+		const hasUsernameFormatError = errors.includes(
+			'auth:error.username_invalid',
+		);
+
+		if (!hasUsernameFormatError) {
+			const usernameExists = await UserModel.usernameExists(username);
+
+			if (usernameExists) {
+				errors.push('auth:error.username_taken');
+			}
+		}
+
+		if (errors.length > 0) {
+			req.flash('errors', errors);
+			req.flash('modal', 'complete_signup');
+			return res.redirect('/');
+		}
+
+		// continue real signup completion flow here
 	} catch (err) {
 		logger.error(err.message, {
 			type: 'auth',
