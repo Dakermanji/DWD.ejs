@@ -91,3 +91,26 @@ export function validateVerifyEmailQuery(req, res, next) {
 
 	next();
 }
+
+/**
+ * Validate complete-local-signup input.
+ *
+ * Intended route:
+ * - POST /auth/complete-local-signup
+ *
+ * Temporary behavior:
+ * - placeholder middleware so the route is wired safely
+ *
+ * Future rules:
+ * - validate token
+ * - validate username
+ * - validate password strength
+ * - validate password confirmation
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export function validateCompleteLocalSignup(req, res, next) {
+	next();
+}

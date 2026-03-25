@@ -20,9 +20,11 @@ import { Router } from 'express';
 import {
 	validateSignupEmail,
 	validateVerifyEmailQuery,
+	validateCompleteLocalSignup,
 } from '../middlewares/validators/auth.js';
 import { signupLocal } from '../controllers/auth/signupLocal.js';
 import { verifyEmail } from '../controllers/auth/verifyEmail.js';
+import { completeLocalSignup } from '../controllers/auth/completeLocalSignup.js';
 
 const router = Router();
 
@@ -31,5 +33,12 @@ router.post('/signup', validateSignupEmail, signupLocal);
 
 // Sign up - Step 2: verify email via token (?token=...)
 router.get('/verify-email', validateVerifyEmailQuery, verifyEmail);
+
+// Sign up - Step 3: complete local signup
+router.post(
+	'/complete-local-signup',
+	validateCompleteLocalSignup,
+	completeLocalSignup,
+);
 
 export default router;

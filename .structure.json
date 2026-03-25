@@ -22,7 +22,7 @@
 		]
 	},
 	"controllers": {
-		"auth": ["signupLocal.js", "verifyEmail.js"],
+		"auth": ["completeLocalSignup.js", "signupLocal.js", "verifyEmail.js"],
 		"~": ["home.js", "lang.js"]
 	},
 	"locales": {
