@@ -27,6 +27,10 @@ export async function verifyEmail(req, res) {
 			return res.redirect('/');
 		}
 
+		// Pass token through session
+		req.session.completeSignup = token;
+
+		// Open complete signup modal
 		req.flash('modal', 'complete_signup_local');
 		return res.redirect('/');
 	} catch (err) {

@@ -30,5 +30,6 @@ export function renderHome(req, res) {
 			'partials/brands',
 		],
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio'],
+		verifyEmailToken: req.session.completeSignup || null,
 	});
 }

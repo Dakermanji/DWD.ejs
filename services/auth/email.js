@@ -3,6 +3,7 @@
 import env from '../../config/dotenv.js';
 import transporter from '../../config/mailer.js';
 import emailContent from './emailContent.js';
+import logger from '../../config/logger.js';
 
 /**
  * Send signup email with verification link.
@@ -25,6 +26,11 @@ export async function sendSignupEmail(email, token, locale = 'en') {
 		to: email,
 		subject: content.subject,
 		html: content.html(verifyUrl),
+	});
+
+	logger.success('Signup email sent', {
+		type: 'mail',
+		email: email,
 	});
 }
 
