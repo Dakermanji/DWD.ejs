@@ -17,7 +17,7 @@
 
 import flash from 'connect-flash';
 
-const FLASH_TYPES = ['success', 'error', 'warning', 'info'];
+const FLASH_TYPES = ['success', 'error', 'errors', 'warning', 'info'];
 
 /**
  * Registers flash message support.
