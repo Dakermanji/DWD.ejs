@@ -112,7 +112,7 @@
 	},
 	"routes": ["auth.js", "home.js", "lang.js"],
 	"services": {
-		"auth": ["email.js", "emailContent.js", "verifyToken.js"]
+		"auth": ["email.js", "emailContent.js", "", "verifyToken.js"]
 	},
 	"sql": [
 		"01_session.sql",
@@ -127,7 +127,7 @@
 			"_contact.ejs",
 			"_hero.ejs",
 			"_portfolio.ejs",
-			"services_.ejs",
+			"_services.ejs",
 			"main.ejs"
 		],
 		"layouts": [
