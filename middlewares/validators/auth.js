@@ -11,7 +11,15 @@
  * - keeps auth validation rules consistent
  */
 
-import { isSafeEmail, isValidEmail, normalizeEmail, fail } from './common.js';
+import {
+	isSafeEmail,
+	isValidEmail,
+	isValidUsername,
+	isValidPassword,
+	normalizeUsername,
+	normalizeEmail,
+	fail,
+} from './common.js';
 import { isValidToken, normalizeToken } from './token.js';
 
 /**
