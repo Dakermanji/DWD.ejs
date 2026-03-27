@@ -1,6 +1,6 @@
 //! models/User.js
 
-import { queryRows } from '../config/database.js';
+import { query, queryRows } from '../config/database.js';
 
 /**
  * Find a user by email (basic fields only).
@@ -56,12 +56,12 @@ export async function updateIsVerifiedById(userId, isVerified) {
 		SET
 			is_verified = $1,
 			updated_at = NOW()
-		WHERE id = $2
-		RETURNING id;
+		WHERE id = $2;
 	`;
 
-	const rows = await queryRows(q, [isVerified, userId]);
-	return rows.length > 0;
+	const result = await query(q, [isVerified, userId]);
+
+	return result.rowCount > 0;
 }
 
 /**
@@ -77,10 +77,14 @@ export async function updateIsVerifiedById(userId, isVerified) {
 export async function usernameExists(username) {
 	const lowerCasedUsername = username.toLowerCase();
 
-	const result = await db.query(
-		`SELECT 1 FROM users WHERE username_normalized = $1 LIMIT 1`,
-		[lowerCasedUsername],
-	);
+	const q = `
+		SELECT 1
+		FROM users
+		WHERE username_normalized = $1
+		LIMIT 1;
+	`;
+
+	const result = await query(q, [lowerCasedUsername]);
 
 	return result.rowCount > 0;
 }
