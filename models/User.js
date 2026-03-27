@@ -89,8 +89,58 @@ export async function usernameExists(username) {
 	return result.rowCount > 0;
 }
 
+/**
+ * Complete local signup by user id.
+ *
+ * Responsibilities:
+ * - set the chosen username
+ * - set the normalized username
+ * - set the hashed password
+ * - update the updated_at timestamp
+ *
+ * Notes:
+ * - expects validated inputs
+ * - expects hashedPassword to already be hashed
+ *
+ * @param {string} userId
+ * @param {string} username
+ * @param {string} hashedPassword
+ * @returns {Promise<{ id: string, username: string, email: string, is_verified: boolean } | null>}
+ */
+export async function completeLocalSignupById(
+	userId,
+	username,
+	hashedPassword,
+) {
+	const lowerCasedUsername = username.toLowerCase();
+
+	const q = `
+		UPDATE users
+		SET
+			username = $1,
+			username_normalized = $2,
+			hashed_password = $3,
+			updated_at = NOW()
+		WHERE id = $4
+			AND username IS NULL
+			AND hashed_password IS NULL
+		RETURNING id, username, email, is_verified;
+	`;
+
+	const rows = await queryRows(q, [
+		username,
+		lowerCasedUsername,
+		hashedPassword,
+		userId,
+	]);
+
+	return rows[0] || null;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
 	updateIsVerifiedById,
+	usernameExists,
+	completeLocalSignupById,
 };
