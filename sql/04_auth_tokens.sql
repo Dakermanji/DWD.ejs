@@ -17,7 +17,7 @@ DO $$
 BEGIN
 	IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'auth_token_type') THEN
 		CREATE TYPE auth_token_type AS ENUM (
-			'email_verification',
+			'signup_verification',
 			'password_reset'
 		);
 	END IF;

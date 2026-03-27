@@ -1,7 +1,12 @@
-//! services/auth/verifyEmailToken.js
+//! services/auth/verifyToken.js
 
 import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
+
+export const types = {
+	signup: 'signup_verification',
+	passwordReset: 'password_reset',
+};
 
 /**
  * Validate an email verification token.
@@ -18,12 +23,9 @@ import tokens from '../../utils/auth/tokens.js';
  * @param {string} rawToken
  * @returns {Promise<{ ok: true, authToken: object } | { ok: false }>}
  */
-export async function verifyEmailToken(rawToken) {
+export async function verifyToken(rawToken, type) {
 	const tokenHash = tokens.hashAuthToken(rawToken);
-	const authToken = await AuthTokenModel.findTokenByHash(
-		tokenHash,
-		'email_verification',
-	);
+	const authToken = await AuthTokenModel.findTokenByHash(tokenHash, type);
 
 	if (!authToken) {
 		return { ok: false };
@@ -43,5 +45,3 @@ export async function verifyEmailToken(rawToken) {
 		tokenHash,
 	};
 }
-
-export default verifyEmailToken;
