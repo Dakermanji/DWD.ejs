@@ -63,8 +63,27 @@ export async function updateIsVerifiedById(userId, isVerified) {
 	const rows = await queryRows(q, [isVerified, userId]);
 	return rows.length > 0;
 }
-// Placeholder function for usernameExists
-export async function usernameExists(username) {}
+
+/**
+ * Check whether a username already exists.
+ *
+ * Notes:
+ * - expects a normalized username
+ * - uses a lightweight existence query
+ *
+ * @param {string} username
+ * @returns {Promise<boolean>}
+ */
+export async function usernameExists(username) {
+	const lowerCasedUsername = username.toLowerCase();
+
+	const result = await db.query(
+		`SELECT 1 FROM users WHERE username_normalized = $1 LIMIT 1`,
+		[lowerCasedUsername],
+	);
+
+	return result.rowCount > 0;
+}
 
 export default {
 	findByEmailBasic,
