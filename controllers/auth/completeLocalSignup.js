@@ -2,8 +2,9 @@
 
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
+import AuthTokenModel from '../../models/AuthToken.js';
 import { verifyToken, types } from '../../services/auth/verifyToken.js';
-// import hashPassword from '../../services/auth/hashPassword.js';
+import { hashPassword } from '../../services/auth/password.js';
 
 /**
  * Complete local signup after email verification.
@@ -18,13 +19,12 @@ import { verifyToken, types } from '../../services/auth/verifyToken.js';
  * - reads normalized input from req.body
  * - checks whether the requested username is already taken
  * - verifies the signup token
- * - redirects back with grouped errors when validation fails
+ * - hashes the password
+ * - updates the user with username and password
+ * - consumes the signup token
  *
  * Future:
- * - hash the password
- * - update the user with username and password
- * - consume the auth token
- * - log the user in
+ * - log the user in with passport
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -65,17 +65,35 @@ export async function completeLocalSignup(req, res) {
 		}
 
 		// Hash password.
-		// const hashedPassword = await hashPassword(password);
+		const hashedPassword = await hashPassword(password);
 
 		// Complete signup in DB.
-		// const updated = await UserModel.completeLocalSignupById(
-		// 	tokenResult.userId,
-		// 	username,
-		// 	hashedPassword,
-		// );
+		const user = await UserModel.completeLocalSignupById(
+			tokenResult.userId,
+			username,
+			hashedPassword,
+		);
+
+		if (!user) {
+			req.flash('error', 'common:error_generic');
+			return res.redirect('/');
+		}
 
 		// Consume token.
-		// await AuthTokenModel.markTokenUsed(tokenResult.tokenHash, types.signup);
+		const tokenMarkedUsed = await AuthTokenModel.markTokenUsed(
+			tokenResult.tokenHash,
+			types.signup,
+			user.id,
+		);
+
+		if (!tokenMarkedUsed) {
+			logger.error('Failed to mark signup token as used', {
+				type: 'auth',
+				controller: 'completeLocalSignup',
+				userId: user.id,
+				tokenHash: tokenResult.tokenHash,
+			});
+		}
 
 		// Log user in with passport here when ready.
 
