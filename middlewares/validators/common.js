@@ -167,3 +167,62 @@ export const fail = (req, res, flashKey, modal = false) => {
 
 	return res.redirect('/');
 };
+
+/**
+ * Check whether a value is a non-empty string.
+ *
+ * Rules:
+ * - must be of type string
+ * - must contain at least one non-whitespace character after trimming
+ *
+ * Notes:
+ * - does NOT enforce length limits
+ * - does NOT normalize the value
+ *
+ * @param {*} value
+ * @returns {boolean}
+ */
+export function isNonEmptyString(value) {
+	return typeof value === 'string' && value.trim().length > 0;
+}
+
+/**
+ * Check whether a string is within certain length.
+ *
+ * Rules:
+ * - must be of type string
+ * - length must be less than or equal to max
+ *
+ * Notes:
+ * - does NOT check for empty values
+ * - does NOT trim or normalize the string
+ * - intended to be combined with other validators
+ *
+ * @param {*} value
+ * @param {number} max
+ * @returns {boolean}
+ */
+export function isWithinLength(value, max) {
+	return typeof value === 'string' && value.length <= max;
+}
+
+/**
+ * Check whether a value is a safe string for basic input validation.
+ *
+ * Rules:
+ * - must be a non-empty string (after trimming)
+ * - must not exceed the specified maximum length
+ *
+ * Notes:
+ * - combines isNonEmptyString + isWithinLength
+ * - does NOT enforce format rules (email, username, etc.)
+ * - does NOT normalize the value
+ * - suitable for early request-shape validation
+ *
+ * @param {*} value
+ * @param {number} max
+ * @returns {boolean}
+ */
+export function isSafeString(value, max) {
+	return isNonEmptyString(value) && isWithinLength(value, max);
+}

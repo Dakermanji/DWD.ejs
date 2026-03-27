@@ -18,6 +18,7 @@ import {
 	isValidPassword,
 	normalizeUsername,
 	normalizeEmail,
+	isSafeString,
 	fail,
 } from './common.js';
 import { isValidToken, normalizeToken } from './token.js';
@@ -26,6 +27,17 @@ import { isValidToken, normalizeToken } from './token.js';
  * Namespace for auth validation flash keys.
  */
 const ERROR_PREFIX = 'auth:error.';
+
+/**
+ * Practical upper bounds for sign-in input.
+ *
+ * Notes:
+ * - identifier uses the email max because email is the longest allowed variant
+ * - password is not strength-validated here, only shape-validated
+ * - the password max is intentionally generous to avoid rejecting valid stored passwords
+ */
+const MAX_IDENTIFIER_LENGTH = 254;
+const MAX_PASSWORD_LENGTH = 1024;
 
 /**
  * Validate the email-first signup step.
@@ -143,4 +155,70 @@ export function validateCompleteLocalSignup(req, res, next) {
 	req.validationErrors = errors;
 
 	next();
+}
+
+/**
+ * Validate local sign-in input.
+ *
+ * Intended route:
+ * - POST /auth/signin
+ *
+ * Current rules:
+ * - identifier must be present
+ * - identifier must be a string
+ * - identifier must not be empty after trimming
+ * - identifier must be either a valid email or a valid username
+ * - email identifiers are normalized to lowercase
+ * - username identifiers are trimmed only
+ * - password must be present
+ * - password must be a string
+ * - password must not be empty
+ * - password must stay within a practical max length
+ *
+ * On success:
+ * - stores normalized identifier back in req.body.identifier
+ * - stores identifier type in req.body.identifierType
+ *
+ * Notes:
+ * - this middleware validates request shape only
+ * - account existence, admin blocks, lockouts, and rate limits belong later
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ * @returns {void | import('express').Response}
+ */
+export function validateSignIn(req, res, next) {
+	const identifierRaw = req.body?.identifier;
+	const passwordRaw = req.body?.password;
+
+	const KEY = `${ERROR_PREFIX}invalid_credentials`;
+
+	if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH)) {
+		return fail(req, res, KEY, 'signin');
+	}
+
+	if (!isSafeString(passwordRaw, MAX_PASSWORD_LENGTH)) {
+		return fail(req, res, KEY, 'signin');
+	}
+
+	const email = normalizeEmail(identifierRaw);
+
+	if (isValidEmail(email) && isSafeEmail(email)) {
+		req.body.identifier = email;
+		req.body.identifierType = 'email';
+		req.body.password = passwordRaw;
+		return next();
+	}
+
+	const username = normalizeUsername(identifierRaw);
+
+	if (isValidUsername(username)) {
+		req.body.identifier = username;
+		req.body.identifierType = 'username';
+		req.body.password = passwordRaw;
+		return next();
+	}
+
+	return fail(req, res, KEY, 'signin');
 }
