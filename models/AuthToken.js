@@ -1,6 +1,6 @@
 //! models/AuthToken.js
 
-import { queryRows } from '../config/database.js';
+import { query, queryRows } from '../config/database.js';
 
 /**
  * Create a token.
@@ -61,7 +61,7 @@ export async function findTokenByHash(tokenHash, type) {
 			created_at
 		FROM auth_tokens
 		WHERE token_hash = $1
-		  AND type = $2
+			AND type = $2
 		LIMIT 1
 	`;
 
@@ -69,7 +69,40 @@ export async function findTokenByHash(tokenHash, type) {
 	return rows[0] || null;
 }
 
+/**
+ * Mark an auth token as used.
+ *
+ * Responsibilities:
+ * - mark the token as used
+ * - update the used_at timestamp
+ *
+ * Notes:
+ * - will not update already-used tokens
+ * - safe to call after successful flows
+ *
+ * @param {string} tokenHash
+ * @param {string} type
+ * @param {string} userId
+ * @returns {Promise<boolean>}
+ */
+export async function markTokenUsed(tokenHash, type, userId) {
+	const q = `
+		UPDATE auth_tokens
+		SET
+			used_at = NOW()
+		WHERE token_hash = $1
+			AND type = $2
+			AND used_at IS NULL
+			AND user_id = $3;
+	`;
+
+	const result = await query(q, [tokenHash, type, userId]);
+
+	return result.rowCount > 0;
+}
+
 export default {
 	createToken,
 	findTokenByHash,
+	markTokenUsed,
 };
