@@ -2,7 +2,7 @@
 
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
-import { verifyToken, types } from '../../services/auth/verifyToken.js';
+import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
 
 /**
  * Handle email verification.
@@ -27,7 +27,7 @@ export async function verifyEmail(req, res) {
 
 	try {
 		// Ensure the verification token is valid before changing user state.
-		const result = await verifyToken(token, tokens.types.signup);
+		const result = await verifyToken(token, tokenTypes.signup);
 		if (!result.ok) {
 			req.flash('error', 'auth:signup.verify_email_invalid_link');
 			return res.redirect('/');

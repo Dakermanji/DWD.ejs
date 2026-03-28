@@ -80,12 +80,12 @@ function setupLocalStrategy(passport) {
 						});
 					}
 
-					// Admin block check
-					if (user.is_blocked) {
-						return done(null, false, {
-							message: INVALID_CREDENTIALS_KEY,
-						});
-					}
+					// TODO: Admin block check
+					// if (user.is_blocked) {
+					// return done(null, false, {
+					// message: INVALID_CREDENTIALS_KEY,
+					// });
+					// }
 
 					const isPasswordValid = await comparePassword(
 						password,

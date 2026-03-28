@@ -21,10 +21,12 @@ import {
 	validateSignupEmail,
 	validateVerifyEmailQuery,
 	validateCompleteLocalSignup,
+	validateSignIn,
 } from '../middlewares/validators/auth.js';
 import { signupLocal } from '../controllers/auth/signupLocal.js';
 import { verifyEmail } from '../controllers/auth/verifyEmail.js';
 import { completeLocalSignup } from '../controllers/auth/completeLocalSignup.js';
+import { signinLocal } from '../controllers/auth/signinLocal.js';
 
 const router = Router();
 
@@ -40,5 +42,8 @@ router.post(
 	validateCompleteLocalSignup,
 	completeLocalSignup,
 );
+
+// Sign in
+router.post('/signin', validateSignIn, signinLocal);
 
 export default router;

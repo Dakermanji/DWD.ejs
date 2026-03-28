@@ -6,6 +6,7 @@ import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
 import emailService from '../../services/auth/email.js';
+import { tokenTypes } from '../../services/auth/verifyToken.js';
 
 /**
  * Handle local signup step 1.
@@ -48,11 +49,7 @@ export async function signupLocal(req, res) {
 		// Continue the signup flow only for emails that are not yet registered.
 		// The success response stays identical either way to avoid enumeration.
 		if (!existingUser) {
-			const user = await UserModel.createLocalPendingUser(
-				email,
-				email,
-				locale,
-			);
+			const user = await UserModel.createLocalPendingUser(email, locale);
 
 			// Store only the token hash in the database.
 			// The raw token is sent to the user by email.
@@ -64,7 +61,7 @@ export async function signupLocal(req, res) {
 				user.id,
 				tokenHash,
 				expiresAt,
-				'email_verification',
+				tokenTypes.signup,
 			);
 
 			emailService.sendSignupEmail(user.email, rawToken, user.locale);

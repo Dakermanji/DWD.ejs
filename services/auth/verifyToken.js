@@ -3,7 +3,7 @@
 import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
 
-export const types = {
+export const tokenTypes = {
 	signup: 'signup_verification',
 	passwordReset: 'password_reset',
 };

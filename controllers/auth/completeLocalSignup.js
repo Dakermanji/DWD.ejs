@@ -3,7 +3,7 @@
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
-import { verifyToken, types } from '../../services/auth/verifyToken.js';
+import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
 import { hashPassword } from '../../services/auth/password.js';
 
 /**
@@ -56,7 +56,7 @@ export async function completeLocalSignup(req, res) {
 		}
 
 		// Verify the signup token after cheap validation passes.
-		const tokenResult = await verifyToken(token, types.signup);
+		const tokenResult = await verifyToken(token, tokenTypes.signup);
 
 		if (!tokenResult.ok) {
 			req.flash('error', 'auth:signup.verify_email_invalid_link');
@@ -82,7 +82,7 @@ export async function completeLocalSignup(req, res) {
 		// Consume token.
 		const tokenMarkedUsed = await AuthTokenModel.markTokenUsed(
 			tokenResult.tokenHash,
-			types.signup,
+			tokenTypes.signup,
 			user.id,
 		);
 
