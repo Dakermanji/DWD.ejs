@@ -123,7 +123,9 @@
 		"01_session.sql",
 		"02_users.sql",
 		"03_user_providers.sql",
-		"04_auth_tokens.sql"
+		"04_auth_tokens.sql",
+		"05_auth_security.sql",
+		"06_auth_security_events.sql"
 	],
 	"utils": { "config": ["dotenv.js"], "auth": ["tokens.js"] },
 	"views": {
