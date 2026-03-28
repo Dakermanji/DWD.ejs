@@ -7,18 +7,18 @@ import { query, queryRows } from '../config/database.js';
  *
  * Used in auth flows where full user data is not required.
  *
- * @param {string} emailNormalized
+ * @param {string} email
  * @returns {Promise<{ id: string, email: string, is_verified: boolean } | null>}
  */
-export async function findByEmailBasic(emailNormalized) {
+export async function findByEmailBasic(email) {
 	const q = `
 		SELECT id, email, is_verified
 		FROM users
-		WHERE email_normalized = $1
+		WHERE email = $1
 		LIMIT 1
 	`;
 
-	const rows = await queryRows(q, [emailNormalized]);
+	const rows = await queryRows(q, [email]);
 	return rows[0] || null;
 }
 
@@ -32,14 +32,14 @@ export async function findByEmailBasic(emailNormalized) {
  * @param {string} emailNormalized
  * @returns {Promise<{ id: string, email: string, locale: string, is_verified: boolean, created_at: Date } | null>}
  */
-export async function createLocalPendingUser(email, emailNormalized, locale) {
+export async function createLocalPendingUser(email, locale) {
 	const q = `
-		INSERT INTO users (email, email_normalized, locale)
-		VALUES ($1, $2, $3)
+		INSERT INTO users (email, locale)
+		VALUES ($1, $2)
 		RETURNING id, email, locale, is_verified, created_at
 	`;
 
-	const rows = await queryRows(q, [email, emailNormalized, locale]);
+	const rows = await queryRows(q, [email, locale]);
 	return rows[0] || null;
 }
 
@@ -137,10 +137,48 @@ export async function completeLocalSignupById(
 	return rows[0] || null;
 }
 
+/**
+ * Find completed local user for sign-in.
+ *
+ * Requirements:
+ * - matched by email or username
+ * - local signup must be completed
+ *
+ * @param {string} identifier
+ * @param {'email' | 'username'} identifierType
+ * @returns {Promise<object|null>}
+ */
+async function findForLocalSignin(identifier, identifierType) {
+	const column =
+		identifierType === 'email'
+			? 'email'
+			: identifierType === 'username'
+				? 'username_normalized'
+				: null;
+
+	if (!column) {
+		throw new Error(`Unsupported identifier type: ${identifierType}`);
+	}
+
+	const q = `
+		SELECT id, email, username, is_blocked, hashed_password
+		FROM users
+		WHERE ${column} = $1
+			AND username IS NOT NULL
+			AND hashed_password IS NOT NULL
+		LIMIT 1;
+	`;
+
+	const rows = await queryRows(q, [identifier]);
+
+	return rows[0] ?? null;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
 	updateIsVerifiedById,
 	usernameExists,
 	completeLocalSignupById,
+	findForLocalSignin,
 };
