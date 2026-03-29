@@ -59,7 +59,7 @@ export async function completeLocalSignup(req, res) {
 		const tokenResult = await verifyToken(token, tokenTypes.signup);
 
 		if (!tokenResult.ok) {
-			req.flash('error', 'auth:signup.verify_email_invalid_link');
+			req.flash('error', 'auth:error.verify_email_invalid_link');
 			req.flash('modal', 'complete_signup');
 			return res.redirect('/');
 		}
@@ -96,8 +96,6 @@ export async function completeLocalSignup(req, res) {
 		}
 
 		// Log user in with passport here when ready.
-
-		req.flash('info', 'common:coming_soon');
 		return res.redirect('/');
 	} catch (err) {
 		logger.error(err.message, {

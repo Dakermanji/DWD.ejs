@@ -161,7 +161,7 @@ async function findForLocalSignin(identifier, identifierType) {
 	}
 
 	const q = `
-		SELECT id, email, username, hashed_password
+		SELECT id, email, username, hashed_password, is_blocked
 		FROM users
 		WHERE ${column} = $1
 			AND username IS NOT NULL

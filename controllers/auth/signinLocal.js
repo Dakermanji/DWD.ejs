@@ -30,7 +30,7 @@ export async function signinLocal(req, res, next) {
 			if (info?.message) {
 				req.flash('error', info.message);
 			} else {
-				req.flash('error', 'auth:signin.invalid_credentials');
+				req.flash('error', 'auth:error.invalid_credentials');
 			}
 
 			// Re-open login modal on next request

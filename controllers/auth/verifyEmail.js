@@ -29,7 +29,7 @@ export async function verifyEmail(req, res) {
 		// Ensure the verification token is valid before changing user state.
 		const result = await verifyToken(token, tokenTypes.signup);
 		if (!result.ok) {
-			req.flash('error', 'auth:signup.verify_email_invalid_link');
+			req.flash('error', 'auth:error.verify_email_invalid_link');
 			return res.redirect('/');
 		}
 

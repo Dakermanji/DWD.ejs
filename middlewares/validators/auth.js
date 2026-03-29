@@ -100,7 +100,7 @@ export function validateVerifyEmailQuery(req, res, next) {
 	const { token } = req.query;
 
 	if (!isValidToken(token)) {
-		req.flash('error', 'auth:signup.verify_email_invalid_link');
+		req.flash('error', 'auth:error.verify_email_invalid_link');
 		return res.redirect('/');
 	}
 
@@ -135,7 +135,7 @@ export function validateCompleteLocalSignup(req, res, next) {
 	const errors = [];
 
 	if (!isValidToken(token)) {
-		errors.push('auth:signup.verify_email_invalid_link');
+		errors.push('auth:error.verify_email_invalid_link');
 	}
 
 	if (!isValidUsername(username)) {

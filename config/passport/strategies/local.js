@@ -10,7 +10,7 @@ import { comparePassword } from '../../../services/auth/password.js';
  * Keep this the same across auth failures
  * to avoid leaking account state.
  */
-const INVALID_CREDENTIALS_KEY = 'auth:signin.invalid_credentials';
+const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
 
 /**
  * Register local authentication strategy.
@@ -52,21 +52,7 @@ function setupLocalStrategy(passport) {
 			},
 			async (req, identifier, password, done) => {
 				try {
-					const identifierType = req.body?.identifierType;
-
-					// Basic request-shape guard.
-					// Full validation should still happen in middleware.
-					if (
-						typeof identifier !== 'string' ||
-						typeof password !== 'string' ||
-						(identifierType !== 'email' &&
-							identifierType !== 'username')
-					) {
-						return done(null, false, {
-							message: INVALID_CREDENTIALS_KEY,
-						});
-					}
-
+					const identifierType = req.body.identifierType;
 					const user = await UserModel.findForLocalSignin(
 						identifier,
 						identifierType,
@@ -80,12 +66,11 @@ function setupLocalStrategy(passport) {
 						});
 					}
 
-					// TODO: Admin block check
-					// if (user.is_blocked) {
-					// return done(null, false, {
-					// message: INVALID_CREDENTIALS_KEY,
-					// });
-					// }
+					if (user.is_blocked) {
+						return done(null, false, {
+							message: INVALID_CREDENTIALS_KEY,
+						});
+					}
 
 					const isPasswordValid = await comparePassword(
 						password,
