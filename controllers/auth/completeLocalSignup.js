@@ -51,7 +51,7 @@ export async function completeLocalSignup(req, res) {
 		// Stop early if request validation already failed.
 		if (errors.length > 0) {
 			req.flash('errors', errors);
-			req.flash('modal', 'complete_signup');
+			req.flash('modal', 'complete_signup_local');
 			return res.redirect('/');
 		}
 
@@ -60,7 +60,7 @@ export async function completeLocalSignup(req, res) {
 
 		if (!tokenResult.ok) {
 			req.flash('error', 'auth:error.verify_email_invalid_link');
-			req.flash('modal', 'complete_signup');
+			req.flash('modal', 'complete_signup_local');
 			return res.redirect('/');
 		}
 

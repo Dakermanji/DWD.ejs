@@ -13,6 +13,7 @@
 
 import express from 'express';
 
+import './mailer.js';
 import configureViews from './views.js';
 import applyMiddlewares from './middlewares.js';
 import router from './routes.js';
