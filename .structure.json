@@ -2,7 +2,13 @@
 	".private": [],
 	"config": {
 		"passport": {
-			"strategies": ["local.js", "google.js", "github.js", "discord.js"],
+			"strategies": [
+				"discord.js",
+				"github.js",
+				"google.js",
+				"local.js",
+				"localSecurity.js"
+			],
 			"~": ["index.js", "serializeUser.js"]
 		},
 		"~": [

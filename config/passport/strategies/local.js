@@ -3,6 +3,11 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import UserModel from '../../../models/User.js';
 import { comparePassword } from '../../../services/auth/password.js';
+import {
+	getRequestMeta,
+	logAuthEvent,
+	updateSigninState,
+} from './localSecurity.js';
 
 /**
  * Generic sign-in failure message key.
@@ -53,6 +58,8 @@ function setupLocalStrategy(passport) {
 			async (req, identifier, password, done) => {
 				try {
 					const identifierType = req.body.identifierType;
+					const requestMeta = getRequestMeta(req);
+
 					const user = await UserModel.findForLocalSignin(
 						identifier,
 						identifierType,
@@ -61,12 +68,32 @@ function setupLocalStrategy(passport) {
 					// User does not exist
 					// or local signup is not completed
 					if (!user) {
+						await updateSigninState({
+							successful: false,
+							userId: null,
+							identifier,
+						});
+
+						await logAuthEvent({
+							userId: null,
+							identifier,
+							eventType: 'signin_failed',
+							...requestMeta,
+						});
+
 						return done(null, false, {
 							message: INVALID_CREDENTIALS_KEY,
 						});
 					}
 
 					if (user.is_blocked) {
+						await logAuthEvent({
+							userId: user.id,
+							identifier,
+							eventType: 'signin_blocked',
+							...requestMeta,
+						});
+
 						return done(null, false, {
 							message: INVALID_CREDENTIALS_KEY,
 						});
@@ -78,10 +105,36 @@ function setupLocalStrategy(passport) {
 					);
 
 					if (!isPasswordValid) {
+						await updateSigninState({
+							successful: false,
+							userId: user.id,
+							identifier,
+						});
+
+						await logAuthEvent({
+							userId: user.id,
+							identifier,
+							eventType: 'signin_failed',
+							...requestMeta,
+						});
+
 						return done(null, false, {
 							message: INVALID_CREDENTIALS_KEY,
 						});
 					}
+
+					await updateSigninState({
+						successful: true,
+						userId: user.id,
+						identifier,
+					});
+
+					await logAuthEvent({
+						userId: user.id,
+						identifier,
+						eventType: 'signin_success',
+						...requestMeta,
+					});
 
 					return done(null, {
 						id: user.id,
