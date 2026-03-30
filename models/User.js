@@ -10,7 +10,7 @@ import { query, queryRows } from '../config/database.js';
  * @param {string} email
  * @returns {Promise<{ id: string, email: string, is_verified: boolean } | null>}
  */
-export async function findByEmailBasic(email) {
+async function findByEmailBasic(email) {
 	const q = `
 		SELECT id, email, is_verified
 		FROM users
@@ -32,7 +32,7 @@ export async function findByEmailBasic(email) {
  * @param {string} emailNormalized
  * @returns {Promise<{ id: string, email: string, locale: string, is_verified: boolean, created_at: Date } | null>}
  */
-export async function createLocalPendingUser(email, locale) {
+async function createLocalPendingUser(email, locale) {
 	const q = `
 		INSERT INTO users (email, locale)
 		VALUES ($1, $2)
@@ -50,7 +50,7 @@ export async function createLocalPendingUser(email, locale) {
  * @param {boolean} isVerified
  * @returns {Promise<boolean>}
  */
-export async function updateIsVerifiedById(userId, isVerified) {
+async function updateIsVerifiedById(userId, isVerified) {
 	const q = `
 		UPDATE users
 		SET
@@ -74,7 +74,7 @@ export async function updateIsVerifiedById(userId, isVerified) {
  * @param {string} username
  * @returns {Promise<boolean>}
  */
-export async function usernameExists(username) {
+async function usernameExists(username) {
 	const lowerCasedUsername = username.toLowerCase();
 
 	const q = `
@@ -107,11 +107,7 @@ export async function usernameExists(username) {
  * @param {string} hashedPassword
  * @returns {Promise<{ id: string, username: string, email: string, is_verified: boolean } | null>}
  */
-export async function completeLocalSignupById(
-	userId,
-	username,
-	hashedPassword,
-) {
+async function completeLocalSignupById(userId, username, hashedPassword) {
 	const lowerCasedUsername = username.toLowerCase();
 
 	const q = `
@@ -145,25 +141,26 @@ export async function completeLocalSignupById(
  * - local signup must be completed
  *
  * @param {string} identifier
+ * - expected to be normalized (lowercase) by validator
  * @param {'email' | 'username'} identifierType
  * @returns {Promise<object|null>}
  */
 async function findForLocalSignin(identifier, identifierType) {
-	const column =
+	const lookupColumn =
 		identifierType === 'email'
 			? 'email'
 			: identifierType === 'username'
 				? 'username_normalized'
 				: null;
 
-	if (!column) {
+	if (!lookupColumn) {
 		throw new Error(`Unsupported identifier type: ${identifierType}`);
 	}
 
 	const q = `
 		SELECT id, email, username, hashed_password, is_blocked
 		FROM users
-		WHERE ${column} = $1
+		WHERE ${lookupColumn} = $1
 			AND username IS NOT NULL
 			AND hashed_password IS NOT NULL
 		LIMIT 1;
