@@ -58,7 +58,13 @@
 			"staticFiles.js"
 		]
 	},
-	"models": ["User.js", "UserProvider.js", "AuthToken.js"],
+	"models": [
+		"AuthSecurity.js",
+		"AuthSecurityEvent.js",
+		"AuthToken.js",
+		"User.js",
+		"UserProvider.js"
+	],
 	"node_modules": [],
 	"patches": ["connect-flash+0.1.1.patch"],
 	"public": {

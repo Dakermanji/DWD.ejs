@@ -1,5 +1,8 @@
 //! config/passport/strategies/localSecurity.js
 
+import AuthSecurityModel from '../../../models/AuthSecurity.js';
+import AuthSecurityEventModel from '../../../models/AuthSecurityEvent.js';
+
 /**
  * Local sign-in security helpers.
  *
@@ -28,8 +31,7 @@ function getRequestMeta(req) {
 /**
  * Log an auth security event.
  *
- * Temporary stub:
- * - later should insert into auth_security_events
+ * Inserts a record into auth_security_events.
  *
  * @param {{
  *   userId?: string | null,
@@ -47,18 +49,21 @@ async function logAuthEvent({
 	ipAddress = null,
 	userAgent = null,
 }) {
-	void userId;
-	void identifier;
-	void eventType;
-	void ipAddress;
-	void userAgent;
+	await AuthSecurityEventModel.insertAuthEvent({
+		userId,
+		identifier,
+		eventType,
+		ipAddress,
+		userAgent,
+	});
 }
 
 /**
  * Get auth security state for a sign-in attempt.
  *
- * Temporary stub:
- * - later should read from auth_security
+ * Current behavior:
+ * - loads auth_security row by userId or identifier
+ * - returns null if no state exists yet
  *
  * @param {{
  *   userId?: string | null,
@@ -71,18 +76,19 @@ async function logAuthEvent({
  * } | null>}
  */
 async function getAuthSecurityState({ userId = null, identifier = null }) {
-	void userId;
-	void identifier;
-
-	return null;
+	return await AuthSecurityModel.findByUserIdOrIdentifier({
+		userId,
+		identifier,
+	});
 }
 
 /**
  * Update auth security state after sign-in attempt.
  *
- * Temporary stub:
- * - on failure: increment failed count / update last_failed_signin_at
- * - on success: reset failures / clear lock / update last_signin_at
+ * Current behavior:
+ * - ensures an auth_security row exists
+ * - on failure: records failed sign-in metadata
+ * - on success: records successful sign-in metadata
  *
  * @param {{
  *   successful: boolean,
@@ -96,9 +102,24 @@ async function updateSigninState({
 	userId = null,
 	identifier = null,
 }) {
-	void successful;
-	void userId;
-	void identifier;
+	await AuthSecurityModel.createIfMissing({
+		userId,
+		identifier,
+	});
+
+	if (successful) {
+		await AuthSecurityModel.recordSuccessfulSignin({
+			userId,
+			identifier,
+		});
+
+		return;
+	}
+
+	await AuthSecurityModel.recordFailedSignin({
+		userId,
+		identifier,
+	});
 }
 
 /**
@@ -115,18 +136,109 @@ function isLocked(authSecurity) {
 	return new Date(authSecurity.locked_until).getTime() > Date.now();
 }
 
+/**
+ * Decide whether a sign-in state should be locked.
+ *
+ * Current policy:
+ * - lock after 5 failed sign-in attempts
+ * - lock duration is 15 minutes
+ *
+ * Notes:
+ * - pure helper, no DB writes
+ * - returns lock info so caller can decide what to persist
+ *
+ * @param {{
+ *   failed_signin_count?: number,
+ *   locked_until?: Date | string | null
+ * } | null} authSecurity
+ * @returns {{
+ *   shouldLock: boolean,
+ *   lockedUntil: Date | null
+ * }}
+ */
+function getLockDecision(authSecurity) {
+	const failedSigninCount = authSecurity?.failed_signin_count ?? 0;
+	const isAlreadyLocked = isLocked(authSecurity);
+
+	if (isAlreadyLocked) {
+		return {
+			shouldLock: false,
+			lockedUntil: null,
+		};
+	}
+
+	if (failedSigninCount < 5) {
+		return {
+			shouldLock: false,
+			lockedUntil: null,
+		};
+	}
+
+	const lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
+
+	return {
+		shouldLock: true,
+		lockedUntil,
+	};
+}
+
+/**
+ * Apply account lock if the current security state requires it.
+ *
+ * Responsibilities:
+ * - load current auth security state
+ * - evaluate lock policy using getLockDecision
+ * - persist lock if needed
+ *
+ * Behavior:
+ * - does nothing if lock conditions are not met
+ * - sets locked_until when threshold is reached
+ *
+ * Notes:
+ * - userId is preferred when available
+ * - identifier is used for pre-user or fallback cases
+ * - lock policy is defined in getLockDecision()
+ * - persistence is handled by AuthSecurityModel
+ *
+ * @param {{
+ *   userId?: string | null,
+ *   identifier?: string | null
+ * }} params
+ * @returns {Promise<boolean>}
+ * - true  → lock was applied
+ * - false → no lock needed
+ */
+async function lockSigninIfNeeded({ userId = null, identifier = null }) {
+	// Load current security state (may be null if not created yet)
+	const authSecurity = await getAuthSecurityState({
+		userId,
+		identifier,
+	});
+
+	// Determine whether a lock should be applied
+	const lockDecision = getLockDecision(authSecurity);
+
+	// No lock needed → exit early
+	if (!lockDecision.shouldLock) {
+		return false;
+	}
+
+	// Persist lock in database
+	await AuthSecurityModel.setLockedUntil({
+		userId,
+		identifier,
+		lockedUntil: lockDecision.lockedUntil,
+	});
+
+	return true;
+}
+
 export {
 	getRequestMeta,
 	logAuthEvent,
 	getAuthSecurityState,
 	updateSigninState,
 	isLocked,
-};
-
-export default {
-	getRequestMeta,
-	logAuthEvent,
-	getAuthSecurityState,
-	updateSigninState,
-	isLocked,
+	getLockDecision,
+	lockSigninIfNeeded,
 };

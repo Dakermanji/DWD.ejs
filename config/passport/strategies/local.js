@@ -6,7 +6,9 @@ import { comparePassword } from '../../../services/auth/password.js';
 import {
 	getRequestMeta,
 	logAuthEvent,
+	getAuthSecurityState,
 	updateSigninState,
+	isLocked,
 } from './localSecurity.js';
 
 /**
@@ -85,12 +87,29 @@ function setupLocalStrategy(passport) {
 							message: INVALID_CREDENTIALS_KEY,
 						});
 					}
+					const authSecurity = await getAuthSecurityState({
+						userId: user?.id ?? null,
+						identifier,
+					});
 
 					if (user.is_blocked) {
 						await logAuthEvent({
 							userId: user.id,
 							identifier,
 							eventType: 'signin_blocked',
+							...requestMeta,
+						});
+
+						return done(null, false, {
+							message: INVALID_CREDENTIALS_KEY,
+						});
+					}
+
+					if (isLocked(authSecurity)) {
+						await logAuthEvent({
+							userId: user?.id ?? null,
+							identifier,
+							eventType: 'signin_locked',
 							...requestMeta,
 						});
 
