@@ -5,12 +5,12 @@ import UserModel from '../../../models/User.js';
 import { comparePassword } from '../../../services/auth/password.js';
 import {
 	getAuthSecurityState,
-	getRequestMeta,
 	isLocked,
 	lockSigninIfNeeded,
 	logAuthEvent,
 	updateSigninState,
 } from './localSecurity.js';
+import { getRequestMeta } from '../../../services/auth/requestMeta.js';
 
 /**
  * Generic sign-in failure message key.

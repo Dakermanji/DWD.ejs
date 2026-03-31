@@ -1,26 +1,186 @@
 //! controllers/auth/signupLocal.js
 
-import { SUPPORTED_LANGUAGE_CODES } from '../../config/languages.js';
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
-import tokens from '../../utils/auth/tokens.js';
-import emailService from '../../services/auth/email.js';
-import { tokenTypes } from '../../services/auth/verifyToken.js';
 import AuthSecurityEventModel from '../../models/AuthSecurityEvent.js';
-import { getRequestMeta } from '../../config/passport/strategies/localSecurity.js';
+import SignupSecurityModel from '../../models/SignupSecurity.js';
+import { sendSignupEmail } from '../../services/auth/email.js';
+import { getRequestMeta } from '../../services/auth/requestMeta.js';
+import {
+	isLocked,
+	isEmailCooldownActive,
+	lockIpIfNeeded,
+} from '../../services/auth/signupSecurity.js';
+import {
+	createAuthToken,
+	hashAuthToken,
+	AUTH_EXPIRY_TIME,
+} from '../../utils/auth/tokens.js';
+import { tokenTypes } from '../../services/auth/verifyToken.js';
+
+/**
+ * Generic signup success message key.
+ *
+ * Keep this the same across normal signup outcomes
+ * to avoid leaking whether the email already exists.
+ */
+const SIGNUP_SUCCESS_KEY = 'auth:signup.check_your_email';
+
+/**
+ * Handle generic signup success response.
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @returns {void}
+ */
+function respondSignupSuccess(req, res) {
+	req.flash('success', SIGNUP_SUCCESS_KEY);
+	res.redirect('/');
+}
+
+/**
+ * Log signup-related auth event.
+ *
+ * @param {{
+ *   userId?: string | null,
+ *   email: string,
+ *   eventType: string,
+ *   requestMeta: {
+ *     ipAddress: string | null,
+ *     userAgent: string | null
+ *   }
+ * }} params
+ * @returns {Promise<void>}
+ */
+async function logSignupEvent({
+	userId = null,
+	email,
+	eventType,
+	requestMeta,
+}) {
+	await AuthSecurityEventModel.insertAuthEvent({
+		userId,
+		identifier: email,
+		eventType,
+		ipAddress: requestMeta.ipAddress,
+		userAgent: requestMeta.userAgent,
+	});
+}
+
+/**
+ * Check whether signup should silently stop due to IP lock or email cooldown.
+ *
+ * Responsibilities:
+ * - check IP lock
+ * - check email cooldown
+ * - log security event when blocked
+ *
+ * @param {{
+ *   email: string,
+ *   requestMeta: {
+ *     ipAddress: string | null,
+ *     userAgent: string | null
+ *   }
+ * }} params
+ * @returns {Promise<boolean>}
+ * - true  -> stop signup flow and return generic success
+ * - false -> continue signup flow
+ */
+async function shouldStopSignupEarly({ email, requestMeta }) {
+	const ipSecurity = await SignupSecurityModel.findLatestByIp(
+		requestMeta.ipAddress,
+	);
+
+	if (isLocked(ipSecurity)) {
+		await logSignupEvent({
+			userId: null,
+			email,
+			eventType: 'signup_rate_limited',
+			requestMeta,
+		});
+
+		return true;
+	}
+
+	const emailSecurity = await SignupSecurityModel.findLatestByEmail(email);
+
+	if (isEmailCooldownActive(emailSecurity)) {
+		await logSignupEvent({
+			userId: null,
+			email,
+			eventType: 'signup_email_cooldown',
+			requestMeta,
+		});
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Record signup attempt security state.
+ *
+ * Responsibilities:
+ * - increment signup attempt counter
+ * - apply IP lock when threshold is reached
+ *
+ * @param {{
+ *   ipAddress: string | null,
+ *   email: string
+ * }} params
+ * @returns {Promise<void>}
+ */
+async function recordSignupSecurity({ ipAddress, email }) {
+	await SignupSecurityModel.recordAttempt({
+		ipAddress,
+		email,
+	});
+
+	await lockIpIfNeeded({
+		ipAddress,
+		email,
+	});
+}
+
+/**
+ * Create pending local user, token, and signup email.
+ *
+ * @param {{
+ *   email: string,
+ *   locale: string
+ * }} params
+ * @returns {Promise<{ id: string, email: string, locale: string }>}
+ */
+async function createPendingSignupAndSendEmail({ email, locale }) {
+	const user = await UserModel.createLocalPendingUser(email, locale);
+
+	const rawToken = createAuthToken();
+	const tokenHash = hashAuthToken(rawToken);
+	const expiresAt = new Date(Date.now() + AUTH_EXPIRY_TIME);
+
+	await AuthTokenModel.createToken(
+		user.id,
+		tokenHash,
+		expiresAt,
+		tokenTypes.signup,
+	);
+
+	await sendSignupEmail(user.email, rawToken, user.locale);
+
+	return user;
+}
 
 /**
  * Handle local signup step 1.
  *
  * Flow:
- * - receives a validated and normalized email
- * - resolves a supported locale for the pending user
+ * - receives validated and normalized email
+ * - applies signup security checks
+ * - records signup attempt security state
  * - checks whether the email is already registered
- * - if not registered:
- *   - creates a pending local user
- *   - creates an email verification token
- *   - sends the signup email
+ * - creates pending user + verification token + email when needed
  * - always returns the same success response on normal flow
  *
  * Why the response is generic:
@@ -29,68 +189,60 @@ import { getRequestMeta } from '../../config/passport/strategies/localSecurity.j
  * Notes:
  * - this step does not complete registration yet
  * - password and username are collected later
- * - locale is stored now so auth emails can match the user's language
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @returns {Promise<void>}
  */
 export async function signupLocal(req, res) {
-	const { email } = req.body;
-	const metaData = getRequestMeta(req);
-
-	// Keep only supported application languages.
-	// Fallback to English for anything unknown or missing.
-	const rawLocale = req.locale || 'en';
-	const locale = SUPPORTED_LANGUAGE_CODES.includes(rawLocale)
-		? rawLocale
-		: 'en';
-	let user;
+	const { email, locale } = req.body;
+	const requestMeta = getRequestMeta(req);
 
 	try {
-		const existingUser = await UserModel.findByEmailBasic(email);
-
-		// Continue the signup flow only for emails that are not yet registered.
-		// The success response stays identical either way to avoid enumeration.
-		if (!existingUser) {
-			user = await UserModel.createLocalPendingUser(email, locale);
-
-			// Store only the token hash in the database.
-			// The raw token is sent to the user by email.
-			const rawToken = tokens.createAuthToken();
-			const tokenHash = tokens.hashAuthToken(rawToken);
-			const expiresAt = new Date(Date.now() + tokens.AUTH_EXPIRY_TIME);
-
-			await AuthTokenModel.createToken(
-				user.id,
-				tokenHash,
-				expiresAt,
-				tokenTypes.signup,
-			);
-
-			emailService.sendSignupEmail(user.email, rawToken, user.locale);
-		}
-
-		await AuthSecurityEventModel.insertAuthEvent({
-			userId: user?.id ?? null,
-			identifier: email,
-			eventType: 'signup_attempt',
-			ipAddress: metaData.ipAddress,
-			userAgent: metaData.userAgent,
+		const shouldStopEarly = await shouldStopSignupEarly({
+			email,
+			requestMeta,
 		});
 
-		req.flash('success', 'auth:signup.success_email_sent');
-		return res.redirect('/');
-	} catch (err) {
-		logger.error(err.message, {
-			type: 'auth',
-			controller: 'signupLocal',
+		if (shouldStopEarly) {
+			return respondSignupSuccess(req, res);
+		}
+
+		await recordSignupSecurity({
+			ipAddress: requestMeta.ipAddress,
 			email,
 		});
 
-		req.flash('error', 'common:error_generic');
+		const existingUser = await UserModel.findByEmailBasic(email);
+
+		await logSignupEvent({
+			userId: existingUser?.id ?? null,
+			email,
+			eventType: 'signup_attempt',
+			requestMeta,
+		});
+
+		if (!existingUser) {
+			const user = await createPendingSignupAndSendEmail({
+				email,
+				locale,
+			});
+
+			await logSignupEvent({
+				userId: user.id,
+				email,
+				eventType: 'signup_email_sent',
+				requestMeta,
+			});
+		}
+
+		return respondSignupSuccess(req, res);
+	} catch (error) {
+		logger.error('signupLocal error', {
+			error: error.message,
+		});
+
+		req.flash('error', 'common:unexpected_error');
 		return res.redirect('/');
 	}
 }
-
-export default signupLocal;

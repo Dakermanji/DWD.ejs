@@ -62,6 +62,7 @@
 		"AuthSecurity.js",
 		"AuthSecurityEvent.js",
 		"AuthToken.js",
+		"SignupSecurity.js",
 		"User.js",
 		"UserProvider.js"
 	],
@@ -129,7 +130,14 @@
 	},
 	"routes": ["auth.js", "home.js", "lang.js"],
 	"services": {
-		"auth": ["email.js", "emailContent.js", "", "verifyToken.js"]
+		"auth": [
+			"email.js",
+			"emailContent.js",
+			"password.js",
+			"requestMeta.js",
+			"requestMeta.js",
+			"verifyToken.js"
+		]
 	},
 	"sql": [
 		"01_session.sql",

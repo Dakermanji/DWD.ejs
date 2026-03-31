@@ -3,6 +3,49 @@
 import passport from 'passport';
 
 /**
+ * Handle failed local sign-in response.
+ *
+ * Responsibilities:
+ * - flash auth error message
+ * - reopen login modal
+ * - redirect back home
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {{ message?: string } | undefined} info
+ * @returns {void}
+ */
+function handleSigninFailure(req, res, info) {
+	req.flash('error', info?.message || 'auth:error.invalid_credentials');
+	req.flash('modal', 'login');
+
+	res.redirect('/');
+}
+
+/**
+ * Handle successful local sign-in response.
+ *
+ * Responsibilities:
+ * - establish login session
+ * - redirect after success
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ * @param {{ id: string, email: string, username: string }} user
+ * @returns {void}
+ */
+function handleSigninSuccess(req, res, next, user) {
+	req.logIn(user, (loginErr) => {
+		if (loginErr) {
+			return next(loginErr);
+		}
+
+		return res.redirect('/');
+	});
+}
+
+/**
  * Handle local sign-in.
  *
  * Expected input:
@@ -25,27 +68,10 @@ export async function signinLocal(req, res, next) {
 			return next(err);
 		}
 
-		// Authentication failed
 		if (!user) {
-			if (info?.message) {
-				req.flash('error', info.message);
-			} else {
-				req.flash('error', 'auth:error.invalid_credentials');
-			}
-
-			// Re-open login modal on next request
-			req.flash('modal', 'login');
-
-			return res.redirect('/');
+			return handleSigninFailure(req, res, info);
 		}
 
-		// Authentication succeeded → establish login session
-		req.logIn(user, (loginErr) => {
-			if (loginErr) {
-				return next(loginErr);
-			}
-
-			return res.redirect('/');
-		});
+		return handleSigninSuccess(req, res, next, user);
 	})(req, res, next);
 }

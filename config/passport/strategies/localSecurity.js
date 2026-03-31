@@ -11,24 +11,6 @@ import AuthSecurityEventModel from '../../../models/AuthSecurityEvent.js';
  */
 
 /**
- * Extract request metadata for auth logging/security tracking.
- *
- * @param {import('express').Request} req
- * @returns {{
- *   ipAddress: string | null,
- *   userAgent: string | null,
- *   identifier: string | null
- * }}
- */
-function getRequestMeta(req) {
-	return {
-		ipAddress: req.ip || null,
-		userAgent: req.get('user-agent') || null,
-		identifier: req.body.identifier || null,
-	};
-}
-
-/**
  * Log an auth security event.
  *
  * Inserts a record into auth_security_events.
@@ -234,7 +216,6 @@ async function lockSigninIfNeeded({ userId = null, identifier = null }) {
 }
 
 export {
-	getRequestMeta,
 	logAuthEvent,
 	getAuthSecurityState,
 	updateSigninState,
