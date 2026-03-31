@@ -136,6 +136,8 @@
 			"password.js",
 			"requestMeta.js",
 			"requestMeta.js",
+			"signupLocal.js",
+			"signupSecurity.js",
 			"verifyToken.js"
 		]
 	},

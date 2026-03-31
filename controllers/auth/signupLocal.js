@@ -2,22 +2,15 @@
 
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
-import AuthTokenModel from '../../models/AuthToken.js';
 import AuthSecurityEventModel from '../../models/AuthSecurityEvent.js';
 import SignupSecurityModel from '../../models/SignupSecurity.js';
-import { sendSignupEmail } from '../../services/auth/email.js';
 import { getRequestMeta } from '../../services/auth/requestMeta.js';
 import {
 	isLocked,
 	isEmailCooldownActive,
 	lockIpIfNeeded,
 } from '../../services/auth/signupSecurity.js';
-import {
-	createAuthToken,
-	hashAuthToken,
-	AUTH_EXPIRY_TIME,
-} from '../../utils/auth/tokens.js';
-import { tokenTypes } from '../../services/auth/verifyToken.js';
+import { createPendingSignupAndSendEmail } from '../../services/auth/signupLocal.js';
 
 /**
  * Generic signup success message key.
@@ -142,34 +135,6 @@ async function recordSignupSecurity({ ipAddress, email }) {
 		ipAddress,
 		email,
 	});
-}
-
-/**
- * Create pending local user, token, and signup email.
- *
- * @param {{
- *   email: string,
- *   locale: string
- * }} params
- * @returns {Promise<{ id: string, email: string, locale: string }>}
- */
-async function createPendingSignupAndSendEmail({ email, locale }) {
-	const user = await UserModel.createLocalPendingUser(email, locale);
-
-	const rawToken = createAuthToken();
-	const tokenHash = hashAuthToken(rawToken);
-	const expiresAt = new Date(Date.now() + AUTH_EXPIRY_TIME);
-
-	await AuthTokenModel.createToken(
-		user.id,
-		tokenHash,
-		expiresAt,
-		tokenTypes.signup,
-	);
-
-	await sendSignupEmail(user.email, rawToken, user.locale);
-
-	return user;
 }
 
 /**
