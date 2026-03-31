@@ -7,6 +7,8 @@ import AuthTokenModel from '../../models/AuthToken.js';
 import tokens from '../../utils/auth/tokens.js';
 import emailService from '../../services/auth/email.js';
 import { tokenTypes } from '../../services/auth/verifyToken.js';
+import AuthSecurityEventModel from '../../models/AuthSecurityEvent.js';
+import { getRequestMeta } from '../../config/passport/strategies/localSecurity.js';
 
 /**
  * Handle local signup step 1.
@@ -35,6 +37,7 @@ import { tokenTypes } from '../../services/auth/verifyToken.js';
  */
 export async function signupLocal(req, res) {
 	const { email } = req.body;
+	const metaData = getRequestMeta(req);
 
 	// Keep only supported application languages.
 	// Fallback to English for anything unknown or missing.
@@ -42,6 +45,7 @@ export async function signupLocal(req, res) {
 	const locale = SUPPORTED_LANGUAGE_CODES.includes(rawLocale)
 		? rawLocale
 		: 'en';
+	let user;
 
 	try {
 		const existingUser = await UserModel.findByEmailBasic(email);
@@ -49,7 +53,7 @@ export async function signupLocal(req, res) {
 		// Continue the signup flow only for emails that are not yet registered.
 		// The success response stays identical either way to avoid enumeration.
 		if (!existingUser) {
-			const user = await UserModel.createLocalPendingUser(email, locale);
+			user = await UserModel.createLocalPendingUser(email, locale);
 
 			// Store only the token hash in the database.
 			// The raw token is sent to the user by email.
@@ -66,6 +70,14 @@ export async function signupLocal(req, res) {
 
 			emailService.sendSignupEmail(user.email, rawToken, user.locale);
 		}
+
+		await AuthSecurityEventModel.insertAuthEvent({
+			userId: user?.id ?? null,
+			identifier: email,
+			eventType: 'signup_attempt',
+			ipAddress: metaData.ipAddress,
+			userAgent: metaData.userAgent,
+		});
 
 		req.flash('success', 'auth:signup.success_email_sent');
 		return res.redirect('/');
