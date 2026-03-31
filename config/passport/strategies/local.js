@@ -4,12 +4,12 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import UserModel from '../../../models/User.js';
 import { comparePassword } from '../../../services/auth/password.js';
 import {
-	getRequestMeta,
-	logAuthEvent,
 	getAuthSecurityState,
-	updateSigninState,
+	getRequestMeta,
 	isLocked,
 	lockSigninIfNeeded,
+	logAuthEvent,
+	updateSigninState,
 } from './localSecurity.js';
 
 /**
@@ -21,6 +21,133 @@ import {
 const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
 
 /**
+ * Build the safe user object returned to Passport.
+ *
+ * @param {{
+ *   id: string,
+ *   email: string,
+ *   username: string
+ * }} user
+ * @returns {{
+ *   id: string,
+ *   email: string,
+ *   username: string
+ * }}
+ */
+function buildSafeUser(user) {
+	return {
+		id: user.id,
+		email: user.email,
+		username: user.username,
+	};
+}
+
+/**
+ * Handle a failed sign-in attempt.
+ *
+ * Responsibilities:
+ * - update mutable auth security state
+ * - optionally evaluate and apply account lock
+ * - log the auth event
+ * - return the generic Passport failure response
+ *
+ * Notes:
+ * - use shouldUpdateState=false for failures that should not
+ *   affect failed_signin_count (for example blocked/locked users)
+ *
+ * @param {{
+ *   done: Function,
+ *   identifier: string,
+ *   userId?: string | null,
+ *   eventType: string,
+ *   requestMeta: {
+ *     ipAddress: string | null,
+ *     userAgent: string | null,
+ *     identifier: string | null
+ *   },
+ *   shouldUpdateState?: boolean,
+ *   shouldCheckLock?: boolean
+ * }} params
+ * @returns {Promise<void>}
+ */
+async function failSignin({
+	done,
+	identifier,
+	userId = null,
+	eventType,
+	requestMeta,
+	shouldUpdateState = false,
+	shouldCheckLock = false,
+}) {
+	if (shouldUpdateState) {
+		await updateSigninState({
+			successful: false,
+			userId,
+			identifier,
+		});
+	}
+
+	if (shouldCheckLock) {
+		await lockSigninIfNeeded({
+			userId,
+			identifier,
+		});
+	}
+
+	await logAuthEvent({
+		userId,
+		identifier,
+		eventType,
+		...requestMeta,
+	});
+
+	return done(null, false, {
+		message: INVALID_CREDENTIALS_KEY,
+	});
+}
+
+/**
+ * Handle a successful sign-in attempt.
+ *
+ * Responsibilities:
+ * - reset auth security failure state
+ * - log successful sign-in event
+ * - return the safe user object to Passport
+ *
+ * @param {{
+ *   done: Function,
+ *   user: {
+ *     id: string,
+ *     email: string,
+ *     username: string
+ *   },
+ *   identifier: string,
+ *   requestMeta: {
+ *     ipAddress: string | null,
+ *     userAgent: string | null,
+ *     identifier: string | null
+ *   }
+ * }} params
+ * @returns {Promise<void>}
+ */
+async function succeedSignin({ done, user, identifier, requestMeta }) {
+	await updateSigninState({
+		successful: true,
+		userId: user.id,
+		identifier,
+	});
+
+	await logAuthEvent({
+		userId: user.id,
+		identifier,
+		eventType: 'signin_success',
+		...requestMeta,
+	});
+
+	return done(null, buildSafeUser(user));
+}
+
+/**
  * Register local authentication strategy.
  *
  * Responsibilities:
@@ -28,6 +155,7 @@ const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
  * - read identifierType from req.body
  * - load the matching completed local user
  * - reject blocked users
+ * - reject locked users
  * - verify the password
  * - return a safe user object to Passport
  *
@@ -41,11 +169,6 @@ const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
  * - completed local accounts already have hashed_password
  * - local completed signup results in a verified account
  * - OAuth accounts are stored separately and are not handled here
- *
- * Future checks:
- * - failed login attempts by user
- * - failed login attempts by IP
- * - password reset / forced re-auth states
  *
  * @param {import('passport').PassportStatic} passport
  */
@@ -71,51 +194,43 @@ function setupLocalStrategy(passport) {
 					// User does not exist
 					// or local signup is not completed
 					if (!user) {
-						await updateSigninState({
-							successful: false,
-							userId: null,
+						return await failSignin({
+							done,
 							identifier,
-						});
-
-						await logAuthEvent({
 							userId: null,
-							identifier,
 							eventType: 'signin_failed',
-							...requestMeta,
-						});
-
-						return done(null, false, {
-							message: INVALID_CREDENTIALS_KEY,
+							requestMeta,
+							shouldUpdateState: true,
+							shouldCheckLock: false,
 						});
 					}
+
 					const authSecurity = await getAuthSecurityState({
-						userId: user?.id ?? null,
+						userId: user.id,
 						identifier,
 					});
 
 					if (user.is_blocked) {
-						await logAuthEvent({
-							userId: user.id,
+						return await failSignin({
+							done,
 							identifier,
+							userId: user.id,
 							eventType: 'signin_blocked',
-							...requestMeta,
-						});
-
-						return done(null, false, {
-							message: INVALID_CREDENTIALS_KEY,
+							requestMeta,
+							shouldUpdateState: false,
+							shouldCheckLock: false,
 						});
 					}
 
 					if (isLocked(authSecurity)) {
-						await logAuthEvent({
-							userId: user?.id ?? null,
+						return await failSignin({
+							done,
 							identifier,
+							userId: user.id,
 							eventType: 'signin_locked',
-							...requestMeta,
-						});
-
-						return done(null, false, {
-							message: INVALID_CREDENTIALS_KEY,
+							requestMeta,
+							shouldUpdateState: false,
+							shouldCheckLock: false,
 						});
 					}
 
@@ -125,46 +240,22 @@ function setupLocalStrategy(passport) {
 					);
 
 					if (!isPasswordValid) {
-						await updateSigninState({
-							successful: false,
-							userId: user.id,
+						return await failSignin({
+							done,
 							identifier,
-						});
-
-						await lockSigninIfNeeded({
 							userId: user.id,
-							identifier,
-						});
-
-						await logAuthEvent({
-							userId: user.id,
-							identifier,
 							eventType: 'signin_failed',
-							...requestMeta,
-						});
-
-						return done(null, false, {
-							message: INVALID_CREDENTIALS_KEY,
+							requestMeta,
+							shouldUpdateState: true,
+							shouldCheckLock: true,
 						});
 					}
 
-					await updateSigninState({
-						successful: true,
-						userId: user.id,
+					return await succeedSignin({
+						done,
+						user,
 						identifier,
-					});
-
-					await logAuthEvent({
-						userId: user.id,
-						identifier,
-						eventType: 'signin_success',
-						...requestMeta,
-					});
-
-					return done(null, {
-						id: user.id,
-						email: user.email,
-						username: user.username,
+						requestMeta,
 					});
 				} catch (error) {
 					return done(error);
