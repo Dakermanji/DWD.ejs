@@ -3,7 +3,7 @@
 import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
 import { sendSignupEmail } from './email.js';
-import tokens from '../../utils/auth/tokens.js';
+import tokens from './tokens.js';
 
 /**
  * Create pending local signup user and send signup email.

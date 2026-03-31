@@ -1,7 +1,7 @@
 //! services/auth/verifyToken.js
 
 import AuthTokenModel from '../../models/AuthToken.js';
-import tokens from '../../utils/auth/tokens.js';
+import tokens from '../../services/auth/tokens.js';
 
 export const tokenTypes = {
 	signup: 'signup_verification',

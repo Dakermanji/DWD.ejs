@@ -138,6 +138,7 @@
 			"requestMeta.js",
 			"signupLocal.js",
 			"signupSecurity.js",
+			"tokens.js",
 			"verifyToken.js"
 		]
 	},
@@ -150,7 +151,7 @@
 		"06_auth_security_events.sql",
 		"07_signup_security.sql"
 	],
-	"utils": { "config": ["dotenv.js"], "auth": ["tokens.js"] },
+	"utils": { "config": ["dotenv.js"] },
 	"views": {
 		"Home": [
 			"_about.ejs",

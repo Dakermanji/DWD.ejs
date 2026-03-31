@@ -1,4 +1,4 @@
-//! utils/auth/tokens.js
+//! services/auth/tokens.js
 
 import crypto from 'node:crypto';
 
