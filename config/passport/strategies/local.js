@@ -9,6 +9,7 @@ import {
 	getAuthSecurityState,
 	updateSigninState,
 	isLocked,
+	lockSigninIfNeeded,
 } from './localSecurity.js';
 
 /**
@@ -126,6 +127,11 @@ function setupLocalStrategy(passport) {
 					if (!isPasswordValid) {
 						await updateSigninState({
 							successful: false,
+							userId: user.id,
+							identifier,
+						});
+
+						await lockSigninIfNeeded({
 							userId: user.id,
 							identifier,
 						});
