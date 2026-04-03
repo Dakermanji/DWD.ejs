@@ -141,34 +141,6 @@ export const isSafeEmail = (email) => {
 };
 
 /**
- * Flash an error, optionally reopen a modal, then redirect home.
- *
- * Intended use:
- * - shared validator/controller failure path for simple form flows
- *
- * Notes:
- * - flashKey is intentionally generic
- * - callers can pass full translation keys such as:
- *   - auth:error.email_invalid
- *   - auth:signup.verify_email_invalid_link
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {string} flashKey
- * @param {string|false} [modal=false]
- * @returns {import('express').Response}
- */
-export const fail = (req, res, flashKey, modal = false) => {
-	req.flash('error', flashKey);
-
-	if (modal) {
-		req.flash('modal', modal);
-	}
-
-	return res.redirect('/');
-};
-
-/**
  * Check whether a value is a non-empty string.
  *
  * Rules:

@@ -19,9 +19,9 @@ import {
 	normalizeUsername,
 	normalizeEmail,
 	isSafeString,
-	fail,
 } from './common.js';
 import { isValidToken, normalizeToken } from './token.js';
+import { fail } from '../../services/http/response.js';
 
 /**
  * Namespace for auth validation flash keys.
@@ -66,14 +66,18 @@ export function validateSignupEmail(req, res, next) {
 
 	// Reject invalid shapes early.
 	if (typeof emailRaw !== 'string' || !emailRaw.trim()) {
-		return fail(req, res, `${ERROR_PREFIX}email_invalid`, 'signup');
+		return fail(req, res, `${ERROR_PREFIX}email_invalid`, {
+			modal: 'signup',
+		});
 	}
 
 	// Normalize once, then validate the normalized value.
 	const email = normalizeEmail(emailRaw);
 
 	if (!isValidEmail(email) || !isSafeEmail(email)) {
-		return fail(req, res, `${ERROR_PREFIX}email_invalid`, 'signup');
+		return fail(req, res, `${ERROR_PREFIX}email_invalid`, {
+			modal: 'signup',
+		});
 	}
 
 	req.body.email = email;
@@ -195,11 +199,11 @@ export function validateSignIn(req, res, next) {
 	const KEY = `${ERROR_PREFIX}invalid_credentials`;
 
 	if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH)) {
-		return fail(req, res, KEY, 'signin');
+		return fail(req, res, KEY, { modal: 'signin' });
 	}
 
 	if (!isSafeString(passwordRaw, MAX_PASSWORD_LENGTH)) {
-		return fail(req, res, KEY, 'signin');
+		return fail(req, res, KEY, { modal: 'signin' });
 	}
 
 	const email = normalizeEmail(identifierRaw);
@@ -220,5 +224,5 @@ export function validateSignIn(req, res, next) {
 		return next();
 	}
 
-	return fail(req, res, KEY, 'signin');
+	return fail(req, res, KEY, { modal: 'signin' });
 }

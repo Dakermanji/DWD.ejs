@@ -140,7 +140,8 @@
 			"signupSecurity.js",
 			"tokens.js",
 			"verifyToken.js"
-		]
+		],
+		"http": ["response.js"]
 	},
 	"sql": [
 		"01_session.sql",

@@ -5,6 +5,7 @@ import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
 import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
 import { hashPassword } from '../../services/auth/password.js';
+import { fail } from '../../services/http/response.js';
 
 /**
  * Complete local signup after email verification.
@@ -59,9 +60,9 @@ export async function completeLocalSignup(req, res) {
 		const tokenResult = await verifyToken(token, tokenTypes.signup);
 
 		if (!tokenResult.ok) {
-			req.flash('error', 'auth:error.verify_email_invalid_link');
-			req.flash('modal', 'complete_signup_local');
-			return res.redirect('/');
+			return fail(req, res, 'auth:error.verify_email_invalid_link', {
+				modal: 'complete_signup_local',
+			});
 		}
 
 		// Hash password.
@@ -75,8 +76,9 @@ export async function completeLocalSignup(req, res) {
 		);
 
 		if (!user) {
-			req.flash('error', 'common:error_generic');
-			return res.redirect('/');
+			return fail(req, res, 'auth:error.error_generic', {
+				modal: 'complete_signup_local',
+			});
 		}
 
 		// Consume token.

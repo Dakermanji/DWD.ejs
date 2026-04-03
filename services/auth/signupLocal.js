@@ -4,6 +4,7 @@ import UserModel from '../../models/User.js';
 import AuthTokenModel from '../../models/AuthToken.js';
 import { sendSignupEmail } from './email.js';
 import tokens from './tokens.js';
+import { tokenTypes } from './verifyToken.js';
 
 /**
  * Create pending local signup user and send signup email.

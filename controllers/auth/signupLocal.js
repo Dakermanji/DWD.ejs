@@ -11,6 +11,7 @@ import {
 	lockIpIfNeeded,
 } from '../../services/auth/signupSecurity.js';
 import { createPendingSignupAndSendEmail } from '../../services/auth/signupLocal.js';
+import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
 
 /**
  * Generic signup success message key.
@@ -85,6 +86,8 @@ async function shouldStopSignupEarly({ email, requestMeta }) {
 		requestMeta.ipAddress,
 	);
 
+	if (!ipSecurity) return false;
+
 	if (isLocked(ipSecurity)) {
 		await logSignupEvent({
 			userId: null,
@@ -97,6 +100,8 @@ async function shouldStopSignupEarly({ email, requestMeta }) {
 	}
 
 	const emailSecurity = await SignupSecurityModel.findLatestByEmail(email);
+
+	if (emailSecurity?.attempt_count < 5) return false;
 
 	if (isEmailCooldownActive(emailSecurity)) {
 		await logSignupEvent({
@@ -160,7 +165,12 @@ async function recordSignupSecurity({ ipAddress, email }) {
  * @returns {Promise<void>}
  */
 export async function signupLocal(req, res) {
-	const { email, locale } = req.body;
+	const { email } = req.body;
+	let locale = req.locale || 'en';
+	if (!SUPPORTED_LANGUAGE_SET.has(locale)) {
+		locale = 'en';
+	}
+
 	const requestMeta = getRequestMeta(req);
 
 	try {
