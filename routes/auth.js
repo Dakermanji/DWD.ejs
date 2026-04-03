@@ -27,6 +27,7 @@ import { signupLocal } from '../controllers/auth/signupLocal.js';
 import { verifyEmail } from '../controllers/auth/verifyEmail.js';
 import { completeLocalSignup } from '../controllers/auth/completeLocalSignup.js';
 import { signinLocal } from '../controllers/auth/signinLocal.js';
+import signout from '../controllers/auth/signout.js';
 
 const router = Router();
 
@@ -45,5 +46,8 @@ router.post(
 
 // Sign in
 router.post('/signin', validateSignIn, signinLocal);
+
+// Sign out
+router.post('/signout', signout);
 
 export default router;
