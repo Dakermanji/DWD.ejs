@@ -81,6 +81,12 @@ export async function completeLocalSignup(req, res) {
 			});
 		}
 
+		const sessionUser = {
+			id: user.id,
+			email: user.email,
+			username: user.username,
+		};
+
 		// Consume token.
 		const tokenMarkedUsed = await AuthTokenModel.markTokenUsed(
 			tokenResult.tokenHash,
@@ -97,8 +103,21 @@ export async function completeLocalSignup(req, res) {
 			});
 		}
 
-		// Log user in with passport here when ready.
-		return res.redirect('/');
+		req.logIn(sessionUser, (err) => {
+			if (err) {
+				logger.error('Login after signup failed', {
+					type: 'auth',
+					controller: 'completeLocalSignup',
+					userId: user.id,
+					error: err.message,
+				});
+
+				req.flash('error', 'common:error_generic');
+				return res.redirect('/');
+			}
+
+			return res.redirect('/');
+		});
 	} catch (err) {
 		logger.error(err.message, {
 			type: 'auth',
