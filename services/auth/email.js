@@ -18,7 +18,7 @@ export async function sendSignupEmail(email, token, locale = 'en') {
 		? locale
 		: 'en';
 
-	const verifyUrl = `${env.CLIENT_URL}/auth/verify-email?token=${encodeURIComponent(token)}`;
+	const verifyUrl = `${env.CLIENT_URL}/auth/verify-email?token=${encodeURIComponent(token)}&lang=${safeLocale}`;
 	const content = emailContent.signupEmailContent[safeLocale];
 
 	await transporter.sendMail({

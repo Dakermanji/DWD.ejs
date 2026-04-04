@@ -3,6 +3,7 @@
 import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
 import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
+import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
 
 /**
  * Handle email verification.
@@ -23,9 +24,17 @@ import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
  * @returns {Promise<void>}
  */
 export async function verifyEmail(req, res) {
-	const { token } = req.query;
+	const { token, lang } = req.query;
 
 	try {
+		// Ensured the website opens in the same language as the email
+		const safeLang = SUPPORTED_LANGUAGE_SET.has(lang) ? lang : 'en';
+		res.cookie('lang', safeLang, {
+			httpOnly: false,
+			sameSite: 'lax',
+			maxAge: 1000 * 60 * 60 * 24 * 30,
+		});
+
 		// Ensure the verification token is valid before changing user state.
 		const result = await verifyToken(token, tokenTypes.signup);
 		if (!result.ok) {
