@@ -217,7 +217,7 @@ export async function signupLocal(req, res) {
 			error: error.message,
 		});
 
-		req.flash('error', 'common:unexpected_error');
+		req.flash('error', 'common:error_generic');
 		return res.redirect('/');
 	}
 }

@@ -43,7 +43,7 @@ export async function signout(req, res) {
 				res.clearCookie('connect.sid');
 
 				req.sessionStore.generate(req);
-				req.flash('success', 'auth:logout_success');
+				req.flash('success', 'auth:signout.success');
 
 				return req.session.save((saveErr) => {
 					if (saveErr) {
