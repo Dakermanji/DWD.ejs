@@ -36,6 +36,45 @@ const signupEmailContent = {
 	},
 };
 
+const resetPasswordEmailContent = {
+	en: {
+		subject: 'Reset your password',
+		html: (url) => `
+			<div dir="ltr">
+				<p>You requested to reset your password.</p>
+				<p>Click the link below to set a new password:</p>
+				<p><a href="${url}">${url}</a></p>
+				<p>If you did not request this, you can safely ignore this email.</p>
+			</div>
+		`,
+	},
+
+	ar: {
+		subject: 'إعادة تعيين كلمة المرور',
+		html: (url) => `
+			<div dir="rtl">
+				<p>لقد طلبت إعادة تعيين كلمة المرور الخاصة بك.</p>
+				<p>اضغط على الرابط أدناه لتعيين كلمة مرور جديدة:</p>
+				<p><a href="${url}">${url}</a></p>
+				<p>إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة بأمان.</p>
+			</div>
+		`,
+	},
+
+	fr: {
+		subject: 'Réinitialisez votre mot de passe',
+		html: (url) => `
+			<div dir="ltr">
+				<p>Vous avez demandé à réinitialiser votre mot de passe.</p>
+				<p>Cliquez sur le lien ci-dessous pour définir un nouveau mot de passe :</p>
+				<p><a href="${url}">${url}</a></p>
+				<p>Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet e-mail.</p>
+			</div>
+		`,
+	},
+};
+
 export default {
 	signupEmailContent,
+	resetPasswordEmailContent,
 };
