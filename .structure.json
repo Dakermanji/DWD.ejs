@@ -44,6 +44,7 @@
 	},
 	"middlewares": {
 		"validators": ["auth.js", "common.js", "token.js"],
+		"profanity": ["customWords.js", "index.js"],
 		"~": [
 			"errorHandler.js",
 			"flash.js",

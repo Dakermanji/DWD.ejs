@@ -21,6 +21,7 @@ import {
 	isSafeString,
 } from './common.js';
 import { isValidToken, normalizeToken } from './token.js';
+import { validateNoProfanity } from '../profanity/index.js';
 import { fail } from '../../services/http/response.js';
 
 /**
@@ -81,7 +82,6 @@ export function validateSignupEmail(req, res, next) {
 	}
 
 	req.body.email = email;
-
 	next();
 }
 
@@ -121,6 +121,7 @@ export function validateVerifyEmailQuery(req, res, next) {
  * Responsibilities:
  * - validate token format
  * - validate username format
+ * - validate username profanity
  * - validate password strength
  * - validate password confirmation
  * - normalize safe fields before the controller runs
@@ -138,12 +139,19 @@ export function validateCompleteLocalSignup(req, res, next) {
 	const { token, username, password, confirmPassword } = req.body;
 	const errors = [];
 
+	const normalizedToken = normalizeToken(token);
+	const normalizedUsername = normalizeUsername(username);
+
 	if (!isValidToken(token)) {
 		errors.push('auth:error.verify_email_invalid_link');
 	}
 
-	if (!isValidUsername(username)) {
+	if (!isValidUsername(normalizedUsername)) {
 		errors.push('auth:error.username_invalid');
+	}
+
+	if (!validateNoProfanity(normalizedUsername)) {
+		errors.push('auth:error.username_profanity');
 	}
 
 	if (!isValidPassword(password)) {
@@ -154,10 +162,9 @@ export function validateCompleteLocalSignup(req, res, next) {
 		errors.push('auth:error.password_mismatch');
 	}
 
-	req.body.token = normalizeToken(token);
-	req.body.username = normalizeUsername(username);
+	req.body.token = normalizedToken;
+	req.body.username = normalizedUsername;
 	req.validationErrors = errors;
-
 	next();
 }
 
@@ -195,7 +202,6 @@ export function validateCompleteLocalSignup(req, res, next) {
 export function validateSignIn(req, res, next) {
 	const identifierRaw = req.body?.identifier;
 	const passwordRaw = req.body?.password;
-
 	const KEY = `${ERROR_PREFIX}invalid_credentials`;
 
 	if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH)) {

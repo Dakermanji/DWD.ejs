@@ -37,6 +37,7 @@
 	},
 	"homepage": "https://github.com/Dakermanji/DWD.ejs",
 	"dependencies": {
+		"@2toad/profanity": "^3.3.0",
 		"@sentry/node": "^10.43.0",
 		"bcrypt": "^6.0.0",
 		"connect-flash": "^0.1.1",
