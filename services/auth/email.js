@@ -38,11 +38,11 @@ export async function sendSignupEmail(email, token, locale = 'en') {
  * Send recovery-related email based on intent type.
  *
  * Supported types:
- * - reset_password
+ * - password_reset
  * - resend_verification
  *
  * @param {Object} params
- * @param {'reset_password'|'resend_verification'} params.type
+ * @param {'password_reset'|'resend_verification'} params.type
  * @param {string} params.email
  * @param {string} params.token
  * @param {string} params.locale
@@ -58,7 +58,7 @@ export async function sendRecoveryIntentEmail({
 	let url;
 
 	// Select content + URL based on intent type.
-	if (type === 'reset_password') {
+	if (type === 'password_reset') {
 		contentMap = emailContent.resetPasswordEmailContent;
 		url = `${env.CLIENT_URL}/auth/reset-password?token=${encodeURIComponent(token)}&lang=${locale}`;
 	} else if (type === 'resend_verification') {

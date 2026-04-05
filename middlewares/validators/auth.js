@@ -231,7 +231,7 @@ export function validateRecoveryEmail(req, res, next) {
 export function validateRecoveryIntent(req, res, next) {
 	const intent = req.body?.intent;
 
-	if (intent !== 'reset_password' && intent !== 'resend_verification') {
+	if (intent !== 'password_reset' && intent !== 'resend_verification') {
 		return fail(req, res, `${ERROR_PREFIX}invalid_request`, {
 			modal: 'recovery',
 		});

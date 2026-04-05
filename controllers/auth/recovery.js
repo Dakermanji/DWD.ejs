@@ -28,7 +28,7 @@ function respondRecoverySuccess(req, res) {
  * Handle account recovery actions.
  *
  * Supported intents:
- * - reset_password
+ * - password_reset
  * - resend_verification
  *
  * Expected input:
@@ -68,7 +68,7 @@ export async function recovery(req, res) {
 			return respondRecoverySuccess(req, res);
 		}
 
-		if (intent === 'reset_password') {
+		if (intent === 'password_reset') {
 			if (user.is_verified) {
 				await createPasswordResetAndSendEmail({
 					userId: user.id,
