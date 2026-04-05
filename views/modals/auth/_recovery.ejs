@@ -1,0 +1,67 @@
+<!--! views/modals/auth/_recovery.ejs -->
+
+<div
+	class="modal fade"
+	id="recoveryModal"
+	tabindex="-1"
+	aria-labelledby="recoveryModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h5 class="modal-title" id="recoveryModalLabel">
+					<%= t('auth:recovery.title') %>
+				</h5>
+				<button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+				></button>
+			</div>
+
+			<form
+                action="/auth/recovery"
+                method="POST"
+                class="modal-form"
+                novalidate
+            >
+
+                <%- include('../../partials/_csrf') %>
+
+                <p id="recovery-hint"><%= t('auth:recovery.hint') %></p>
+
+                <label for="recovery-email" class="form-label">
+                    <%= t('common:email') %>
+                </label>
+                <input
+                    id="recovery-email"
+                    class="form-control"
+                    name="email"
+                    type="email"
+                    inputmode="email"
+                    autocomplete="email"
+                    dir="ltr"
+                    required
+                    autofocus
+                    maxlength="254"
+                    aria-describedby="recovery-hint"
+                    value="<%= typeof old !== 'undefined' && old?.email ? old.email : '' %>"
+                />
+
+                <div class="d-grid gap-2 mt-3">
+                    <button type="submit" name="intent" value="reset_password" class='btn btn-action'>
+                        <%= t('auth:recovery.resetPassword') %>
+                    </button>
+
+                    <button type="submit" name="intent" value="resend_verification" class='btn btn-action-secondary'>
+                        <%= t('auth:recovery.resendVerification') %>
+                    </button>
+                </div>
+            </form>
+
+		</div>
+	</div>
+</div>

@@ -29,7 +29,7 @@ export function renderHome(req, res) {
 			'modals/auth-tabs',
 			'partials/brands',
 		],
-		scripts: ['home/mouseTrailAndFollower', 'home/portfolio'],
+		scripts: ['home/mouseTrailAndFollower', 'home/portfolio', 'home/auth'],
 		verifyEmailToken: req.session.completeSignup || null,
 	});
 }

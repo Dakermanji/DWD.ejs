@@ -107,7 +107,9 @@ h6 {
 	align-items: center;
 	justify-content: center;
 	gap: 0.25rem;
-	transition: background-color var(--transition-time-method);
+	transition:
+		color var(--transition-time-method),
+		background-color var(--transition-time-method);
 }
 
 .btn-action {

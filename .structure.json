@@ -126,7 +126,7 @@
 			}
 		},
 		"js": {
-			"home": ["mouseTrailAndFollower.js", "portfolio.js"],
+			"home": ["auth.js", "mouseTrailAndFollower.js", "portfolio.js"],
 			"root": ["dropdownMenu.js", "theme.js", "tooltips.js"]
 		}
 	},
@@ -185,7 +185,8 @@
 				"_authTabs_tabs_signup.ejs",
 				"_authTabs_tabs.ejs",
 				"_authTabs.ejs",
-				"_complete_signup.ejs"
+				"_complete_signup.ejs",
+				"_recovery.ejs"
 			]
 		},
 		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],
