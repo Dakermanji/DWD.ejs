@@ -112,7 +112,7 @@ export async function completeLocalSignup(req, res) {
 					error: err.message,
 				});
 
-				req.flash('error', 'common:error_generic');
+				req.flash('error', 'common:error.generic');
 				return res.redirect('/');
 			}
 
@@ -124,7 +124,7 @@ export async function completeLocalSignup(req, res) {
 			controller: 'completeLocalSignup',
 		});
 
-		req.flash('error', 'common:error_generic');
+		req.flash('error', 'common:error.generic');
 		return res.redirect('/');
 	}
 }

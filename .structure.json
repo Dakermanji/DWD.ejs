@@ -30,6 +30,7 @@
 	"controllers": {
 		"auth": [
 			"completeLocalSignup.js",
+			"recovery.js",
 			"signinLocal.js",
 			"signout.js",
 			"signupLocal.js",

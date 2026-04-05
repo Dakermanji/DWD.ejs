@@ -5,5 +5,8 @@
 	"identifier": "Nom d’utilisateur ou e-mail",
 	"username": "Username",
 	"email": "E-mail",
-	"error_generic": "Une erreur s’est produite. Veuillez réessayer."
+	"error": {
+		"generic": "Une erreur s’est produite. Veuillez réessayer.",
+		"invalid_request": "Requête invalide."
+	}
 }

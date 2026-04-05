@@ -48,7 +48,7 @@ export async function verifyEmail(req, res) {
 			true,
 		);
 		if (!updated) {
-			req.flash('error', 'common:error_generic');
+			req.flash('error', 'common:error.generic');
 			return res.redirect('/');
 		}
 
@@ -64,7 +64,7 @@ export async function verifyEmail(req, res) {
 			controller: 'verifyEmail',
 		});
 
-		req.flash('error', 'common:error_generic');
+		req.flash('error', 'common:error.generic');
 		return res.redirect('/');
 	}
 }

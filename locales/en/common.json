@@ -5,5 +5,8 @@
 	"identifier": "Username or email",
 	"username": "Username",
 	"email": "Email",
-	"error_generic": "Something went wrong. Please try again."
+	"error": {
+		"generic": "Something went wrong. Please try again.",
+		"invalid_request": "Invalid request."
+	}
 }

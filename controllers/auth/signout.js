@@ -24,7 +24,7 @@ export async function signout(req, res) {
 					error: err.message,
 				});
 
-				req.flash('error', 'common:error_generic');
+				req.flash('error', 'common:error.generic');
 				return res.redirect('/');
 			}
 
@@ -36,7 +36,7 @@ export async function signout(req, res) {
 						error: sessionErr.message,
 					});
 
-					req.flash('error', 'common:error_generic');
+					req.flash('error', 'common:error.generic');
 					return res.redirect('/');
 				}
 
@@ -67,7 +67,7 @@ export async function signout(req, res) {
 			controller: 'signout',
 		});
 
-		req.flash('error', 'common:error_generic');
+		req.flash('error', 'common:error.generic');
 		return res.redirect('/');
 	}
 }

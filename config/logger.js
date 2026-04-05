@@ -1,3 +1,5 @@
+//! config/logger.js
+
 /**
  * Application logger
  * ------------------
