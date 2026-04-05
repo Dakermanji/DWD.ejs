@@ -41,44 +41,22 @@ const MAX_IDENTIFIER_LENGTH = 254;
 const MAX_PASSWORD_LENGTH = 1024;
 
 /**
- * Validate the email-first signup step.
- *
- * Intended route:
- * - POST /auth/signup
- *
- * Current rules:
- * - email must be present
- * - email must be a string
- * - email must not be empty after trimming
- * - email is normalized before use
- * - email must pass format validation
- * - email must pass basic sanity checks
- *
- * On success:
- * - stores normalized email back in req.body.email
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- * @returns {void | import('express').Response}
+ * Validate and normalize an email field.
+ * Reusable across multiple auth flows (signup, recovery, etc.).
  */
-export function validateSignupEmail(req, res, next) {
+export function validateEmailField(req, res, next, { modal }) {
 	const emailRaw = req.body?.email;
 
-	// Reject invalid shapes early.
+	// Ensure a non-empty string before normalization.
 	if (typeof emailRaw !== 'string' || !emailRaw.trim()) {
-		return fail(req, res, `${ERROR_PREFIX}email_invalid`, {
-			modal: 'signup',
-		});
+		return fail(req, res, `${ERROR_PREFIX}email_invalid`, { modal });
 	}
 
-	// Normalize once, then validate the normalized value.
 	const email = normalizeEmail(emailRaw);
 
+	// Validate normalized email for format and safety.
 	if (!isValidEmail(email) || !isSafeEmail(email)) {
-		return fail(req, res, `${ERROR_PREFIX}email_invalid`, {
-			modal: 'signup',
-		});
+		return fail(req, res, `${ERROR_PREFIX}email_invalid`, { modal });
 	}
 
 	req.body.email = email;
@@ -231,4 +209,33 @@ export function validateSignIn(req, res, next) {
 	}
 
 	return fail(req, res, KEY, { modal: 'signin' });
+}
+
+/**
+ * Signup email validation.
+ */
+export function validateSignupEmail(req, res, next) {
+	return validateEmailField(req, res, next, { modal: 'signup' });
+}
+
+/**
+ * Recovery email validation.
+ */
+export function validateRecoveryEmail(req, res, next) {
+	return validateEmailField(req, res, next, { modal: 'recovery' });
+}
+
+/**
+ * Ensure recovery intent is valid.
+ */
+export function validateRecoveryIntent(req, res, next) {
+	const intent = req.body?.intent;
+
+	if (intent !== 'reset_password' && intent !== 'resend_verification') {
+		return fail(req, res, `${ERROR_PREFIX}invalid_request`, {
+			modal: 'recovery',
+		});
+	}
+
+	next();
 }
