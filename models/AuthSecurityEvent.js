@@ -54,6 +54,44 @@ async function insertAuthEvent({
 	await query(q, [userId, identifier, ipAddress, eventType, userAgent]);
 }
 
+/**
+ * Count recent auth security events by one searchable field.
+ *
+ * Supported fields:
+ * - ip
+ * - identifier
+ *
+ * @param {Object} params
+ * @param {string} params.eventType
+ * @param {'ip' | 'identifier'} params.field
+ * @param {string} params.value
+ * @param {Date | string} params.since
+ * @returns {Promise<number>}
+ */
+export async function countRecentByField({ eventType, field, value, since }) {
+	let whereField;
+
+	if (field === 'ip') {
+		whereField = 'ip_address';
+	} else if (field === 'identifier') {
+		whereField = 'identifier';
+	} else {
+		throw new Error(`Unsupported rate limit field: ${field}`);
+	}
+
+	const q = `
+		SELECT COUNT(*)::int AS count
+		FROM auth_security_events
+		WHERE event_type = $1
+			AND ${whereField} = $2
+			AND created_at >= $3
+	`;
+
+	const rows = await queryRows(q, [eventType, value, since]);
+	return rows[0]?.count || 0;
+}
+
 export default {
 	insertAuthEvent,
+	countRecentByField,
 };

@@ -1,11 +1,7 @@
 //! controllers/auth/recovery.js
 
 import logger from '../../config/logger.js';
-import UserModel from '../../models/User.js';
-import {
-	createPasswordResetAndSendEmail,
-	createVerificationResendAndSendEmail,
-} from '../../services/auth/recovery.js';
+import { getRequestMeta } from '../../services/auth/requestMeta.js';
 
 const RECOVERY_SUCCESS_KEY = 'auth:recovery.check_your_email';
 
@@ -48,45 +44,18 @@ function respondRecoverySuccess(req, res) {
 export async function recovery(req, res) {
 	const { email, intent } = req.body;
 	const locale = req.locale || 'en';
+	const requestMeta = getRequestMeta(req);
 
 	try {
-		const user = await UserModel.findByEmailBasic(email);
+		await handleRecoveryRequest({ requestMeta, email, intent, locale });
 
-		if (!user) {
-			return respondRecoverySuccess(req, res);
-		}
-
-		if (intent === 'resend_verification') {
-			if (!user.is_verified) {
-				await createVerificationResendAndSendEmail({
-					userId: user.id,
-					email: user.email,
-					locale,
-				});
-			}
-
-			return respondRecoverySuccess(req, res);
-		}
-
-		if (intent === 'password_reset') {
-			if (user.is_verified) {
-				await createPasswordResetAndSendEmail({
-					userId: user.id,
-					email: user.email,
-					locale,
-				});
-			}
-
-			return respondRecoverySuccess(req, res);
-		}
-
-		req.flash('error', 'auth:error.invalid_request');
-		req.flash('modal', 'recovery');
+		req.flash('success', 'auth:recovery.check_your_email');
 		return res.redirect('/');
 	} catch (error) {
 		logger.error('recovery error', {
 			error: error.message,
 		});
+
 		req.flash('error', 'common:error.generic');
 		req.flash('modal', 'recovery');
 		return res.redirect('/');

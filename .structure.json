@@ -29,6 +29,7 @@
 	},
 	"controllers": {
 		"auth": [
+			"common.js",
 			"completeLocalSignup.js",
 			"recovery.js",
 			"signinLocal.js",
@@ -139,6 +140,7 @@
 			"password.js",
 			"requestMeta.js",
 			"requestMeta.js",
+			"security.js",
 			"signupLocal.js",
 			"signupSecurity.js",
 			"tokens.js",

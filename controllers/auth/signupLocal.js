@@ -1,8 +1,8 @@
 //! controllers/auth/signupLocal.js
 
 import logger from '../../config/logger.js';
+import { logAuthEvent } from './common.js';
 import UserModel from '../../models/User.js';
-import AuthSecurityEventModel from '../../models/AuthSecurityEvent.js';
 import SignupSecurityModel from '../../models/SignupSecurity.js';
 import { getRequestMeta } from '../../services/auth/requestMeta.js';
 import {
@@ -34,35 +34,6 @@ function respondSignupSuccess(req, res) {
 }
 
 /**
- * Log signup-related auth event.
- *
- * @param {{
- *   userId?: string | null,
- *   email: string,
- *   eventType: string,
- *   requestMeta: {
- *     ipAddress: string | null,
- *     userAgent: string | null
- *   }
- * }} params
- * @returns {Promise<void>}
- */
-async function logSignupEvent({
-	userId = null,
-	email,
-	eventType,
-	requestMeta,
-}) {
-	await AuthSecurityEventModel.insertAuthEvent({
-		userId,
-		identifier: email,
-		eventType,
-		ipAddress: requestMeta.ipAddress,
-		userAgent: requestMeta.userAgent,
-	});
-}
-
-/**
  * Check whether signup should silently stop due to IP lock or email cooldown.
  *
  * Responsibilities:
@@ -89,7 +60,7 @@ async function shouldStopSignupEarly({ email, requestMeta }) {
 	if (!ipSecurity) return false;
 
 	if (isLocked(ipSecurity)) {
-		await logSignupEvent({
+		await logAuthEvent({
 			userId: null,
 			email,
 			eventType: 'signup_rate_limited',
@@ -104,7 +75,7 @@ async function shouldStopSignupEarly({ email, requestMeta }) {
 	if (emailSecurity?.attempt_count < 5) return false;
 
 	if (isEmailCooldownActive(emailSecurity)) {
-		await logSignupEvent({
+		await logAuthEvent({
 			userId: null,
 			email,
 			eventType: 'signup_email_cooldown',
@@ -190,7 +161,7 @@ export async function signupLocal(req, res) {
 
 		const existingUser = await UserModel.findByEmailBasic(email);
 
-		await logSignupEvent({
+		await logAuthEvent({
 			userId: existingUser?.id ?? null,
 			email,
 			eventType: 'signup_attempt',
@@ -203,7 +174,7 @@ export async function signupLocal(req, res) {
 				locale,
 			});
 
-			await logSignupEvent({
+			await logAuthEvent({
 				userId: user.id,
 				email,
 				eventType: 'signup_email_sent',

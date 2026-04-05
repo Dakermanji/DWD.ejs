@@ -171,6 +171,32 @@ async function findForLocalSignin(identifier, identifierType) {
 	return rows[0] ?? null;
 }
 
+/**
+ * Find user with fields needed for recovery.
+ *
+ * Requirements:
+ * - matched by normalized email
+ *
+ * @param {string} email
+ * @returns {Promise<object|null>}
+ */
+export async function findUserForRecovery(email) {
+	const q = `
+		SELECT
+			id,
+			email,
+			is_verified,
+			is_blocked,
+			(hashed_password IS NOT NULL) AS has_password
+		FROM users
+		WHERE email = $1
+		LIMIT 1;
+	`;
+
+	const rows = await queryRows(q, [email]);
+	return rows[0] ?? null;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -178,4 +204,5 @@ export default {
 	usernameExists,
 	completeLocalSignupById,
 	findForLocalSignin,
+	findUserForRecovery,
 };
