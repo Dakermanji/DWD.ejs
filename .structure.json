@@ -29,7 +29,6 @@
 	},
 	"controllers": {
 		"auth": [
-			"common.js",
 			"completeLocalSignup.js",
 			"recovery.js",
 			"signinLocal.js",

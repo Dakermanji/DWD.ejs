@@ -1,7 +1,7 @@
 //! controllers/auth/signupLocal.js
 
 import logger from '../../config/logger.js';
-import { logAuthEvent } from './common.js';
+import { logAuthEvent } from '../../config/passport/strategies/localSecurity.js';
 import UserModel from '../../models/User.js';
 import SignupSecurityModel from '../../models/SignupSecurity.js';
 import { getRequestMeta } from '../../services/http/requestMeta.js';
@@ -61,10 +61,9 @@ async function shouldStopSignupEarly({ email, requestMeta }) {
 
 	if (isLocked(ipSecurity)) {
 		await logAuthEvent({
-			userId: null,
-			email,
+			identifier: email,
 			eventType: 'signup_rate_limited',
-			requestMeta,
+			...requestMeta,
 		});
 
 		return true;
@@ -76,10 +75,9 @@ async function shouldStopSignupEarly({ email, requestMeta }) {
 
 	if (isEmailCooldownActive(emailSecurity)) {
 		await logAuthEvent({
-			userId: null,
-			email,
+			identifier: email,
 			eventType: 'signup_email_cooldown',
-			requestMeta,
+			...requestMeta,
 		});
 
 		return true;
@@ -163,9 +161,9 @@ export async function signupLocal(req, res) {
 
 		await logAuthEvent({
 			userId: existingUser?.id ?? null,
-			email,
+			identifier: email,
 			eventType: 'signup_attempt',
-			requestMeta,
+			...requestMeta,
 		});
 
 		if (!existingUser) {
@@ -176,9 +174,9 @@ export async function signupLocal(req, res) {
 
 			await logAuthEvent({
 				userId: user.id,
-				email,
+				identifier: email,
 				eventType: 'signup_email_sent',
-				requestMeta,
+				...requestMeta,
 			});
 		}
 
