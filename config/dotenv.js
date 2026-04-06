@@ -44,6 +44,8 @@ const env = {
 	EMAIL_ADMIN: requireEnv('EMAIL_ADMIN'),
 	EMAIL_PASSWORD: requireEnv('EMAIL_PASSWORD'),
 	EMAIL_SERVICE: requireEnv('EMAIL_SERVICE'),
+	EMAIL_HOST: requireEnv('EMAIL_HOST'),
+	EMAIL_PORT: optionalEnv('EMAIL_PORT', 465),
 
 	/** PostgreSQL host */
 	DB_HOST: optionalEnv('DB_HOST', 'localhost'),
