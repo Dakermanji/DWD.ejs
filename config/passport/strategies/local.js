@@ -10,7 +10,7 @@ import {
 	logAuthEvent,
 	updateSigninState,
 } from './localSecurity.js';
-import { getRequestMeta } from '../../../services/auth/requestMeta.js';
+import { getRequestMeta } from '../../../services/http/requestMeta.js';
 
 /**
  * Generic sign-in failure message key.

@@ -4,7 +4,7 @@ import logger from '../../config/logger.js';
 import { logAuthEvent } from './common.js';
 import UserModel from '../../models/User.js';
 import SignupSecurityModel from '../../models/SignupSecurity.js';
-import { getRequestMeta } from '../../services/auth/requestMeta.js';
+import { getRequestMeta } from '../../services/http/requestMeta.js';
 import {
 	isLocked,
 	isEmailCooldownActive,

@@ -1,7 +1,7 @@
 //! controllers/auth/recovery.js
 
 import logger from '../../config/logger.js';
-import { getRequestMeta } from '../../services/auth/requestMeta.js';
+import { getRequestMeta } from '../../services/http/requestMeta.js';
 
 const RECOVERY_SUCCESS_KEY = 'auth:recovery.check_your_email';
 

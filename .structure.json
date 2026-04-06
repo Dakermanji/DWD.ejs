@@ -139,14 +139,13 @@
 			"emailContent.js",
 			"password.js",
 			"recovery.js",
-			"requestMeta.js",
 			"security.js",
 			"signupLocal.js",
 			"signupSecurity.js",
 			"tokens.js",
 			"verifyToken.js"
 		],
-		"http": ["response.js"]
+		"http": ["requestMeta.js", "response.js"]
 	},
 	"sql": [
 		"01_session.sql",
