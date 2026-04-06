@@ -138,7 +138,7 @@
 			"email.js",
 			"emailContent.js",
 			"password.js",
-			"requestMeta.js",
+			"recovery.js",
 			"requestMeta.js",
 			"security.js",
 			"signupLocal.js",

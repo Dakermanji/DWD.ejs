@@ -22,12 +22,15 @@ import {
 	validateVerifyEmailQuery,
 	validateCompleteLocalSignup,
 	validateSignIn,
+	validateRecoveryEmail,
+	validateRecoveryIntent,
 } from '../middlewares/validators/auth.js';
 import { signupLocal } from '../controllers/auth/signupLocal.js';
 import { verifyEmail } from '../controllers/auth/verifyEmail.js';
 import { completeLocalSignup } from '../controllers/auth/completeLocalSignup.js';
 import { signinLocal } from '../controllers/auth/signinLocal.js';
 import signout from '../controllers/auth/signout.js';
+import recovery from '../controllers/auth/recovery.js';
 
 const router = Router();
 
@@ -50,4 +53,11 @@ router.post('/signin', validateSignIn, signinLocal);
 // Sign out
 router.post('/signout', signout);
 
+// Recovery
+router.post(
+	'/recovery',
+	validateRecoveryEmail,
+	validateRecoveryIntent,
+	recovery,
+);
 export default router;
