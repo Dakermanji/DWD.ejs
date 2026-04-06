@@ -232,7 +232,7 @@ export function validateRecoveryIntent(req, res, next) {
 	const intent = req.body?.intent;
 
 	if (intent !== 'password_reset' && intent !== 'resend_verification') {
-		return fail(req, res, `${ERROR_PREFIX}invalid_request`, {
+		return fail(req, res, `common:error.invalid_request`, {
 			modal: 'recovery',
 		});
 	}

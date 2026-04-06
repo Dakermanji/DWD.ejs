@@ -1,24 +1,8 @@
 //! controllers/auth/recovery.js
 
 import logger from '../../config/logger.js';
+import { handleRecoveryRequest } from '../../services/auth/recovery.js';
 import { getRequestMeta } from '../../services/http/requestMeta.js';
-
-const RECOVERY_SUCCESS_KEY = 'auth:recovery.check_your_email';
-
-/**
- * Return the same success message for normal recovery outcomes.
- *
- * This keeps the flow neutral and avoids revealing whether
- * an email exists or which recovery branch actually ran.
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @returns {import('express').Response}
- */
-function respondRecoverySuccess(req, res) {
-	req.flash('success', RECOVERY_SUCCESS_KEY);
-	return res.redirect('/');
-}
 
 /**
  * Handle account recovery actions.

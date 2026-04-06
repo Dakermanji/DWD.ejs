@@ -38,7 +38,7 @@ export function hashAuthToken(token) {
  *
  * @param {Object} params
  * @param {string} params.userId
- * @param {'password_reset'|'email_verification'} params.type
+ * @param {'password_reset'|'signup_verification'} params.type
  * @returns {Promise<{
  *   token: string,
  *   record: object,

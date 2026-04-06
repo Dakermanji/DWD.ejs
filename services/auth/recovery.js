@@ -90,6 +90,7 @@ export async function handleRecoveryRequest({
 
 		return { ok: true };
 	}
+
 	// 4. check latest unused token for (user, type)
 	// if token exists:
 	// - - if cooldown not passed → generic success without sending
@@ -97,7 +98,7 @@ export async function handleRecoveryRequest({
 	// - if token does not exist → create token
 	const tokenType =
 		intent === 'resend_verification'
-			? 'email_verification'
+			? 'signup_verification'
 			: 'password_reset';
 	const { token } = await prepareRecoveryToken({
 		userId,
@@ -105,11 +106,18 @@ export async function handleRecoveryRequest({
 	});
 
 	// 5. send correct email
-	await sendRecoveryIntentEmail({
+	void sendRecoveryIntentEmail({
 		type: intent,
 		email,
 		token,
 		locale,
+	}).catch((error) => {
+		logger.error('recovery email send failed', {
+			error: error.message,
+			email,
+			intent,
+			userId,
+		});
 	});
 
 	// 6. log security event
