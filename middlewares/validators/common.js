@@ -66,20 +66,23 @@ export const normalizeEmail = (email) =>
 		.toLowerCase();
 
 /**
- * Normalize a username value before validation or comparisons.
- *
- * Current behavior:
- * - converts nullish/falsy input to an empty string
- * - trims surrounding whitespace
+ * Normalize a text value before validation or comparisons.
  *
  * Notes:
- * - does not remove internal characters
- * - does not silently repair invalid usernames
+ * - converts nullish input to an empty string
+ * - trims surrounding whitespace
+ * - optionally converts the result to lowercase
  *
- * @param {unknown} username
+ * @param {unknown} value - The input value to normalize.
+ * @param {Object} [options]
+ * @param {boolean} [options.lower=false] - Whether to convert the result to lowercase.
  * @returns {string}
  */
-export const normalizeUsername = (username) => String(username ?? '').trim();
+export const normalizeText = (value, { lower = false } = {}) => {
+	let result = String(value ?? '').trim();
+	if (lower) result = result.toLowerCase();
+	return result;
+};
 
 /**
  * Check whether an email has a valid format.
@@ -105,7 +108,7 @@ export const isValidEmail = (email) => validator.isEmail(normalizeEmail(email));
  * @returns {boolean}
  */
 export const isValidUsername = (username) => {
-	const normalizedUsername = normalizeUsername(username);
+	const normalizedUsername = normalizeText(username);
 	return USERNAME_REGEX.test(normalizedUsername);
 };
 
@@ -198,3 +201,19 @@ export function isWithinLength(value, max) {
 export function isSafeString(value, max) {
 	return isNonEmptyString(value) && isWithinLength(value, max);
 }
+
+/**
+ * Check whether a language code is valid.
+ *
+ * Rules:
+ * - must be exactly 2 lowercase alphabetic characters (e.g. "en", "fr")
+ *
+ * Note:
+ * - input is expected to be normalized beforehand if needed
+ *
+ * @param {string} lang
+ * @returns {boolean}
+ */
+export const isValidLang = (lang) => {
+	return /^[a-z]{2}$/.test(lang);
+};

@@ -16,9 +16,10 @@ import {
 	isValidEmail,
 	isValidUsername,
 	isValidPassword,
-	normalizeUsername,
+	normalizeText,
 	normalizeEmail,
 	isSafeString,
+	isValidLang,
 } from './common.js';
 import { isValidToken, normalizeToken } from './token.js';
 import { validateNoProfanity } from '../profanity/index.js';
@@ -64,31 +65,53 @@ export function validateEmailField(req, res, next, { modal }) {
 }
 
 /**
- * Validate the email-verification token from the query string.
+ * Validate and normalize token + optional language from query params.
  *
- * Intended route:
- * - GET /auth/verify-email
+ * Behavior:
+ * - ensures token is valid
+ * - normalizes token and lang
+ * - validates lang only if provided
+ * - attaches normalized values back to req.query
  *
- * Responsibilities:
- * - ensure the token exists in the query string
- * - ensure the token matches the expected public format
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- * @returns {void | import('express').Response}
+ * @param {string} errorKey - i18n key for invalid link error
+ * @returns {import('express').RequestHandler}
  */
-export function validateVerifyEmailQuery(req, res, next) {
-	const { token } = req.query;
+export const validateTokenAndLangQuery = (errorKey) => {
+	return function (req, res, next) {
+		const { token, lang } = req.query;
 
-	if (!isValidToken(token)) {
-		req.flash('error', 'auth:error.verify_email_invalid_link');
-		return res.redirect('/');
-	}
+		const normalizedToken = normalizeToken(token);
+		const normalizedLang = normalizeText(lang, { lower: true });
 
-	req.query.token = normalizeToken(token);
-	next();
-}
+		if (!isValidToken(token) || (lang && !isValidLang(normalizedLang))) {
+			req.flash('error', errorKey);
+			return res.redirect('/');
+		}
+
+		req.query.token = normalizedToken;
+		req.query.lang = normalizedLang;
+
+		next();
+	};
+};
+
+/**
+ * Validate query params for email verification link.
+ *
+ * Uses shared token+lang validator with verify-email error message.
+ */
+export const validateVerifyEmailQuery = validateTokenAndLangQuery(
+	'auth:error.verify_email_invalid_link',
+);
+
+/**
+ * Validate query params for reset-password link.
+ *
+ * Uses shared token+lang validator with reset-password error message.
+ */
+export const validateResetPasswordQuery = validateTokenAndLangQuery(
+	'auth:error.reset_password_invalid_link',
+);
 
 /**
  * Validate complete-local-signup input.
@@ -118,7 +141,7 @@ export function validateCompleteLocalSignup(req, res, next) {
 	const errors = [];
 
 	const normalizedToken = normalizeToken(token);
-	const normalizedUsername = normalizeUsername(username);
+	const normalizedUsername = normalizeText(username);
 
 	if (!isValidToken(token)) {
 		errors.push('auth:error.verify_email_invalid_link');
@@ -199,7 +222,7 @@ export function validateSignIn(req, res, next) {
 		return next();
 	}
 
-	const username = normalizeUsername(identifierRaw);
+	const username = normalizeText(identifierRaw);
 
 	if (isValidUsername(username)) {
 		req.body.identifier = username;
