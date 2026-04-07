@@ -31,6 +31,7 @@
 		signin: { id: 'authModal', tab: 'auth-signin-tab' },
 		complete_signup_local: { id: 'completeSignUpModal' },
 		complete_signup_oath: { id: 'completeSignUpModal' },
+		reset_password: { id: 'resetPasswordModal' },
 	};
 
 	const target = MODALS[modalName];

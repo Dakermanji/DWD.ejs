@@ -30,6 +30,6 @@ export function renderHome(req, res) {
 			'partials/brands',
 		],
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio', 'home/auth'],
-		verifyEmailToken: req.session.completeSignup || null,
+		token: req.session.token || null,
 	});
 }

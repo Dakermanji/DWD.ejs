@@ -27,7 +27,7 @@ export async function verifyEmail(req, res) {
 	const { token, lang } = req.query;
 
 	try {
-		// Ensured the website opens in the same language as the email
+		// Ensure the website opens in the same language as the email
 		const safeLang = SUPPORTED_LANGUAGE_SET.has(lang) ? lang : 'en';
 		res.cookie('lang', safeLang, {
 			httpOnly: false,
@@ -53,7 +53,7 @@ export async function verifyEmail(req, res) {
 		}
 
 		// Keep the raw token for the next step where signup is completed.
-		req.session.completeSignup = token;
+		req.session.token = token;
 
 		// Redirect home and open the complete-signup modal.
 		req.flash('modal', 'complete_signup_local');
