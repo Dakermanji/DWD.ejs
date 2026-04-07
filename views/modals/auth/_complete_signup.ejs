@@ -28,6 +28,7 @@
 			</div>
 
 			<form method="POST" action="/auth/<%= action %>">
+				<%- include('../../partials/_csrf') %>
 				<div class="modal-body">
 
 					<!-- Username -->
@@ -46,35 +47,7 @@
 					</div>
 
 					<% if (isLocal) { %>
-						<div class="mb-3">
-							<label for="password" class="form-label">
-								<%= t('auth:security.password') %>
-							</label>
-							<input
-								id="password"
-								dir="ltr"
-								type="password"
-								class="form-control"
-								name="password"
-								required
-							/>
-						</div>
-
-						<div class="mb-3">
-							<label for="confirmPassword" class="form-label">
-								<%= t('auth:security.confirm_password') %>
-							</label>
-							<input
-								id="confirmPassword"
-								dir="ltr"
-								type="password"
-								class="form-control"
-								name="confirmPassword"
-								required
-							/>
-						</div>
-
-						<input type="hidden" name="token" value="<%= verifyEmailToken %>" />
+						<%- include('./_setPassword', {token}) %>
 					<% } %>
 
 				</div>
