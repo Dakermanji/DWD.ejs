@@ -25,6 +25,7 @@
 <% if (!user) { %>
 	<%- include('../modals/auth/_authTabs') %>
 	<%- include('../modals/auth/_recovery') %>
+	<%- include('../modals/auth/_resetPassword') %>
 <% } %>
 <% if (modal === 'complete_signup_local' || modal === 'complete_signup_oauth' ) { %>
 	<%- include('../modals/auth/_complete_signup') %>

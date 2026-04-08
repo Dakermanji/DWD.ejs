@@ -28,7 +28,7 @@ export async function getResetPassword(req, res) {
 
 	try {
 		// Ensure the website opens in the same language as the email when possible.
-		const safeLang = SUPPORTED_LANGUAGE_SET.has(lang) ? rawLang : 'en';
+		const safeLang = SUPPORTED_LANGUAGE_SET.has(lang) ? lang : 'en';
 		res.cookie('lang', safeLang, {
 			httpOnly: false,
 			sameSite: 'lax',
