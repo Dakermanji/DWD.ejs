@@ -31,6 +31,7 @@
 		"auth": [
 			"completeLocalSignup.js",
 			"recovery.js",
+			"resetPassword.js",
 			"signinLocal.js",
 			"signout.js",
 			"signupLocal.js",
@@ -44,8 +45,8 @@
 		"fr": ["authjson", "common.json", "home.json", "layout.json"]
 	},
 	"middlewares": {
-		"validators": ["auth.js", "common.js", "token.js"],
 		"profanity": ["customWords.js", "index.js"],
+		"validators": ["auth.js", "common.js", "token.js"],
 		"~": [
 			"errorHandler.js",
 			"flash.js",
@@ -82,7 +83,7 @@
 				"services.css"
 			],
 			"modals": ["auth-tabs.json", "main.css"],
-			"partials": ["brands"],
+			"partials": ["brands.css"],
 			"root": ["base.css", "layout.css", "tokens.css", "ui-bar.css"]
 		},
 		"favicons": [
@@ -169,8 +170,9 @@
 			"_company_name.ejs",
 			"_flash.ejs",
 			"_footer.ejs",
-			"_header.ejs",
+			"_head.ejs",
 			"_i18n.ejs",
+			"_modalStates.ejs",
 			"_navbar.ejs",
 			"_navBrand.ejs",
 			"_navLang.ejs",
@@ -187,7 +189,9 @@
 				"_authTabs_tabs.ejs",
 				"_authTabs.ejs",
 				"_complete_signup.ejs",
-				"_recovery.ejs"
+				"_recovery.ejs",
+				"_resetPassword.ejs",
+				"_setPassword.ejs"
 			]
 		},
 		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],
