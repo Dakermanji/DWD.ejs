@@ -37,6 +37,7 @@ import {
 	getResetPassword,
 	postResetPassword,
 } from '../controllers/auth/resetPassword.js';
+import { googleCall, googleCallback } from '../controllers/auth/google.js';
 
 const router = Router();
 
@@ -70,5 +71,9 @@ router.post(
 // Reset Password
 router.get('/reset-password', validateResetPasswordQuery, getResetPassword);
 router.post('/reset-password', validateResetPassword, postResetPassword);
+
+// Google OAuth
+router.get('/google', googleCall);
+router.get('/google/callback', googleCallback);
 
 export default router;

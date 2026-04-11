@@ -30,6 +30,7 @@
 	"controllers": {
 		"auth": [
 			"completeLocalSignup.js",
+			"google.js",
 			"recovery.js",
 			"resetPassword.js",
 			"signinLocal.js",
