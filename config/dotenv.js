@@ -64,6 +64,14 @@ const env = {
 
 	/** Whether PostgreSQL SSL is enabled */
 	DB_SSL: optionalEnv('DB_SSL', 'false') === 'true',
+
+	/** Google OAuth */
+	GOOGLE_CLIENT_ID: requireEnv('GOOGLE_CLIENT_ID'),
+	GOOGLE_CLIENT_SECRET: requireEnv('GOOGLE_CLIENT_SECRET'),
+	GOOGLE_CALLBACK_URL: optionalEnv(
+		'GOOGLE_CALLBACK_URL',
+		'/auth/google/callback',
+	),
 };
 
 export default env;
