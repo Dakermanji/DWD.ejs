@@ -25,6 +25,7 @@ import {
 	validateRecoveryEmail,
 	validateRecoveryIntent,
 	validateResetPasswordQuery,
+	validateResetPassword,
 } from '../middlewares/validators/auth.js';
 import { signupLocal } from '../controllers/auth/signupLocal.js';
 import { verifyEmail } from '../controllers/auth/verifyEmail.js';
@@ -32,7 +33,10 @@ import { completeLocalSignup } from '../controllers/auth/completeLocalSignup.js'
 import { signinLocal } from '../controllers/auth/signinLocal.js';
 import signout from '../controllers/auth/signout.js';
 import recovery from '../controllers/auth/recovery.js';
-import { getResetPassword } from '../controllers/auth/resetPassword.js';
+import {
+	getResetPassword,
+	postResetPassword,
+} from '../controllers/auth/resetPassword.js';
 
 const router = Router();
 
@@ -65,5 +69,6 @@ router.post(
 
 // Reset Password
 router.get('/reset-password', validateResetPasswordQuery, getResetPassword);
+router.post('/reset-password', validateResetPassword, postResetPassword);
 
 export default router;

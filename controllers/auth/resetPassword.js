@@ -3,6 +3,7 @@
 import logger from '../../config/logger.js';
 import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
 import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
+import { resetPassword } from '../../services/auth/resetPassword.js';
 
 /**
  * Open the reset-password modal when the reset link token is valid.
@@ -66,4 +67,58 @@ export async function getResetPassword(req, res) {
 	}
 }
 
-export default getResetPassword;
+/**
+ * Handle reset-password form submission.
+ *
+ * Intended route:
+ * - POST /auth/reset-password
+ *
+ * Responsibilities:
+ * - receive validated reset-password input
+ * - delegate password reset to the service layer
+ * - clear temporary reset session data after success
+ * - redirect with a success flash message
+ *
+ * Notes:
+ * - assumes validateResetPassword already ran
+ * - assumes token was normalized by validation middleware
+ * - keeps controller thin and free of business logic
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ * @returns {Promise<import('express').Response | void>}
+ */
+export async function postResetPassword(req, res, next) {
+	try {
+		const { token, password } = req.body;
+
+		// Reset the password through the service layer.
+		await resetPassword({
+			token,
+			newPassword: password,
+			ip: req.ip,
+			userAgent: req.get('user-agent'),
+		});
+
+		// Clear any temporary reset-password session state after success.
+		delete req.session.token;
+
+		// Inform the user that the password was reset successfully.
+		req.flash('success', req.t('auth:password_reset.success'));
+
+		return res.redirect('/');
+	} catch (err) {
+		// Log the failure for debugging and monitoring.
+		logger.error('Reset password failed', {
+			type: 'auth',
+			err: err.message,
+			code: err.code,
+			ip: req.ip,
+		});
+
+		return next(err);
+	}
+}
+
+export default { getResetPassword, postResetPassword };
