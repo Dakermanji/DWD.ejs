@@ -2,6 +2,8 @@
 
 import passport from 'passport';
 
+import { handleOAuthCallback } from '../../services/auth/oauth.js';
+
 /**
  * Start Discord OAuth flow.
  *
@@ -24,38 +26,21 @@ export function discordCall(req, res, next) {
  * Handle Discord OAuth callback.
  *
  * Responsibilities:
- * - complete Passport authentication
- * - redirect on failure
- * - redirect users without username to complete signup
- * - redirect authenticated users home
+ * - complete Passport authentication for Discord OAuth
+ * - delegate shared OAuth logic to handleOAuthCallback
+ * - keep controller minimal and provider-specific only
  *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * Flow:
+ * - Passport authenticates the request
+ * - result (err, user) is passed to shared handler
+ *
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @param {import('express').NextFunction} next - Express next middleware function
  * @returns {void}
  */
 export function discordCallback(req, res, next) {
-	passport.authenticate('discord', (err, user) => {
-		if (err) {
-			return next(err);
-		}
-
-		if (!user) {
-			req.flash('error', 'auth:error.oauth_failed');
-			return res.redirect('/');
-		}
-
-		return req.logIn(user, (loginErr) => {
-			if (loginErr) {
-				return next(loginErr);
-			}
-
-			if (!user.username) {
-				req.flash('modal', 'complete_signup_oauth');
-				return res.redirect('/');
-			}
-
-			return res.redirect('/');
-		});
-	})(req, res, next);
+	passport.authenticate('github', (err, user) =>
+		handleOAuthCallback(req, res, next, err, user),
+	)(req, res, next);
 }

@@ -2,6 +2,8 @@
 
 import passport from 'passport';
 
+import { handleOAuthCallback } from '../../services/auth/oauth.js';
+
 /**
  * Start Google OAuth flow.
  *
@@ -15,6 +17,7 @@ import passport from 'passport';
  * @returns {void}
  */
 export function googleCall(req, res, next) {
+	req.session.oauthLocale = req.language || req.resolvedLanguage || 'en';
 	passport.authenticate('google', {
 		scope: ['profile', 'email'],
 		prompt: 'select_account',
@@ -25,38 +28,21 @@ export function googleCall(req, res, next) {
  * Handle Google OAuth callback.
  *
  * Responsibilities:
- * - complete Passport authentication
- * - redirect on failure
- * - redirect users without username to complete signup
- * - redirect authenticated users home
+ * - complete Passport authentication for Google OAuth
+ * - delegate shared OAuth logic to handleOAuthCallback
+ * - keep controller minimal and provider-specific only
  *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * Flow:
+ * - Passport authenticates the request
+ * - result (err, user) is passed to shared handler
+ *
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @param {import('express').NextFunction} next - Express next middleware function
  * @returns {void}
  */
 export function googleCallback(req, res, next) {
-	passport.authenticate('google', (err, user) => {
-		if (err) {
-			return next(err);
-		}
-
-		if (!user) {
-			req.flash('error', 'auth:error.oauth_failed');
-			return res.redirect('/');
-		}
-
-		return req.logIn(user, (loginErr) => {
-			if (loginErr) {
-				return next(loginErr);
-			}
-
-			if (!user.username) {
-				req.flash('modal', 'complete_signup_oauth');
-				return res.redirect('/');
-			}
-
-			return res.redirect('/');
-		});
-	})(req, res, next);
+	passport.authenticate('google', (err, user) =>
+		handleOAuthCallback(req, res, next, err, user),
+	)(req, res, next);
 }

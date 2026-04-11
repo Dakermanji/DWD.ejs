@@ -2,6 +2,7 @@
 
 import User from '../../models/User.js';
 import UserProvider from '../../models/UserProvider.js';
+import { getLocale, setLangCookie } from '../i18n/locale.js';
 
 /**
  * Normalize OAuth provider email.
@@ -78,7 +79,12 @@ export function createOAuthVerifyCallback({
 		done,
 	) {
 		try {
-			const locale = req?.locale || 'en';
+			const locale =
+				req.session?.oauthLocale ||
+				req.language ||
+				req.resolvedLanguage ||
+				'en';
+
 			const providerUserId = getProviderUserId(profile);
 			const profileEmail = getEmail(profile);
 			let resolvedEmail = null;
@@ -129,4 +135,52 @@ export function createOAuthVerifyCallback({
 			return done(error);
 		}
 	};
+}
+
+/**
+ * Handle shared OAuth callback result.
+ *
+ * Responsibilities:
+ * - propagate authentication errors
+ * - handle failed OAuth authentication
+ * - log user into the session
+ * - sync language cookie from user locale or remembered request locale
+ * - redirect incomplete OAuth users to username completion
+ * - redirect completed users home
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ * @param {unknown} err
+ * @param {Express.User | false | null | undefined} user
+ * @returns {void}
+ */
+export function handleOAuthCallback(req, res, next, err, user) {
+	if (err) {
+		return next(err);
+	}
+
+	if (!user) {
+		req.flash('error', 'auth:error.oauth_failed');
+		return res.redirect('/');
+	}
+
+	const locale = getLocale(req);
+	delete req.session.oauthLocale;
+
+	return req.logIn(user, (loginErr) => {
+		if (loginErr) {
+			return next(loginErr);
+		}
+
+		const lang = user?.locale || locale;
+		setLangCookie(res, lang);
+
+		if (!user.username) {
+			req.flash('modal', 'complete_signup_oauth');
+			return res.redirect('/');
+		}
+
+		return res.redirect('/');
+	});
 }
