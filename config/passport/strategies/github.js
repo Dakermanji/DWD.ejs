@@ -1,27 +1,35 @@
 //! config/passport/strategies/github.js
 
-/**
- * GitHub OAuth strategy scaffold
- *
- * Responsibilities:
- * - Register Passport GitHub strategy
- *
- * Why this file exists:
- * - Keeps GitHub auth configuration isolated
- * - Prepares future account linking/sign in flow
- *
- * Notes:
- * - Strategy is intentionally not registered yet
- * - Environment variables and DB logic will be added later
- */
+import { Strategy as GitHubStrategy } from 'passport-github2';
+import env from '../../dotenv.js';
+import { createOAuthVerifyCallback } from '../../../services/auth/oauth.js';
 
 /**
- * Register GitHub OAuth strategy
+ * Register GitHub OAuth strategy.
  *
- * @param {import('passport').PassportStatic} _passport
+ * Responsibilities:
+ * - configure Passport GitHub strategy
+ * - delegate shared account logic to reusable OAuth callback
+ *
+ * @param {import('passport').PassportStatic} passport
  */
-function setupGithubStrategy(_passport) {
-	// Strategy setup will be added later.
+function setupGithubStrategy(passport) {
+	passport.use(
+		new GitHubStrategy(
+			{
+				clientID: env.GITHUB_CLIENT_ID,
+				clientSecret: env.GITHUB_CLIENT_SECRET,
+				callbackURL: env.GITHUB_CALLBACK_URL,
+				passReqToCallback: true,
+				scope: ['user:email'],
+			},
+			createOAuthVerifyCallback({
+				provider: 'github',
+				getProviderUserId: (profile) => profile?.id,
+				getEmail: (profile) => profile?.emails?.[0]?.value,
+			}),
+		),
+	);
 }
 
 export default setupGithubStrategy;
