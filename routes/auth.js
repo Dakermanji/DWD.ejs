@@ -38,6 +38,7 @@ import {
 	postResetPassword,
 } from '../controllers/auth/resetPassword.js';
 import { googleCall, googleCallback } from '../controllers/auth/google.js';
+import { githubCall, githubCallback } from '../controllers/auth/github.js';
 
 const router = Router();
 
@@ -75,5 +76,9 @@ router.post('/reset-password', validateResetPassword, postResetPassword);
 // Google OAuth
 router.get('/google', googleCall);
 router.get('/google/callback', googleCallback);
+
+// GitHub OAuth
+router.get('/github', githubCall);
+router.get('/github/callback', githubCallback);
 
 export default router;
