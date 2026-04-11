@@ -40,7 +40,6 @@ export function googleCallback(req, res, next) {
 		if (err) {
 			return next(err);
 		}
-		console.log(req);
 
 		if (!user) {
 			req.flash('error', 'auth:error.oauth_failed');

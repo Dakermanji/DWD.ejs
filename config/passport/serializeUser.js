@@ -10,14 +10,12 @@
  * Why this file exists:
  * - Keeps session-specific Passport logic separate
  * - Makes serialization easy to update later
- *
- * Notes:
- * - Current implementation is a placeholder
- * - Real database lookup will be added later
  */
 
+import User from '../../models/User.js';
+
 /**
- * Register Passport serializeUser and deserializeUser handlers
+ * Register Passport serializeUser and deserializeUser handlers.
  *
  * @param {import('passport').PassportStatic} passport
  */
@@ -26,8 +24,22 @@ function setupPassportSession(passport) {
 		done(null, user?.id ?? null);
 	});
 
-	passport.deserializeUser((userId, done) => {
-		done(null, userId ? { id: userId } : false);
+	passport.deserializeUser(async (userId, done) => {
+		try {
+			if (!userId) {
+				return done(null, false);
+			}
+
+			const user = await User.findByIdForSession(userId);
+
+			if (!user) {
+				return done(null, false);
+			}
+
+			return done(null, user);
+		} catch (error) {
+			return done(error);
+		}
 	});
 }
 
