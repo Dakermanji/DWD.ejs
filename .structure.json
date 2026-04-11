@@ -30,6 +30,7 @@
 	"controllers": {
 		"auth": [
 			"completeLocalSignup.js",
+			"discord.js",
 			"github.js",
 			"google.js",
 			"recovery.js",

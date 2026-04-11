@@ -39,6 +39,7 @@ import {
 } from '../controllers/auth/resetPassword.js';
 import { googleCall, googleCallback } from '../controllers/auth/google.js';
 import { githubCall, githubCallback } from '../controllers/auth/github.js';
+import { discordCall, discordCallback } from '../controllers/auth/discord.js';
 
 const router = Router();
 
@@ -80,5 +81,9 @@ router.get('/google/callback', googleCallback);
 // GitHub OAuth
 router.get('/github', githubCall);
 router.get('/github/callback', githubCallback);
+
+// Discord OAuth
+router.get('/discord', discordCall);
+router.get('/discord/callback', discordCallback);
 
 export default router;
