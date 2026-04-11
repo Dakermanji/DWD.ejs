@@ -139,6 +139,7 @@
 			"emailContent.js",
 			"password.js",
 			"recovery.js",
+			"resetPassword.js",
 			"security.js",
 			"signupLocal.js",
 			"signupSecurity.js",

@@ -197,6 +197,33 @@ export async function findUserForRecovery(email) {
 	return rows[0] ?? null;
 }
 
+/**
+ * Update a user's password hash by id.
+ *
+ * Responsibilities:
+ * - replace the stored hashed password
+ * - refresh the updated_at timestamp
+ *
+ * Notes:
+ * - expects hashedPassword to already be hashed
+ * - does not validate password strength
+ *
+ * @param {string} userId
+ * @param {string} hashedPassword
+ * @returns {Promise<{ id: string, email: string } | null>}
+ */
+async function updatePasswordById(userId, hashedPassword) {
+	const q = `
+		UPDATE users
+		SET hashed_password = $1, updated_at = NOW()
+		WHERE id = $2
+		RETURNING id, email;
+	`;
+
+	const rows = await queryRows(q, [hashedPassword, userId]);
+	return rows[0] || null;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -205,4 +232,5 @@ export default {
 	completeLocalSignupById,
 	findForLocalSignin,
 	findUserForRecovery,
+	updatePasswordById,
 };
