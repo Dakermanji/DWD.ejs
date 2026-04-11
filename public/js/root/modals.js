@@ -30,7 +30,7 @@
 		signup: { id: 'authModal', tab: 'auth-signup-tab' },
 		signin: { id: 'authModal', tab: 'auth-signin-tab' },
 		complete_signup_local: { id: 'completeSignUpModal' },
-		complete_signup_oath: { id: 'completeSignUpModal' },
+		complete_signup_oauth: { id: 'completeSignUpModal' },
 		reset_password: { id: 'resetPasswordModal' },
 	};
 
