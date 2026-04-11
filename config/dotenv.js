@@ -68,10 +68,12 @@ const env = {
 	/** Google OAuth */
 	GOOGLE_CLIENT_ID: requireEnv('GOOGLE_CLIENT_ID'),
 	GOOGLE_CLIENT_SECRET: requireEnv('GOOGLE_CLIENT_SECRET'),
-	GOOGLE_CALLBACK_URL: optionalEnv(
-		'GOOGLE_CALLBACK_URL',
-		'/auth/google/callback',
-	),
+	GOOGLE_CALLBACK_URL: requireEnv('GOOGLE_CALLBACK_URL'),
+
+	/** GitHub OAuth */
+	GITHUB_CLIENT_ID: requireEnv('GITHUB_CLIENT_ID'),
+	GITHUB_CLIENT_SECRET: requireEnv('GITHUB_CLIENT_SECRET'),
+	GITHUB_CALLBACK_URL: requireEnv('GITHUB_CALLBACK_URL'),
 };
 
 export default env;
