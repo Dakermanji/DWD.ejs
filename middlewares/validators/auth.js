@@ -262,3 +262,50 @@ export function validateRecoveryIntent(req, res, next) {
 
 	next();
 }
+
+/**
+ * Validate reset-password input.
+ *
+ * Intended route:
+ * - POST /auth/reset-password
+ *
+ * Responsibilities:
+ * - validate token format
+ * - validate password strength
+ * - validate password confirmation
+ * - normalize safe fields before the controller runs
+ *
+ * Notes:
+ * - this middleware validates request shape only
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ * @returns {void | import('express').Response}
+ */
+export function validateResetPassword(req, res, next) {
+	const modal = 'reset_password';
+	const { token, password, confirmPassword } = req.body;
+	const normalizedToken = normalizeToken(token);
+
+	if (!isValidToken(normalizedToken)) {
+		return fail(req, res, `${ERROR_PREFIX}reset_password_invalid_link`, {
+			modal,
+		});
+	}
+
+	if (!password || !isValidPassword(password)) {
+		return fail(req, res, `${ERROR_PREFIX}password_weak`, {
+			modal,
+		});
+	}
+
+	if (password !== confirmPassword) {
+		return fail(req, res, `${ERROR_PREFIX}password_mismatch`, {
+			modal,
+		});
+	}
+
+	req.body.token = normalizedToken;
+	next();
+}
