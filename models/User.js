@@ -247,7 +247,8 @@ async function findByIdForSession(userId) {
 		email,
 		username,
 		is_verified,
-		is_blocked
+		is_blocked,
+		locale
     FROM users
     WHERE id = $1
     LIMIT 1;

@@ -22,7 +22,8 @@ async function findUserByProviderAccount(provider, providerUserId) {
             u.email,
             u.username,
             u.is_verified,
-            u.is_blocked
+            u.is_blocked,
+            u.locale
         FROM user_providers up
         INNER JOIN users u
             ON u.id = up.user_id
