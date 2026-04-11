@@ -293,6 +293,24 @@ async function createOAuthUser(email, locale = 'en', isVerified = true) {
 	return rows[0] ?? null;
 }
 
+/**
+ * Update a user's locale preference.
+ *
+ * @param {number|string} userId
+ * @param {string} locale
+ * @returns {Promise<boolean>} Whether a row was updated
+ */
+export async function updateLocale(userId, locale) {
+	const q = `
+		UPDATE users
+		SET locale = $1, updated_at = NOW()
+		WHERE id = $2;
+	`;
+
+	const result = await queryRows(q, [locale, userId]);
+	return result.rowCount > 0;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -304,4 +322,5 @@ export default {
 	updatePasswordById,
 	findByIdForSession,
 	createOAuthUser,
+	updateLocale,
 };
