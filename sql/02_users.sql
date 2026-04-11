@@ -30,7 +30,7 @@ CREATE TABLE
         -- human-readable reason for admin/debugging
         "blocked_reason" TEXT NULL,
         -- Localization
-        "locale" VARCHAR(10) NOT NULL DEFAULT 'en',
+        "locale" VARCHAR(2) NOT NULL DEFAULT 'en',
         -- Activity tracking
         "last_signin_at" TIMESTAMPTZ NULL,
         -- Timestamps

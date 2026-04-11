@@ -14,9 +14,6 @@ import { getRequestMeta } from '../../../services/http/requestMeta.js';
 
 /**
  * Generic sign-in failure message key.
- *
- * Keep this the same across auth failures
- * to avoid leaking account state.
  */
 const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
 
@@ -27,11 +24,13 @@ const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
  *   id: string,
  *   email: string,
  *   username: string
+ *   locale: string
  * }} user
  * @returns {{
  *   id: string,
  *   email: string,
  *   username: string
+ *   locale: string
  * }}
  */
 function buildSafeUser(user) {
@@ -39,6 +38,7 @@ function buildSafeUser(user) {
 		id: user.id,
 		email: user.email,
 		username: user.username,
+		locale: user.locale,
 	};
 }
 

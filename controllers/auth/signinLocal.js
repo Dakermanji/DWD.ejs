@@ -2,6 +2,8 @@
 
 import passport from 'passport';
 
+import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
+
 /**
  * Handle failed local sign-in response.
  *
@@ -39,6 +41,14 @@ function handleSigninSuccess(req, res, next, user) {
 	req.logIn(user, (loginErr) => {
 		if (loginErr) {
 			return next(loginErr);
+		}
+
+		if (user?.locale && SUPPORTED_LANGUAGE_SET.has(user.locale)) {
+			res.cookie('lang', user.locale, {
+				httpOnly: false,
+				sameSite: 'lax',
+				maxAge: 1000 * 60 * 60 * 24 * 30,
+			});
 		}
 
 		return res.redirect('/');
