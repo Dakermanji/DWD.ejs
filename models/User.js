@@ -224,6 +224,75 @@ async function updatePasswordById(userId, hashedPassword) {
 	return rows[0] || null;
 }
 
+/**
+ * Find a user by id for Passport session restore.
+ *
+ * Responsibilities:
+ * - load only the fields needed on req.user
+ * - avoid returning sensitive fields like hashed_password
+ *
+ * @param {string} userId
+ * @returns {Promise<{
+ *   id: string,
+ *   email: string,
+ *   username: string | null,
+ *   is_verified: boolean,
+ *   is_blocked: boolean
+ * } | null>}
+ */
+async function findByIdForSession(userId) {
+	const q = `
+    SELECT
+		id,
+		email,
+		username,
+		is_verified,
+		is_blocked
+    FROM users
+    WHERE id = $1
+    LIMIT 1;
+	`;
+
+	const rows = await queryRows(q, [userId]);
+	return rows[0] || null;
+}
+
+/**
+ * Create a user from OAuth.
+ *
+ * @param {string} email
+ * @param {string} locale
+ * @param {boolean} isVerified
+ * @returns {Promise<{
+ *   id: string,
+ *   email: string,
+ *   username: string | null,
+ *   is_verified: boolean,
+ *   is_blocked: boolean,
+ *   locale: string
+ * } | null>}
+ */
+async function createOAuthUser(email, locale = 'en', isVerified = true) {
+	const q = `
+		INSERT INTO users (
+			email,
+			locale,
+			is_verified
+		)
+		VALUES ($1, $2, $3)
+		RETURNING
+			id,
+			email,
+			username,
+			is_verified,
+			is_blocked,
+			locale;
+	`;
+
+	const rows = await queryRows(q, [email, locale, isVerified]);
+	return rows[0] ?? null;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -233,4 +302,6 @@ export default {
 	findForLocalSignin,
 	findUserForRecovery,
 	updatePasswordById,
+	findByIdForSession,
+	createOAuthUser,
 };
