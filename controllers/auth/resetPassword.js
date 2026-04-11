@@ -4,6 +4,7 @@ import logger from '../../config/logger.js';
 import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
 import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
 import { resetPassword } from '../../services/auth/resetPassword.js';
+import { setLangCookie } from '../../services/i18n/locale.js';
 
 /**
  * Open the reset-password modal when the reset link token is valid.
@@ -29,12 +30,7 @@ export async function getResetPassword(req, res) {
 
 	try {
 		// Ensure the website opens in the same language as the email when possible.
-		const safeLang = SUPPORTED_LANGUAGE_SET.has(lang) ? lang : 'en';
-		res.cookie('lang', safeLang, {
-			httpOnly: false,
-			sameSite: 'lax',
-			maxAge: 1000 * 60 * 60 * 24 * 30,
-		});
+		setLangCookie(res, localelang);
 
 		// Reject missing or malformed links early.
 		if (!token) {

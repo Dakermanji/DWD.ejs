@@ -3,6 +3,7 @@
 import passport from 'passport';
 
 import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
+import { setLangCookie } from '../../services/i18n/locale.js';
 
 /**
  * Handle failed local sign-in response.
@@ -43,13 +44,7 @@ function handleSigninSuccess(req, res, next, user) {
 			return next(loginErr);
 		}
 
-		if (user?.locale && SUPPORTED_LANGUAGE_SET.has(user.locale)) {
-			res.cookie('lang', user.locale, {
-				httpOnly: false,
-				sameSite: 'lax',
-				maxAge: 1000 * 60 * 60 * 24 * 30,
-			});
-		}
+		setLangCookie(res, user?.locale);
 
 		return res.redirect('/');
 	});

@@ -4,6 +4,7 @@ import logger from '../../config/logger.js';
 import UserModel from '../../models/User.js';
 import { verifyToken, tokenTypes } from '../../services/auth/verifyToken.js';
 import { SUPPORTED_LANGUAGE_SET } from '../../config/languages.js';
+import { setLangCookie } from '../../services/i18n/locale.js';
 
 /**
  * Handle email verification.
@@ -28,12 +29,7 @@ export async function verifyEmail(req, res) {
 
 	try {
 		// Ensure the website opens in the same language as the email
-		const safeLang = SUPPORTED_LANGUAGE_SET.has(lang) ? lang : 'en';
-		res.cookie('lang', safeLang, {
-			httpOnly: false,
-			sameSite: 'lax',
-			maxAge: 1000 * 60 * 60 * 24 * 30,
-		});
+		setLangCookie(res, lang);
 
 		// Ensure the verification token is valid before changing user state.
 		const result = await verifyToken(token, tokenTypes.signup);

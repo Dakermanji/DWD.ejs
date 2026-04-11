@@ -2,6 +2,7 @@
 
 import { SUPPORTED_LANGUAGE_SET } from '../config/languages.js';
 import User from '../models/User.js';
+import { setLangCookie } from '../services/i18n/locale.js';
 
 /**
  * Language Controller
@@ -28,13 +29,7 @@ export async function changeLanguage(req, res) {
 	const { lang } = req.params;
 
 	// Persist language only when it is supported by the application
-	if (SUPPORTED_LANGUAGE_SET.has(lang)) {
-		res.cookie('lang', lang, {
-			httpOnly: false,
-			sameSite: 'lax',
-			maxAge: 1000 * 60 * 60 * 24 * 30,
-		});
-	}
+	setLangCookie(res, lang);
 
 	if (req.user && req.user.locale !== lang) {
 		await User.updateLocale(req.user.id, lang);
