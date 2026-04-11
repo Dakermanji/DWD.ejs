@@ -45,6 +45,7 @@ function normalizeOAuthEmail(email) {
  * @param {'google' | 'github' | 'discord'} options.provider
  * @param {(profile: any) => string | number | null | undefined} options.getProviderUserId
  * @param {(profile: any) => string | null | undefined} options.getEmail
+ *  @param {(params: { profile: any, accessToken: string }) => Promise<string | null> | string | null} [options.resolveEmail]
  * @returns {(
  *   req: import('express').Request,
  *   accessToken: string,
@@ -57,6 +58,7 @@ export function createOAuthVerifyCallback({
 	provider,
 	getProviderUserId,
 	getEmail,
+	resolveEmail = null,
 }) {
 	/**
 	 * Shared Passport OAuth verify callback.
@@ -78,7 +80,18 @@ export function createOAuthVerifyCallback({
 		try {
 			const locale = req?.locale || 'en';
 			const providerUserId = getProviderUserId(profile);
-			const email = normalizeOAuthEmail(getEmail(profile));
+			const profileEmail = getEmail(profile);
+			let resolvedEmail = null;
+
+			if (!profileEmail && resolveEmail) {
+				resolvedEmail = await resolveEmail({
+					profile,
+					accessToken: _accessToken,
+				});
+			}
+
+			const rawEmail = profileEmail || resolvedEmail;
+			const email = normalizeOAuthEmail(rawEmail);
 
 			if (!providerUserId || !email) {
 				return done(null, false);

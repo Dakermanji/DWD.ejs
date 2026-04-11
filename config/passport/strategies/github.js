@@ -27,6 +27,8 @@ function setupGithubStrategy(passport) {
 				provider: 'github',
 				getProviderUserId: (profile) => profile?.id,
 				getEmail: (profile) => profile?.emails?.[0]?.value,
+				resolveEmail: ({ accessToken }) =>
+					fetchGithubPrimaryEmail(accessToken),
 			}),
 		),
 	);
