@@ -15,7 +15,7 @@ const groupedErrors = locals.errors || [];
 
 <% if (groupedErrors.length > 0) { %>
 	<% groupedErrors.forEach((key) => { %>
-		<div class="flash-message alert alert-danger mb-0 rounded-0" role="alert">
+		<div class="flash-message alert alert-danger fade show mb-0" role="alert">
 			<%= t(key) %>
 		</div>
 	<% }) %>
@@ -26,7 +26,7 @@ const groupedErrors = locals.errors || [];
 	<% const bs = bootstrapClassByType[type]; %>
 
 	<% msgs.forEach((key) => { %>
-		<div class="flash-message alert alert-<%= bs %> mb-0 rounded-0" role="alert">
+		<div class="flash-message alert alert-<%= bs %> fade show mb-0" role="alert">
 			<%= t(key) %>
 		</div>
 	<% }) %>

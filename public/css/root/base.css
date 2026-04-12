@@ -79,6 +79,7 @@ h6 {
 	padding: 1rem;
 	font-size: 1rem;
 	box-shadow: 0 4px 6px #0000001a;
+	border-radius: var(--radius-lg);
 }
 
 .hidden {

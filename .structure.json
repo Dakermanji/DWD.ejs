@@ -132,7 +132,13 @@
 		},
 		"js": {
 			"home": ["auth.js", "mouseTrailAndFollower.js", "portfolio.js"],
-			"root": ["dropdownMenu.js", "theme.js", "tooltips.js"]
+			"root": [
+				"dropdownMenu.js",
+				"flash.js",
+				"modals.js",
+				"theme.js",
+				"tooltips.js"
+			]
 		}
 	},
 	"routes": ["auth.js", "home.js", "lang.js"],
