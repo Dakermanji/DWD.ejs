@@ -44,9 +44,27 @@
 		"~": ["home.js", "lang.js"]
 	},
 	"locales": {
-		"ar": ["authjson", "common.json", "home.json", "layout.json"],
-		"en": ["authjson", "common.json", "home.json", "layout.json"],
-		"fr": ["authjson", "common.json", "home.json", "layout.json"]
+		"ar": [
+			"authjson",
+			"common.json",
+			"home.json",
+			"layout.json",
+			"social.json"
+		],
+		"en": [
+			"authjson",
+			"common.json",
+			"home.json",
+			"layout.json",
+			"social.json"
+		],
+		"fr": [
+			"authjson",
+			"common.json",
+			"home.json",
+			"layout.json",
+			"social.json"
+		]
 	},
 	"middlewares": {
 		"profanity": ["customWords.js", "index.js"],
@@ -218,7 +236,7 @@
 			]
 		},
 		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],
-		"social": ["main.ejs"],
+		"social": ["_follow_request.ejs", "main.ejs"],
 		"~": ["error.ejs"]
 	},
 	"~": [

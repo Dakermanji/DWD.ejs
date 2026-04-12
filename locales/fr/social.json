@@ -1,0 +1,6 @@
+{
+	"followRequest": {
+		"title": "Envoyer une demande de suivi",
+		"placeholder": "Nom d'utilisateur ou email"
+	}
+}

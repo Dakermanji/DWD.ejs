@@ -1,5 +1,4 @@
 <!--! views/social/main.ejs -->
-
 <div
 	class="offcanvas <%= currentLang === 'ar' ? 'offcanvas-end' : 'offcanvas-start' %>"
 	tabindex="-1"
@@ -19,9 +18,7 @@
 	</div>
 
 	<div class="offcanvas-body">
-		<section class="mb-3">
-			<!-- follow form -->
-		</section>
+		<%- include('_follow_requst') %>
 
 		<div class="accordion" id="socialAccordion">
 			<div class="accordion-item">

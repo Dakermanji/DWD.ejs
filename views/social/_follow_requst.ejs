@@ -1,0 +1,33 @@
+<!--! views/social/_follow_request.ejs -->
+<section class="mb-3">
+	<form
+		action="/social/follow-request"
+		method="POST"
+		class="modal-form"
+		novalidate
+	>
+		<%- include('../partials/_csrf') %>
+
+		<label for="follow-request" class="form-label">
+			<%= t('social:followRequest.title') %>
+		</label>
+
+		<div class="input-group">
+			<input
+				id="follow-request"
+				class="form-control"
+				name="identifier"
+				type="text"
+				placeholder="<%= t('social:followRequest.placeholder') %>"
+				autocomplete="off"
+				dir="ltr"
+				required
+				maxlength="254"
+			/>
+
+			<button type="submit" class="btn btn-primary">
+				<i class="bi bi-person-plus"></i>
+			</button>
+		</div>
+	</form>
+</section>
