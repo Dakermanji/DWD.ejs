@@ -1,16 +1,5 @@
 //! middlewares/validators/auth.js
 
-/**
- * Auth validators
- * ---------------
- * Route-level validation middleware for auth flows.
- *
- * Why this file exists:
- * - keeps auth controllers focused on business logic
- * - validates and normalizes input early
- * - keeps auth validation rules consistent
- */
-
 import {
 	isSafeEmail,
 	isValidEmail,
@@ -25,55 +14,37 @@ import { isValidToken, normalizeToken } from './token.js';
 import { validateNoProfanity } from '../profanity/index.js';
 import { fail } from '../../services/http/response.js';
 
-/**
- * Namespace for auth validation flash keys.
- */
 const ERROR_PREFIX = 'auth:error.';
 
-/**
- * Practical upper bounds for sign-in input.
- *
- * Notes:
- * - identifier uses the email max because email is the longest allowed variant
- * - password is not strength-validated here, only shape-validated
- * - the password max is intentionally generous to avoid rejecting valid stored passwords
- */
 const MAX_IDENTIFIER_LENGTH = 254;
 const MAX_PASSWORD_LENGTH = 1024;
 
 /**
- * Validate and normalize an email field.
- * Reusable across multiple auth flows (signup, recovery, etc.).
+ * Validated and normalized an email field from the request body.
+ *
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware.
+ * @param {{ modal: string }} options - Modal name used in the failure response.
+ * @returns {void}
  */
 export function validateEmailField(req, res, next, { modal }) {
-	const emailRaw = req.body?.email;
+	const email = normalizeEmail(req.body?.email);
 
-	// Ensure a non-empty string before normalization.
-	if (typeof emailRaw !== 'string' || !emailRaw.trim()) {
+	if (!isValidEmail(email) || !isSafeEmail(email))
 		return fail(req, res, `${ERROR_PREFIX}email_invalid`, { modal });
-	}
-
-	const email = normalizeEmail(emailRaw);
-
-	// Validate normalized email for format and safety.
-	if (!isValidEmail(email) || !isSafeEmail(email)) {
-		return fail(req, res, `${ERROR_PREFIX}email_invalid`, { modal });
-	}
 
 	req.body.email = email;
 	next();
 }
 
 /**
- * Validate and normalize token + optional language from query params.
+ * Created a query validator for token-based auth links.
  *
- * Behavior:
- * - ensures token is valid
- * - normalizes token and lang
- * - validates lang only if provided
- * - attaches normalized values back to req.query
+ * It validated the token and an optional 2-letter language code, then
+ * normalized both values before passing control to the next middleware.
  *
- * @param {string} errorKey - i18n key for invalid link error
+ * @param {string} errorKey - Flash key used when the link was invalid.
  * @returns {import('express').RequestHandler}
  */
 export const validateTokenAndLangQuery = (errorKey) => {
@@ -95,46 +66,24 @@ export const validateTokenAndLangQuery = (errorKey) => {
 	};
 };
 
-/**
- * Validate query params for email verification link.
- *
- * Uses shared token+lang validator with verify-email error message.
- */
 export const validateVerifyEmailQuery = validateTokenAndLangQuery(
 	`${ERROR_PREFIX}verify_email_invalid_link`,
 );
 
-/**
- * Validate query params for reset-password link.
- *
- * Uses shared token+lang validator with reset-password error message.
- */
 export const validateResetPasswordQuery = validateTokenAndLangQuery(
 	`${ERROR_PREFIX}reset_password_invalid_link`,
 );
 
 /**
- * Validate complete-local-signup input.
+ * Validated the final step of local signup.
  *
- * Intended route:
- * - POST /auth/complete-local-signup
+ * It collected validation errors instead of failing immediately so the
+ * caller could display all relevant feedback at once.
  *
- * Responsibilities:
- * - validate token format
- * - validate username format
- * - validate username profanity
- * - validate password strength
- * - validate password confirmation
- * - normalize safe fields before the controller runs
- *
- * Notes:
- * - this middleware validates request shape only
- * - username availability must be checked later in the controller/service
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- * @returns {void | import('express').Response}
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware.
+ * @returns {void}
  */
 export function validateCompleteLocalSignup(req, res, next) {
 	const { token, username, password, confirmPassword } = req.body;
@@ -143,25 +92,19 @@ export function validateCompleteLocalSignup(req, res, next) {
 	const normalizedToken = normalizeToken(token);
 	const normalizedUsername = normalizeText(username);
 
-	if (!isValidToken(token)) {
+	if (!isValidToken(token))
 		errors.push(`${ERROR_PREFIX}verify_email_invalid_link`);
-	}
 
-	if (!isValidUsername(normalizedUsername)) {
+	if (!isValidUsername(normalizedUsername))
 		errors.push(`${ERROR_PREFIX}username_invalid`);
-	}
 
-	if (!validateNoProfanity(normalizedUsername)) {
+	if (!validateNoProfanity(normalizedUsername))
 		errors.push(`${ERROR_PREFIX}username_profanity`);
-	}
 
-	if (!isValidPassword(password)) {
-		errors.push(`${ERROR_PREFIX}password_weak`);
-	}
+	if (!isValidPassword(password)) errors.push(`${ERROR_PREFIX}password_weak`);
 
-	if (password !== confirmPassword) {
+	if (password !== confirmPassword)
 		errors.push(`${ERROR_PREFIX}password_mismatch`);
-	}
 
 	req.body.token = normalizedToken;
 	req.body.username = normalizedUsername;
@@ -170,48 +113,25 @@ export function validateCompleteLocalSignup(req, res, next) {
 }
 
 /**
- * Validate local sign-in input.
+ * Validated a sign-in request using either email or username.
  *
- * Intended route:
- * - POST /auth/signin
+ * It normalized the identifier and stored its resolved type on the request.
  *
- * Current rules:
- * - identifier must be present
- * - identifier must be a string
- * - identifier must not be empty after trimming
- * - identifier must be either a valid email or a valid username
- * - email identifiers are normalized to lowercase
- * - username identifiers are trimmed only
- * - password must be present
- * - password must be a string
- * - password must not be empty
- * - password must stay within a practical max length
- *
- * On success:
- * - stores normalized identifier back in req.body.identifier
- * - stores identifier type in req.body.identifierType
- *
- * Notes:
- * - this middleware validates request shape only
- * - account existence, admin blocks, lockouts, and rate limits belong later
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- * @returns {void | import('express').Response}
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware.
+ * @returns {void}
  */
 export function validateSignIn(req, res, next) {
 	const identifierRaw = req.body?.identifier;
 	const passwordRaw = req.body?.password;
 	const KEY = `${ERROR_PREFIX}invalid_credentials`;
 
-	if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH)) {
+	if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH))
 		return fail(req, res, KEY, { modal: 'signin' });
-	}
 
-	if (!isSafeString(passwordRaw, MAX_PASSWORD_LENGTH)) {
+	if (!isSafeString(passwordRaw, MAX_PASSWORD_LENGTH))
 		return fail(req, res, KEY, { modal: 'signin' });
-	}
 
 	const email = normalizeEmail(identifierRaw);
 
@@ -234,118 +154,81 @@ export function validateSignIn(req, res, next) {
 	return fail(req, res, KEY, { modal: 'signin' });
 }
 
-/**
- * Signup email validation.
- */
-export function validateSignupEmail(req, res, next) {
-	return validateEmailField(req, res, next, { modal: 'signup' });
-}
+export const validateSignupEmail = (req, res, next) =>
+	validateEmailField(req, res, next, { modal: 'signup' });
+
+export const validateRecoveryEmail = (req, res, next) =>
+	validateEmailField(req, res, next, { modal: 'recovery' });
 
 /**
- * Recovery email validation.
- */
-export function validateRecoveryEmail(req, res, next) {
-	return validateEmailField(req, res, next, { modal: 'recovery' });
-}
-
-/**
- * Ensure recovery intent is valid.
+ * Validated the recovery action selected by the user.
+ *
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware.
+ * @returns {void}
  */
 export function validateRecoveryIntent(req, res, next) {
 	const intent = req.body?.intent;
 
-	if (intent !== 'password_reset' && intent !== 'resend_verification') {
+	if (intent !== 'password_reset' && intent !== 'resend_verification')
 		return fail(req, res, `common:error.invalid_request`, {
 			modal: 'recovery',
 		});
-	}
 
 	next();
 }
 
 /**
- * Validate reset-password input.
+ * Validated a password reset form submission.
  *
- * Intended route:
- * - POST /auth/reset-password
- *
- * Responsibilities:
- * - validate token format
- * - validate password strength
- * - validate password confirmation
- * - normalize safe fields before the controller runs
- *
- * Notes:
- * - this middleware validates request shape only
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- * @returns {void | import('express').Response}
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware.
+ * @returns {void}
  */
 export function validateResetPassword(req, res, next) {
 	const modal = 'reset_password';
 	const { token, password, confirmPassword } = req.body;
 	const normalizedToken = normalizeToken(token);
 
-	if (!isValidToken(normalizedToken)) {
+	if (!isValidToken(normalizedToken))
 		return fail(req, res, `${ERROR_PREFIX}reset_password_invalid_link`, {
 			modal,
 		});
-	}
 
-	if (!password || !isValidPassword(password)) {
+	if (!password || !isValidPassword(password))
 		return fail(req, res, `${ERROR_PREFIX}password_weak`, {
 			modal,
 		});
-	}
 
-	if (password !== confirmPassword) {
+	if (password !== confirmPassword)
 		return fail(req, res, `${ERROR_PREFIX}password_mismatch`, {
 			modal,
 		});
-	}
 
 	req.body.token = normalizedToken;
 	next();
 }
 
-/**
- * Validate set-username request for OAuth completion flow.
- *
- * Responsibilities:
- * - ensure user is authenticated
- * - block users who already completed username setup
- * - validate username input using shared validator
- * - normalize username before passing control forward
- *
- * Notes:
- * - isValidUsername handles normalization internally for validation
- * - username is normalized again before controller to keep a clean final value
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
 export function validateSetUsername(req, res, next) {
 	const user = req.user;
 	const username = req.body?.username;
 
-	// ensure the route is only used by authenticated users
 	if (!user) return fail(req, res, `${ERROR_PREFIX}auth_required`);
 
-	// block access if username was already completed before
 	if (user.username) return res.redirect('/');
 
-	// validate username input (normalization is handled inside isValidUsername)
 	if (!isValidUsername(username))
 		return fail(req, res, `${ERROR_PREFIX}username_invalid`, {
-			// reopen OAuth completion modal on validation failure
 			modal: 'complete_signup_oauth',
 		});
 
-	// store normalized username as the final canonical value
-	req.body.username = normalizeText(username);
+	if (!validateNoProfanity(normalizedUsername))
+		return fail(req, res, `${ERROR_PREFIX}username_profanity`, {
+			modal: 'complete_signup_oauth',
+		});
 
+	req.body.username = normalizeText(username);
 	next();
 }
