@@ -59,6 +59,7 @@
 
     <!-- Static Styles -->
     <% const staticStyles = ['tokens','base', 'layout', 'ui-bar'] %>
+    <% if (user) staticStyles.push('social') %>
     <% staticStyles.forEach((style) => { %>
     <link rel="stylesheet" href="/css/root/<%= style %>.css" />
     <% }) %>

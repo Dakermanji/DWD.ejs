@@ -88,7 +88,13 @@
 			],
 			"modals": ["auth-tabs.json", "main.css"],
 			"partials": ["brands.css"],
-			"root": ["base.css", "layout.css", "tokens.css", "ui-bar.css"]
+			"root": [
+				"base.css",
+				"layout.css",
+				"social.css",
+				"tokens.css",
+				"ui-bar.css"
+			]
 		},
 		"favicons": [
 			"about.txt",
@@ -208,6 +214,7 @@
 			]
 		},
 		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],
+		"social": ["main.ejs"],
 		"~": ["error.ejs"]
 	},
 	"~": [

@@ -21,18 +21,22 @@
 </li>
 
 <li class="nav-item">
-	<a
-	href="#"
-	class="nav-link has-tooltip"
-	id="socialToggle"
-	aria-label="<%= keys.social %>"
-	data-bs-title="<%= keys.social %>"
+	<button
+		type="button"
+		class="nav-link has-tooltip border-0 bg-transparent"
+		id="socialToggle"
+		aria-label="<%= keys.social %>"
+		aria-controls="socialPanel"
+		aria-expanded="false"
+		data-bs-title="<%= keys.social %>"
+		data-bs-toggle="offcanvas"
+		data-bs-target="#socialPanel"
 	>
 		<span class="nav-icon">
 			<i class="bi bi-people-fill" aria-hidden="true"></i>
 		</span>
 		<span class="nav-text"><%= keys.social %></span>
-	</a>
+	</button>
 </li>
 
 <li class="nav-item">

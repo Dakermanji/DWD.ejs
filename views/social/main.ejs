@@ -1,0 +1,124 @@
+<!--! views/social/main.ejs -->
+
+<div
+	class="offcanvas <%= currentLang === 'ar' ? 'offcanvas-end' : 'offcanvas-start' %>"
+	tabindex="-1"
+	id="socialPanel"
+	aria-labelledby="socialPanelLabel"
+>
+	<div class="offcanvas-header">
+		<h2 class="offcanvas-title h5 mb-0" id="socialPanelLabel">
+			<%= t('nav.social') %>
+		</h2>
+		<button
+			type="button"
+			class="btn-close"
+			data-bs-dismiss="offcanvas"
+			aria-label="<%= t('common:close') %>"
+		></button>
+	</div>
+
+	<div class="offcanvas-body">
+		<section class="mb-3">
+			<!-- follow form -->
+		</section>
+
+		<div class="accordion" id="socialAccordion">
+			<div class="accordion-item">
+				<h3 class="accordion-header">
+					<button
+						class="accordion-button collapsed"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#socialFollowers"
+						aria-expanded="false"
+						aria-controls="socialFollowers"
+					>
+						Followers
+					</button>
+				</h3>
+				<div
+					id="socialFollowers"
+					class="accordion-collapse collapse"
+					data-bs-parent="#socialAccordion"
+				>
+					<div class="accordion-body">
+						<!-- followers content -->
+					</div>
+				</div>
+			</div>
+
+			<div class="accordion-item">
+				<h3 class="accordion-header">
+					<button
+						class="accordion-button collapsed"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#socialFollowees"
+						aria-expanded="false"
+						aria-controls="socialFollowees"
+					>
+						Following
+					</button>
+				</h3>
+				<div
+					id="socialFollowees"
+					class="accordion-collapse collapse"
+					data-bs-parent="#socialAccordion"
+				>
+					<div class="accordion-body">
+						<!-- followees content -->
+					</div>
+				</div>
+			</div>
+
+			<div class="accordion-item">
+				<h3 class="accordion-header">
+					<button
+						class="accordion-button collapsed"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#socialBlocked"
+						aria-expanded="false"
+						aria-controls="socialBlocked"
+					>
+						Blocked
+					</button>
+				</h3>
+				<div
+					id="socialBlocked"
+					class="accordion-collapse collapse"
+					data-bs-parent="#socialAccordion"
+				>
+					<div class="accordion-body">
+						<!-- blocked content -->
+					</div>
+				</div>
+			</div>
+
+			<div class="accordion-item">
+				<h3 class="accordion-header">
+					<button
+						class="accordion-button collapsed"
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#socialNotifications"
+						aria-expanded="false"
+						aria-controls="socialNotifications"
+					>
+						Notifications
+					</button>
+				</h3>
+				<div
+					id="socialNotifications"
+					class="accordion-collapse collapse"
+					data-bs-parent="#socialAccordion"
+				>
+					<div class="accordion-body">
+						<!-- notifications content -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

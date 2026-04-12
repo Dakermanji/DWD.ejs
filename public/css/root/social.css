@@ -1,0 +1,21 @@
+/*! public/css/root/social.css */
+
+.social-panel {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 320px;
+	z-index: 1050;
+	transform: translateX(-100%);
+}
+
+html[dir='rtl'] .social-panel {
+	right: 0;
+	left: auto;
+	transform: translateX(100%);
+}
+
+html[dir='ltr'] .social-panel {
+	left: 0;
+	right: auto;
+}

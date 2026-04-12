@@ -15,6 +15,9 @@
 
 			<!-- Body (main contents) -->
 			<main class="container"><%- body %></main>
+			<% if (user) { %>
+				<%- include('../social/main') %>
+			<% } %>
 
 			<!-- Footer -->
 			<%- include('_footer') %>
