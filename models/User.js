@@ -5,8 +5,6 @@ import { query, queryRows } from '../config/database.js';
 /**
  * Find a user by email (basic fields only).
  *
- * Used in auth flows where full user data is not required.
- *
  * @param {string} email
  * @returns {Promise<{ id: string, email: string, is_verified: boolean } | null>}
  */
@@ -25,11 +23,8 @@ async function findByEmailBasic(email) {
 /**
  * Create a local pending user.
  *
- * Used during the first local signup step before
- * password and username are completed.
- *
  * @param {string} email
- * @param {string} emailNormalized
+ * @param {string} locale
  * @returns {Promise<{ id: string, email: string, locale: string, is_verified: boolean, created_at: Date } | null>}
  */
 async function createLocalPendingUser(email, locale) {
@@ -67,10 +62,6 @@ async function updateIsVerifiedById(userId, isVerified) {
 /**
  * Check whether a username already exists.
  *
- * Notes:
- * - expects a normalized username
- * - uses a lightweight existence query
- *
  * @param {string} username
  * @returns {Promise<boolean>}
  */
@@ -91,16 +82,6 @@ async function usernameExists(username) {
 
 /**
  * Complete local signup by user id.
- *
- * Responsibilities:
- * - set the chosen username
- * - set the normalized username
- * - set the hashed password
- * - update the updated_at timestamp
- *
- * Notes:
- * - expects validated inputs
- * - expects hashedPassword to already be hashed
  *
  * @param {string} userId
  * @param {string} username
@@ -136,22 +117,16 @@ async function completeLocalSignupById(userId, username, hashedPassword) {
 /**
  * Find completed local user for sign-in.
  *
- * Requirements:
- * - matched by email or username
- * - local signup must be completed
- *
  * @param {string} identifier
- * - expected to be normalized (lowercase) by validator
  * @param {'email' | 'username'} identifierType
  * @returns {Promise<object|null>}
  */
 async function findForLocalSignin(identifier, identifierType) {
-	const lookupColumn =
-		identifierType === 'email'
-			? 'email'
-			: identifierType === 'username'
-				? 'username_normalized'
-				: null;
+	const lookupColumnMap = {
+		email: 'email',
+		username: 'username_normalized',
+	};
+	const lookupColumn = lookupColumnMap[identifierType];
 
 	if (!lookupColumn) {
 		throw new Error(`Unsupported identifier type: ${identifierType}`);
@@ -173,9 +148,6 @@ async function findForLocalSignin(identifier, identifierType) {
 
 /**
  * Find user with fields needed for recovery.
- *
- * Requirements:
- * - matched by normalized email
  *
  * @param {string} email
  * @returns {Promise<object|null>}
@@ -200,14 +172,6 @@ export async function findUserForRecovery(email) {
 /**
  * Update a user's password hash by id.
  *
- * Responsibilities:
- * - replace the stored hashed password
- * - refresh the updated_at timestamp
- *
- * Notes:
- * - expects hashedPassword to already be hashed
- * - does not validate password strength
- *
  * @param {string} userId
  * @param {string} hashedPassword
  * @returns {Promise<{ id: string, email: string } | null>}
@@ -226,10 +190,6 @@ async function updatePasswordById(userId, hashedPassword) {
 
 /**
  * Find a user by id for Passport session restore.
- *
- * Responsibilities:
- * - load only the fields needed on req.user
- * - avoid returning sensitive fields like hashed_password
  *
  * @param {string} userId
  * @returns {Promise<{
@@ -308,7 +268,7 @@ export async function updateLocale(userId, locale) {
 		WHERE id = $2;
 	`;
 
-	const result = await queryRows(q, [locale, userId]);
+	const result = await query(q, [locale, userId]);
 	return result.rowCount > 0;
 }
 
@@ -326,7 +286,7 @@ export async function updateUsernameById(userId, username) {
 		WHERE id = $2;
 	`;
 
-	const result = await queryRows(q, [username, userId]);
+	const result = await query(q, [username, userId]);
 	return result.rowCount > 0;
 }
 
