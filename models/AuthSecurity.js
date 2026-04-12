@@ -147,19 +147,11 @@ async function recordFailedSignin({ userId = null, identifier = null }) {
  * Notes:
  * - ensures the auth_security row exists first
  *
- * @param {{
- *   userId?: string | null,
- *   identifier?: string | null
- * }} params
+ * @param {string} userId
  * @returns {Promise<void>}
  */
-async function recordSuccessfulSignin({ userId = null, identifier = null }) {
-	await createIfMissing({ userId, identifier });
-
-	const value = userId ?? identifier;
-	const column = userId ? 'user_id' : identifier ? 'identifier' : null;
-
-	if (!column) return;
+async function recordSuccessfulSignin(userId) {
+	await createIfMissing({ userId });
 
 	const q = `
 		UPDATE auth_security
@@ -168,10 +160,10 @@ async function recordSuccessfulSignin({ userId = null, identifier = null }) {
 			failed_signin_count = 0,
 			locked_until = NULL,
 			updated_at = NOW()
-		WHERE ${column} = $1;
+		WHERE user_id = $1;
 	`;
 
-	await query(q, [value]);
+	await query(q, [userId]);
 }
 
 /**

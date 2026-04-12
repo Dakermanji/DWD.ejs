@@ -2,6 +2,7 @@
 
 import AuthSecurityModel from '../../../models/AuthSecurity.js';
 import AuthSecurityEventModel from '../../../models/AuthSecurityEvent.js';
+import UserModel from '../../../models/User.js';
 
 /**
  * Local sign-in security helpers.
@@ -90,10 +91,8 @@ async function updateSigninState({
 	});
 
 	if (successful) {
-		await AuthSecurityModel.recordSuccessfulSignin({
-			userId,
-			identifier,
-		});
+		await AuthSecurityModel.recordSuccessfulSignin(userId);
+		await UserModel.updateLastSignIn(userId);
 
 		return;
 	}

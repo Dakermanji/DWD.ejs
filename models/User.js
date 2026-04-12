@@ -290,6 +290,24 @@ export async function updateUsernameById(userId, username) {
 	return result.rowCount > 0;
 }
 
+/**
+ * Update last sign in for a specific user.
+ *
+ * @param {number} userId
+ * @returns {Promise<boolean>} true if user was updated, false otherwise
+ */
+
+export async function updateLastSignIn(userId) {
+	const q = `
+		UPDATE users
+		SET last_signin_at = NOW(), updated_at = NOW()
+		WHERE id = $1;
+	`;
+
+	const result = await query(q, [userId]);
+	return result.rowCount > 0;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -303,4 +321,5 @@ export default {
 	createOAuthUser,
 	updateLocale,
 	updateUsernameById,
+	updateLastSignIn,
 };

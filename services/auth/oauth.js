@@ -1,6 +1,7 @@
 //! services/auth/oauth.js
 
 import UserModel from '../../models/User.js';
+import AuthSecurityModel from '../../models/AuthSecurity.js';
 import UserProviderModel from '../../models/UserProvider.js';
 import { getLocale, setLangCookie } from '../i18n/locale.js';
 
@@ -119,17 +120,22 @@ export function createOAuthVerifyCallback({
 				user = await UserModel.createOAuthUser(email, locale, true);
 			}
 
+			const userId = user.id;
+
 			await UserProviderModel.createLink(
-				user.id,
+				userId,
 				provider,
 				String(providerUserId),
 			);
 
-			const sessionUser = await UserModel.findByIdForSession(user.id);
+			const sessionUser = await UserModel.findByIdForSession(userId);
 
 			if (!sessionUser) {
 				return done(null, false);
 			}
+
+			await UserModel.updateLastSignIn(userId);
+			await AuthSecurityModel.recordSuccessfulSignin(userId);
 
 			return done(null, sessionUser);
 		} catch (error) {
