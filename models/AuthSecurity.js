@@ -38,64 +38,34 @@ import { query, queryRows } from '../config/database.js';
  * } | null>}
  */
 async function findByUserIdOrIdentifier({ userId = null, identifier = null }) {
-	if (userId) {
-		const q = `
-			SELECT
-				id,
-				user_id,
-				identifier,
-				last_signin_at,
-				last_failed_signin_at,
-				failed_signin_count,
-				locked_until,
-				force_password_reset,
-				created_at,
-				updated_at
-			FROM auth_security
-			WHERE user_id = $1
-			LIMIT 1;
-		`;
+	const value = userId ?? identifier;
+	const column = userId ? 'user_id' : identifier ? 'identifier' : null;
 
-		const rows = await queryRows(q, [userId]);
-		return rows[0] ?? null;
-	}
+	if (!column) return null;
 
-	if (identifier) {
-		const q = `
-			SELECT
-				id,
-				user_id,
-				identifier,
-				last_signin_at,
-				last_failed_signin_at,
-				failed_signin_count,
-				locked_until,
-				force_password_reset,
-				created_at,
-				updated_at
-			FROM auth_security
-			WHERE identifier = $1
-			LIMIT 1;
-		`;
+	const q = `
+	SELECT
+		id,
+		user_id,
+		identifier,
+		last_signin_at,
+		last_failed_signin_at,
+		failed_signin_count,
+		locked_until,
+		force_password_reset,
+		created_at,
+		updated_at
+	FROM auth_security
+	WHERE ${column} = $1
+	LIMIT 1;
+`;
 
-		const rows = await queryRows(q, [identifier]);
-		return rows[0] ?? null;
-	}
-
-	return null;
+	const rows = await queryRows(q, [value]);
+	return rows[0] ?? null;
 }
 
 /**
  * Create an auth security row if none exists.
- *
- * Behavior:
- * - prefers userId lookup when available
- * - otherwise falls back to identifier lookup
- * - does nothing when both userId and identifier are missing
- *
- * Notes:
- * - keeps row creation explicit
- * - avoids duplicate rows during repeated auth attempts
  *
  * @param {{
  *   userId?: string | null,
@@ -146,37 +116,23 @@ async function createIfMissing({ userId = null, identifier = null }) {
  * @returns {Promise<void>}
  */
 async function recordFailedSignin({ userId = null, identifier = null }) {
-	await createIfMissing({
-		userId,
-		identifier,
-	});
+	await createIfMissing({ userId, identifier });
 
-	if (userId) {
-		const q = `
-			UPDATE auth_security
-			SET
-				failed_signin_count = failed_signin_count + 1,
-				last_failed_signin_at = NOW(),
-				updated_at = NOW()
-			WHERE user_id = $1;
-		`;
+	const value = userId ?? identifier;
+	const column = userId ? 'user_id' : identifier ? 'identifier' : null;
 
-		await query(q, [userId]);
-		return;
-	}
+	if (!column) return;
 
-	if (identifier) {
-		const q = `
-			UPDATE auth_security
-			SET
-				failed_signin_count = failed_signin_count + 1,
-				last_failed_signin_at = NOW(),
-				updated_at = NOW()
-			WHERE identifier = $1;
-		`;
+	const q = `
+		UPDATE auth_security
+		SET
+			failed_signin_count = failed_signin_count + 1,
+			last_failed_signin_at = NOW(),
+			updated_at = NOW()
+		WHERE ${column} = $1;
+	`;
 
-		await query(q, [identifier]);
-	}
+	await query(q, [value]);
 }
 
 /**
@@ -198,39 +154,24 @@ async function recordFailedSignin({ userId = null, identifier = null }) {
  * @returns {Promise<void>}
  */
 async function recordSuccessfulSignin({ userId = null, identifier = null }) {
-	await createIfMissing({
-		userId,
-		identifier,
-	});
+	await createIfMissing({ userId, identifier });
 
-	if (userId) {
-		const q = `
-			UPDATE auth_security
-			SET
-				last_signin_at = NOW(),
-				failed_signin_count = 0,
-				locked_until = NULL,
-				updated_at = NOW()
-			WHERE user_id = $1;
-		`;
+	const value = userId ?? identifier;
+	const column = userId ? 'user_id' : identifier ? 'identifier' : null;
 
-		await query(q, [userId]);
-		return;
-	}
+	if (!column) return;
 
-	if (identifier) {
-		const q = `
-			UPDATE auth_security
-			SET
-				last_signin_at = NOW(),
-				failed_signin_count = 0,
-				locked_until = NULL,
-				updated_at = NOW()
-			WHERE identifier = $1;
-		`;
+	const q = `
+		UPDATE auth_security
+		SET
+			last_signin_at = NOW(),
+			failed_signin_count = 0,
+			locked_until = NULL,
+			updated_at = NOW()
+		WHERE ${column} = $1;
+	`;
 
-		await query(q, [identifier]);
-	}
+	await query(q, [value]);
 }
 
 /**
@@ -255,35 +196,22 @@ async function setLockedUntil({
 	identifier = null,
 	lockedUntil,
 }) {
-	await createIfMissing({
-		userId,
-		identifier,
-	});
+	await createIfMissing({ userId, identifier });
 
-	if (userId) {
-		const q = `
-			UPDATE auth_security
-			SET
-				locked_until = $2,
-				updated_at = NOW()
-			WHERE user_id = $1;
-		`;
+	const value = userId ?? identifier;
+	const column = userId ? 'user_id' : identifier ? 'identifier' : null;
 
-		await query(q, [userId, lockedUntil]);
-		return;
-	}
+	if (!column) return;
 
-	if (identifier) {
-		const q = `
-			UPDATE auth_security
-			SET
-				locked_until = $2,
-				updated_at = NOW()
-			WHERE identifier = $1;
-		`;
+	const q = `
+		UPDATE auth_security
+		SET
+			locked_until = $2,
+			updated_at = NOW()
+		WHERE ${column} = $1;
+	`;
 
-		await query(q, [identifier, lockedUntil]);
-	}
+	await query(q, [value, lockedUntil]);
 }
 
 export default {
