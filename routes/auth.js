@@ -26,6 +26,7 @@ import {
 	validateRecoveryIntent,
 	validateResetPasswordQuery,
 	validateResetPassword,
+	validateSetUsername,
 } from '../middlewares/validators/auth.js';
 import { signupLocal } from '../controllers/auth/signupLocal.js';
 import { verifyEmail } from '../controllers/auth/verifyEmail.js';
@@ -40,6 +41,7 @@ import {
 import { googleCall, googleCallback } from '../controllers/auth/google.js';
 import { githubCall, githubCallback } from '../controllers/auth/github.js';
 import { discordCall, discordCallback } from '../controllers/auth/discord.js';
+import { setUsername } from '../controllers/auth/setUsername.js';
 
 const router = Router();
 
@@ -85,5 +87,8 @@ router.get('/github/callback', githubCallback);
 // Discord OAuth
 router.get('/discord', discordCall);
 router.get('/discord/callback', discordCallback);
+
+// Set Username
+router.post('/set-username', validateSetUsername, setUsername);
 
 export default router;

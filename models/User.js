@@ -312,6 +312,24 @@ export async function updateLocale(userId, locale) {
 	return result.rowCount > 0;
 }
 
+/**
+ * Update username for a specific user.
+ *
+ * @param {number} userId
+ * @param {string} username
+ * @returns {Promise<boolean>} true if user was updated, false otherwise
+ */
+export async function updateUsernameById(userId, username) {
+	const q = `
+		UPDATE users
+		SET username = $1, updated_at = NOW()
+		WHERE id = $2;
+	`;
+
+	const result = await queryRows(q, [username, userId]);
+	return result.rowCount > 0;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -324,4 +342,5 @@ export default {
 	findByIdForSession,
 	createOAuthUser,
 	updateLocale,
+	updateUsernameById,
 };

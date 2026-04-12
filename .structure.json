@@ -35,6 +35,7 @@
 			"google.js",
 			"recovery.js",
 			"resetPassword.js",
+			"setUsername.js",
 			"signinLocal.js",
 			"signout.js",
 			"signupLocal.js",

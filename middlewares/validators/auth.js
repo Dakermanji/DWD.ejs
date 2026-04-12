@@ -101,7 +101,7 @@ export const validateTokenAndLangQuery = (errorKey) => {
  * Uses shared token+lang validator with verify-email error message.
  */
 export const validateVerifyEmailQuery = validateTokenAndLangQuery(
-	'auth:error.verify_email_invalid_link',
+	`${ERROR_PREFIX}verify_email_invalid_link`,
 );
 
 /**
@@ -110,7 +110,7 @@ export const validateVerifyEmailQuery = validateTokenAndLangQuery(
  * Uses shared token+lang validator with reset-password error message.
  */
 export const validateResetPasswordQuery = validateTokenAndLangQuery(
-	'auth:error.reset_password_invalid_link',
+	`${ERROR_PREFIX}reset_password_invalid_link`,
 );
 
 /**
@@ -144,23 +144,23 @@ export function validateCompleteLocalSignup(req, res, next) {
 	const normalizedUsername = normalizeText(username);
 
 	if (!isValidToken(token)) {
-		errors.push('auth:error.verify_email_invalid_link');
+		errors.push(`${ERROR_PREFIX}verify_email_invalid_link`);
 	}
 
 	if (!isValidUsername(normalizedUsername)) {
-		errors.push('auth:error.username_invalid');
+		errors.push(`${ERROR_PREFIX}username_invalid`);
 	}
 
 	if (!validateNoProfanity(normalizedUsername)) {
-		errors.push('auth:error.username_profanity');
+		errors.push(`${ERROR_PREFIX}username_profanity`);
 	}
 
 	if (!isValidPassword(password)) {
-		errors.push('auth:error.password_weak');
+		errors.push(`${ERROR_PREFIX}password_weak`);
 	}
 
 	if (password !== confirmPassword) {
-		errors.push('auth:error.password_mismatch');
+		errors.push(`${ERROR_PREFIX}password_mismatch`);
 	}
 
 	req.body.token = normalizedToken;
@@ -307,5 +307,45 @@ export function validateResetPassword(req, res, next) {
 	}
 
 	req.body.token = normalizedToken;
+	next();
+}
+
+/**
+ * Validate set-username request for OAuth completion flow.
+ *
+ * Responsibilities:
+ * - ensure user is authenticated
+ * - block users who already completed username setup
+ * - validate username input using shared validator
+ * - normalize username before passing control forward
+ *
+ * Notes:
+ * - isValidUsername handles normalization internally for validation
+ * - username is normalized again before controller to keep a clean final value
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export function validateSetUsername(req, res, next) {
+	const user = req.user;
+	const username = req.body?.username;
+
+	// ensure the route is only used by authenticated users
+	if (!user) return fail(req, res, `${ERROR_PREFIX}auth_required`);
+
+	// block access if username was already completed before
+	if (user.username) return res.redirect('/');
+
+	// validate username input (normalization is handled inside isValidUsername)
+	if (!isValidUsername(username))
+		return fail(req, res, `${ERROR_PREFIX}username_invalid`, {
+			// reopen OAuth completion modal on validation failure
+			modal: 'complete_signup_oauth',
+		});
+
+	// store normalized username as the final canonical value
+	req.body.username = normalizeText(username);
+
 	next();
 }
