@@ -224,7 +224,7 @@ export function validateSetUsername(req, res, next) {
 			modal: 'complete_signup_oauth',
 		});
 
-	if (!validateNoProfanity(normalizedUsername))
+	if (!validateNoProfanity(username))
 		return fail(req, res, `${ERROR_PREFIX}username_profanity`, {
 			modal: 'complete_signup_oauth',
 		});

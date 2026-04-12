@@ -275,9 +275,21 @@ export async function updateLocale(userId, locale) {
 /**
  * Update username for a specific user.
  *
+ * Responsibilities:
+ * - persist a new username for the given user ID
+ * - handle duplicate username conflicts gracefully
+ * - update the modification timestamp
+ *
+ * Notes:
+ * - assumes username is already validated and normalized
+ * - rethrows unexpected database errors
+ *
  * @param {number} userId
  * @param {string} username
- * @returns {Promise<boolean>} true if user was updated, false otherwise
+ * @returns {Promise<{
+ *   success: boolean,
+ *   reason?: 'auth:error.username_taken'
+ * }>}
  */
 export async function updateUsernameById(userId, username) {
 	const q = `
@@ -286,8 +298,23 @@ export async function updateUsernameById(userId, username) {
 		WHERE id = $2;
 	`;
 
-	const result = await query(q, [username, userId]);
-	return result.rowCount > 0;
+	try {
+		const result = await query(q, [username, userId]);
+
+		return {
+			success: result.rowCount > 0,
+		};
+	} catch (error) {
+		// handle duplicate username from unique constraint
+		if (error.code === '23505') {
+			return {
+				success: false,
+				reason: 'auth:error.username_taken',
+			};
+		}
+
+		throw error;
+	}
 }
 
 /**
@@ -308,6 +335,24 @@ export async function updateLastSignIn(userId) {
 	return result.rowCount > 0;
 }
 
+/**
+ * Find a user by username.
+ *
+ * @param {string} username
+ * @returns {Promise<object|null>} user record or null if not found
+ */
+export async function findByUsername(username) {
+	const q = `
+		SELECT id, username
+		FROM users
+		WHERE username = $1
+		LIMIT 1;
+	`;
+
+	const result = await query(q, [username]);
+	return result.rows[0] || null;
+}
+
 export default {
 	findByEmailBasic,
 	createLocalPendingUser,
@@ -322,4 +367,5 @@ export default {
 	updateLocale,
 	updateUsernameById,
 	updateLastSignIn,
+	findByUsername,
 };

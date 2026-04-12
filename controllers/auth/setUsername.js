@@ -1,6 +1,7 @@
 //! controllers/auth/setUsername.js
 
 import { fail, success } from '../../services/http/response.js';
+import UserModel from '../../models/User.js';
 
 /**
  * Complete OAuth signup by assigning a unique username.
@@ -30,15 +31,22 @@ export async function setUsername(req, res, next) {
 
 		if (existingUser)
 			return fail(req, res, `auth:error.username_taken`, {
-				// reopen OAuth completion modal if username is unavailable
 				modal: 'complete_signup_oauth',
 			});
 
 		// persist username for current user
-		await UserModel.updateUsernameById(user.id, username);
+		const updateResult = await UserModel.updateUsernameById(
+			user.id,
+			username,
+		);
 
-		// notify success (user completed OAuth signup)
-		return success(req, res, `auth:signup.success`);
+		if (!updateResult.success)
+			return fail(req, res, updateResult.reason, {
+				modal: 'complete_signup_oauth',
+			});
+
+		// notify success after completing OAuth signup
+		return success(req, res, `auth:signup.completed`);
 	} catch (error) {
 		next(error);
 	}
