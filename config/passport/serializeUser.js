@@ -12,7 +12,7 @@
  * - Makes serialization easy to update later
  */
 
-import User from '../../models/User.js';
+import UserModel from '../../models/User.js';
 
 /**
  * Register Passport serializeUser and deserializeUser handlers.
@@ -30,7 +30,7 @@ function setupPassportSession(passport) {
 				return done(null, false);
 			}
 
-			const user = await User.findByIdForSession(userId);
+			const user = await UserModel.findByIdForSession(userId);
 
 			if (!user) {
 				return done(null, false);

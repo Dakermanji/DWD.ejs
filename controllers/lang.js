@@ -1,7 +1,7 @@
 //! controllers/lang.js
 
 import { SUPPORTED_LANGUAGE_SET } from '../config/languages.js';
-import User from '../models/User.js';
+import UserModel from '../models/User.js';
 import { setLangCookie } from '../services/i18n/locale.js';
 
 /**
@@ -32,7 +32,7 @@ export async function changeLanguage(req, res) {
 	setLangCookie(res, lang);
 
 	if (req.user && req.user.locale !== lang) {
-		await User.updateLocale(req.user.id, lang);
+		await UserModel.updateLocale(req.user.id, lang);
 	}
 
 	// Return the user to the previous page, or fallback to home

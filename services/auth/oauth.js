@@ -1,7 +1,7 @@
 //! services/auth/oauth.js
 
-import User from '../../models/User.js';
-import UserProvider from '../../models/UserProvider.js';
+import UserModel from '../../models/User.js';
+import UserProviderModel from '../../models/UserProvider.js';
 import { getLocale, setLangCookie } from '../i18n/locale.js';
 
 /**
@@ -103,28 +103,29 @@ export function createOAuthVerifyCallback({
 				return done(null, false);
 			}
 
-			const linkedUser = await UserProvider.findUserByProviderAccount(
-				provider,
-				String(providerUserId),
-			);
+			const linkedUser =
+				await UserProviderModel.findUserByProviderAccount(
+					provider,
+					String(providerUserId),
+				);
 
 			if (linkedUser) {
 				return done(null, linkedUser);
 			}
 
-			let user = await User.findByEmailBasic(email);
+			let user = await UserModel.findByEmailBasic(email);
 
 			if (!user) {
-				user = await User.createOAuthUser(email, locale, true);
+				user = await UserModel.createOAuthUser(email, locale, true);
 			}
 
-			await UserProvider.createLink(
+			await UserProviderModel.createLink(
 				user.id,
 				provider,
 				String(providerUserId),
 			);
 
-			const sessionUser = await User.findByIdForSession(user.id);
+			const sessionUser = await UserModel.findByIdForSession(user.id);
 
 			if (!sessionUser) {
 				return done(null, false);
