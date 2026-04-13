@@ -54,3 +54,16 @@ export const isSafeString = (value, max) =>
 
 /** Validate language code (2-letter ISO) */
 export const isValidLang = (lang) => /^[a-z]{2}$/.test(lang);
+
+/** sanitizeReturnTo */
+export const sanitizeReturnTo = (value) => {
+	if (typeof value !== 'string') return '/';
+
+	// must start with / and not //
+	if (!value.startsWith('/') || value.startsWith('//')) return '/';
+
+	// prevent protocol injection
+	if (value.includes('://')) return '/';
+
+	return value;
+};
