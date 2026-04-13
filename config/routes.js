@@ -11,6 +11,7 @@ import { Router } from 'express';
 import homeRoutes from '../routes/home.js';
 import langRoutes from '../routes/lang.js';
 import authRoutes from '../routes/auth.js';
+import socialRoutes from '../routes/social.js';
 
 const router = Router();
 
@@ -22,5 +23,8 @@ router.use('/language', langRoutes);
 
 // Auth routes
 router.use('/auth', authRoutes);
+
+// Social routes
+router.use('/social', socialRoutes);
 
 export default router;

@@ -41,6 +41,7 @@
 			"signupLocal.js",
 			"verifyEmail.js"
 		],
+		"social": ["followRequest.js"],
 		"~": ["home.js", "lang.js"]
 	},
 	"locales": {
@@ -68,7 +69,7 @@
 	},
 	"middlewares": {
 		"profanity": ["customWords.js", "index.js"],
-		"validators": ["auth.js", "common.js", "token.js"],
+		"validators": ["auth.js", "common.js", "social.js", "token.js"],
 		"~": [
 			"errorHandler.js",
 			"flash.js",
@@ -166,7 +167,7 @@
 			]
 		}
 	},
-	"routes": ["auth.js", "home.js", "lang.js"],
+	"routes": ["auth.js", "home.js", "lang.js", "social.js"],
 	"services": {
 		"auth": [
 			"email.js",
