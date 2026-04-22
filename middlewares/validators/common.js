@@ -10,6 +10,8 @@ const USERNAME_REGEX = /^[a-zA-Z0-9_.-]{3,20}$/;
 const PASSWORD_REGEX =
 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@$%^&*()\[\]{}\-_=<>.,:;'"\~`#\\|\/+])[A-Za-z\d!@$%^&*()\[\]{}\-_=<>.,:;'"\~`#\\|\/+]{8,}$/;
 
+export const MAX_IDENTIFIER_LENGTH = 254;
+
 /** Normalize email (trim + lowercase) */
 export const normalizeEmail = (email) =>
 	String(email ?? '')
@@ -55,15 +57,51 @@ export const isSafeString = (value, max) =>
 /** Validate language code (2-letter ISO) */
 export const isValidLang = (lang) => /^[a-z]{2}$/.test(lang);
 
-/** sanitizeReturnTo */
+/**
+ * Sanitize a redirect path and keep it internal-only.
+ *
+ * @param {unknown} value
+ * @returns {string}
+ */
 export const sanitizeReturnTo = (value) => {
 	if (typeof value !== 'string') return '/';
 
-	// must start with / and not //
-	if (!value.startsWith('/') || value.startsWith('//')) return '/';
+	const normalizedValue = value.trim();
 
-	// prevent protocol injection
-	if (value.includes('://')) return '/';
+	if (!normalizedValue.startsWith('/') || normalizedValue.startsWith('//'))
+		return '/';
 
-	return value;
+	if (normalizedValue.includes('://')) return '/';
+
+	return normalizedValue;
+};
+
+/**
+ * Parse an identifier as either email or username.
+ *
+ * @param {unknown} value
+ * @returns {{ identifier: string, identifierType: 'email' | 'username' } | null}
+ */
+export const parseIdentifier = (value) => {
+	if (!isSafeString(value, MAX_IDENTIFIER_LENGTH)) return null;
+
+	const email = normalizeEmail(value);
+
+	if (isValidEmail(email) && isSafeEmail(email)) {
+		return {
+			identifier: email,
+			identifierType: 'email',
+		};
+	}
+
+	const username = normalizeText(value);
+
+	if (isValidUsername(username)) {
+		return {
+			identifier: username,
+			identifierType: 'username',
+		};
+	}
+
+	return null;
 };

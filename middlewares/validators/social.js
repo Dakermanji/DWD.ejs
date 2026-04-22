@@ -1,6 +1,6 @@
 //! middlewares/validators/social.js
 
-import { sanitizeReturnTo } from './common.js';
+import { parseIdentifier, sanitizeReturnTo } from './common.js';
 import { fail } from '../../services/http/response.js';
 
 const ERROR_PREFIX = 'social:error.';
@@ -11,39 +11,36 @@ const ERROR_PREFIX = 'social:error.';
  * Responsibilities:
  * - validate identifier (username or email)
  * - normalize input
+ * - sanitize returnTo for safe internal redirect
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
  */
 export function validateFollowRequest(req, res, next) {
-	const identifierRaw = req.body?.identifier;
-	const KEY = `${ERROR_PREFIX}invalid_identifier`;
-	const returnToRaw = req.body?.returnTo;
-	req.body.returnTo = sanitizeReturnTo(returnToRaw);
+	const key = `${ERROR_PREFIX}invalid_identifier`;
 
 	try {
-		if (!req.user) return fail(req, res, 'auth:error.not_auth');
-		if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH))
-			return fail(req, res, KEY, { modal: 'social' });
+		req.body.returnTo = sanitizeReturnTo(req.body?.returnTo);
 
-		const email = normalizeEmail(identifierRaw);
+		if (!req.user)
+			return fail(req, res, 'auth:error.auth_required', {
+				to: req.body.returnTo,
+			});
 
-		if (isValidEmail(email) && isSafeEmail(email)) {
-			req.body.identifier = email;
-			req.body.identifierType = 'email';
-			return next();
+		const parsedIdentifier = parseIdentifier(req.body?.identifier);
+
+		if (!parsedIdentifier) {
+			return fail(req, res, key, {
+				modal: 'social',
+				to: req.body.returnTo,
+			});
 		}
 
-		const username = normalizeText(identifierRaw);
+		req.body.identifier = parsedIdentifier.identifier;
+		req.body.identifierType = parsedIdentifier.identifierType;
 
-		if (isValidUsername(username)) {
-			req.body.identifier = username;
-			req.body.identifierType = 'username';
-			return next();
-		}
-
-		return fail(req, res, KEY, { modal: 'social' });
+		next();
 	} catch (error) {
 		next(error);
 	}

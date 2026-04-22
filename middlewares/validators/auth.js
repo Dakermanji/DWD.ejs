@@ -3,12 +3,13 @@
 import {
 	isSafeEmail,
 	isValidEmail,
-	isValidUsername,
 	isValidPassword,
 	normalizeText,
 	normalizeEmail,
 	isSafeString,
 	isValidLang,
+	isValidUsername,
+	parseIdentifier,
 } from './common.js';
 import { isValidToken, normalizeToken } from './token.js';
 import { validateNoProfanity } from '../profanity/index.js';
@@ -16,7 +17,6 @@ import { fail } from '../../services/http/response.js';
 
 const ERROR_PREFIX = 'auth:error.';
 
-const MAX_IDENTIFIER_LENGTH = 254;
 const MAX_PASSWORD_LENGTH = 1024;
 
 /**
@@ -125,33 +125,19 @@ export function validateCompleteLocalSignup(req, res, next) {
 export function validateSignIn(req, res, next) {
 	const identifierRaw = req.body?.identifier;
 	const passwordRaw = req.body?.password;
-	const KEY = `${ERROR_PREFIX}invalid_credentials`;
-
-	if (!isSafeString(identifierRaw, MAX_IDENTIFIER_LENGTH))
-		return fail(req, res, KEY, { modal: 'signin' });
+	const key = `${ERROR_PREFIX}invalid_credentials`;
 
 	if (!isSafeString(passwordRaw, MAX_PASSWORD_LENGTH))
-		return fail(req, res, KEY, { modal: 'signin' });
+		return fail(req, res, key, { modal: 'signin' });
 
-	const email = normalizeEmail(identifierRaw);
+	const parsedIdentifier = parseIdentifier(identifierRaw);
 
-	if (isValidEmail(email) && isSafeEmail(email)) {
-		req.body.identifier = email;
-		req.body.identifierType = 'email';
-		req.body.password = passwordRaw;
-		return next();
-	}
+	if (!parsedIdentifier) return fail(req, res, key, { modal: 'signin' });
 
-	const username = normalizeText(identifierRaw);
-
-	if (isValidUsername(username)) {
-		req.body.identifier = username;
-		req.body.identifierType = 'username';
-		req.body.password = passwordRaw;
-		return next();
-	}
-
-	return fail(req, res, KEY, { modal: 'signin' });
+	req.body.identifier = parsedIdentifier.identifier;
+	req.body.identifierType = parsedIdentifier.identifierType;
+	req.body.password = passwordRaw;
+	next();
 }
 
 export const validateSignupEmail = (req, res, next) =>
@@ -213,7 +199,7 @@ export function validateResetPassword(req, res, next) {
 
 export function validateSetUsername(req, res, next) {
 	const user = req.user;
-	const username = req.body?.username;
+	const username = normalizeText(req.body?.username);
 
 	if (!user) return fail(req, res, `${ERROR_PREFIX}auth_required`);
 
@@ -229,6 +215,6 @@ export function validateSetUsername(req, res, next) {
 			modal: 'complete_signup_oauth',
 		});
 
-	req.body.username = normalizeText(username);
+	req.body.username = username;
 	next();
 }
