@@ -1,6 +1,12 @@
 {
 	"followRequest": {
 		"title": "Send a follow request",
-		"placeholder": "Username or email"
+		"placeholder": "Username or email",
+		"success": "If possible, your follow request has been sent."
+	},
+	"error": {
+		"cannot_follow_self": "You cannot follow yourself.",
+		"you_blocked_this_user": "You have blocked this user. Remove the block first.",
+		"already_following": "You are already following this user."
 	}
 }

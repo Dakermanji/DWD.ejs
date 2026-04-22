@@ -1,6 +1,12 @@
 {
 	"followRequest": {
 		"title": "Envoyer une demande de suivi",
-		"placeholder": "Nom d'utilisateur ou email"
+		"placeholder": "Nom d'utilisateur ou email",
+		"success": "Si possible, votre demande de suivi a été envoyée."
+	},
+	"error": {
+		"cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",
+		"you_blocked_this_user": "Vous avez bloqué cet utilisateur. Supprimez le blocage d’abord.",
+		"already_following": "Vous suivez déjà cet utilisateur."
 	}
 }
