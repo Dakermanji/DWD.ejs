@@ -343,7 +343,7 @@ export async function updateLastSignIn(userId) {
  */
 export async function findByUsername(username) {
 	const q = `
-		SELECT id, username
+		SELECT id, username, email
 		FROM users
 		WHERE username = $1
 		LIMIT 1;
