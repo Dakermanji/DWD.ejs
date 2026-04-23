@@ -92,30 +92,7 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="accordion-item">
-				<h3 class="accordion-header">
-					<button
-						class="accordion-button collapsed"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#socialNotifications"
-						aria-expanded="false"
-						aria-controls="socialNotifications"
-					>
-						Notifications
-					</button>
-				</h3>
-				<div
-					id="socialNotifications"
-					class="accordion-collapse collapse"
-					data-bs-parent="#socialAccordion"
-				>
-					<div class="accordion-body">
-						<!-- notifications content -->
-					</div>
-				</div>
-			</div>
+			<%- include('./_notifications') %>
 		</div>
 	</div>
 </div>

@@ -41,7 +41,7 @@
 			"signupLocal.js",
 			"verifyEmail.js"
 		],
-		"social": ["followRequest.js"],
+		"social": ["followRequest.js", "notifications.js"],
 		"~": ["home.js", "lang.js"]
 	},
 	"locales": {
@@ -166,6 +166,7 @@
 				"dropdownMenu.js",
 				"flash.js",
 				"modals.js",
+				"social.js",
 				"theme.js",
 				"tooltips.js"
 			]
@@ -241,7 +242,7 @@
 			]
 		},
 		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
-		"social": ["_follow_request.ejs", "main.ejs"],
+		"social": ["_follow_request.ejs", "_notifications.ejs", "main.ejs"],
 		"~": ["error.ejs"]
 	},
 	"~": [

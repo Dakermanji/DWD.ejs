@@ -4,6 +4,14 @@
 		"placeholder": "Nom d'utilisateur ou email",
 		"success": "Si possible, votre demande de suivi a été envoyée."
 	},
+	"notifications": {
+		"title": "Notifications",
+		"loading": "Chargement des notifications...",
+		"empty": "Aucune notification pour le moment.",
+		"error": "Impossible de charger les notifications.",
+		"follow_request": "vous a envoyé une demande de suivi.",
+		"someone": "Quelqu’un"
+	},
 	"error": {
 		"cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",
 		"you_blocked_this_user": "Vous avez bloqué cet utilisateur. Supprimez le blocage d’abord.",

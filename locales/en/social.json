@@ -4,6 +4,14 @@
 		"placeholder": "Username or email",
 		"success": "If possible, your follow request has been sent."
 	},
+	"notifications": {
+		"title": "Notifications",
+		"loading": "Loading notifications...",
+		"empty": "No notifications yet.",
+		"error": "Could not load notifications.",
+		"follow_request": "sent you a follow request.",
+		"someone": "Someone"
+	},
 	"error": {
 		"cannot_follow_self": "You cannot follow yourself.",
 		"you_blocked_this_user": "You have blocked this user. Remove the block first.",

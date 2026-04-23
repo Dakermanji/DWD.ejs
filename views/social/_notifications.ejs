@@ -1,0 +1,33 @@
+<!--! views/social/_notifications.ejs -->
+<div
+	class="accordion-item"
+>
+	<h3 class="accordion-header">
+		<button
+			class="accordion-button collapsed"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#socialNotifications"
+			aria-expanded="false"
+			aria-controls="socialNotifications"
+		>
+			<%= t('social:notifications.title') %>
+		</button>
+	</h3>
+	<div
+		id="socialNotifications"
+		class="accordion-collapse collapse"
+		data-bs-parent="#socialAccordion"
+	>
+		<div
+			class="accordion-body"
+			id="socialNotificationsBody"
+			data-url="/social/notifications"
+			data-loading-label="<%= t('social:notifications.loading') %>"
+			data-empty-label="<%= t('social:notifications.empty') %>"
+			data-error-label="<%= t('social:notifications.error') %>"
+			data-follow-request-label="<%= t('social:notifications.follow_request') %>"
+			data-someone-label="<%= t('social:notifications.someone') %>"
+		></div>
+	</div>
+</div>
