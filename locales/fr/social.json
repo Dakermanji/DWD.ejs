@@ -2,7 +2,8 @@
 	"followRequest": {
 		"title": "Envoyer une demande de suivi",
 		"placeholder": "Nom d'utilisateur ou email",
-		"success": "Si possible, votre demande de suivi a été envoyée."
+		"success": "Si possible, votre demande de suivi a été envoyée.",
+		"following_now": "Vous suivez maintenant cet utilisateur."
 	},
 	"notifications": {
 		"title": "Notifications",
@@ -10,7 +11,16 @@
 		"empty": "Aucune notification pour le moment.",
 		"error": "Impossible de charger les notifications.",
 		"follow_request": "vous a envoyé une demande de suivi.",
-		"someone": "Quelqu’un"
+		"follow_started": "vous suit maintenant.",
+		"someone": "Quelqu’un",
+		"action_error": "Impossible de mettre à jour cette notification.",
+		"actions": {
+			"accept": "Accepter",
+			"follow_back": "Accepter et suivre en retour",
+			"decline": "Refuser",
+			"block": "Bloquer",
+			"ignore": "Ignorer"
+		}
 	},
 	"error": {
 		"cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",

@@ -23,6 +23,7 @@ BEGIN
 		WHERE typname = 'user_social_notification_type'
 	) THEN
 		CREATE TYPE user_social_notification_type AS ENUM (
+			'follow_started',
 			'follow_request',
 			'follow_request_accepted',
 			'follow_request_rejected'
