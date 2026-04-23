@@ -8,6 +8,7 @@ import UserSocialNotificationsModel from '../../models/UserSocialNotifications.j
 import { fail, success } from '../../services/http/response.js';
 
 const GENERIC_SUCCESS_KEY = 'social:followRequest.success';
+const FOLLOWING_NOW_SUCCESS_KEY = 'social:followRequest.following_now';
 const ERROR_PREFIX = 'social:error.';
 
 /**
@@ -94,33 +95,94 @@ export async function followRequest(req, res, next) {
 			});
 		}
 
-		// 8. Existing pending request
-		const pendingRequest = await UserFollowRequestsModel.findPending(
+		// 8. Existing pending request by sender
+		const senderPendingRequest = await UserFollowRequestsModel.findPending(
 			senderId,
 			receiverId,
 		);
-		if (pendingRequest) {
+		if (senderPendingRequest) {
 			return success(req, res, GENERIC_SUCCESS_KEY, {
 				modal: 'social',
 				to: returnTo,
 			});
 		}
 
-		// 9. Create follow request
+		// 9. Existing pending request by receiver -> accept it and follow back
+		const receiverPendingRequest = await UserFollowRequestsModel.findPending(
+			receiverId,
+			senderId,
+		);
+		if (receiverPendingRequest) {
+			const accepted = await UserFollowRequestsModel.accept(
+				receiverPendingRequest.id,
+				senderId,
+			);
+			if (!accepted) {
+				throw new Error(
+					'Could not accept reverse pending follow request',
+				);
+			}
+
+			await UserFollowsModel.create(receiverId, senderId);
+			await UserFollowsModel.create(senderId, receiverId);
+			await UserSocialNotificationsModel.markFollowRequestNotificationsAsReadAndHandled(
+				receiverPendingRequest.id,
+				senderId,
+			);
+
+			await UserSocialNotificationsModel.create({
+				recipientId: receiverId,
+				actorId: senderId,
+				type: 'follow_started',
+			});
+
+			return success(req, res, FOLLOWING_NOW_SUCCESS_KEY, {
+				modal: 'social',
+				to: returnTo,
+			});
+		}
+
+		// 10. Receiver already follows sender -> follow immediately
+		const receiverAlreadyFollowingSender = await UserFollowsModel.exists(
+			receiverId,
+			senderId,
+		);
+		if (receiverAlreadyFollowingSender) {
+			await UserFollowsModel.create(senderId, receiverId);
+
+			await UserSocialNotificationsModel.create({
+				recipientId: receiverId,
+				actorId: senderId,
+				type: 'follow_started',
+			});
+
+			return success(req, res, FOLLOWING_NOW_SUCCESS_KEY, {
+				modal: 'social',
+				to: returnTo,
+			});
+		}
+
+		// 11. Create follow request
 		const followRequest = await UserFollowRequestsModel.create({
 			requesterId: senderId,
 			targetId: receiverId,
 		});
+		if (!followRequest) {
+			throw new Error('Could not create follow request');
+		}
 
-		// 10. Create social notification
-		await UserSocialNotificationsModel.create({
+		// 12. Create social notification
+		const notification = await UserSocialNotificationsModel.create({
 			recipientId: receiverId,
 			actorId: senderId,
 			type: 'follow_request',
 			followRequestId: followRequest.id,
 		});
+		if (!notification) {
+			throw new Error('Could not create follow request notification');
+		}
 
-		// 11. Success
+		// 13. Success
 		return success(req, res, GENERIC_SUCCESS_KEY, {
 			modal: 'social',
 			to: returnTo,

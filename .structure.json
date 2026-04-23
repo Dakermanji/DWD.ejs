@@ -41,7 +41,7 @@
 			"signupLocal.js",
 			"verifyEmail.js"
 		],
-		"social": ["followRequest.js", "notifications.js"],
+		"social": ["actions.js", "followRequest.js", "notifications.js"],
 		"~": ["home.js", "lang.js"]
 	},
 	"locales": {
