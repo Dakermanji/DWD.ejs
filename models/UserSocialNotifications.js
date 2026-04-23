@@ -207,6 +207,35 @@ export async function markAsReadAndHandled(notificationId, recipientId) {
 	return result.rowCount > 0;
 }
 
+/**
+ * Mark follow-request notifications as read and handled for one recipient.
+ *
+ * @param {string} followRequestId
+ * @param {string} recipientId
+ * @returns {Promise<boolean>}
+ */
+export async function markFollowRequestNotificationsAsReadAndHandled(
+	followRequestId,
+	recipientId,
+) {
+	const q = `
+		UPDATE user_social_notifications
+		SET
+			is_read = TRUE,
+			read_at = COALESCE(read_at, NOW()),
+			is_handled = TRUE,
+			handled_at = COALESCE(handled_at, NOW()),
+			updated_at = NOW()
+		WHERE follow_request_id = $1
+			AND recipient_id = $2
+			AND type = 'follow_request'
+			AND is_handled = FALSE;
+	`;
+
+	const result = await query(q, [followRequestId, recipientId]);
+	return result.rowCount > 0;
+}
+
 export default {
 	create,
 	findByRecipient,
@@ -214,4 +243,5 @@ export default {
 	markAsRead,
 	markAsHandled,
 	markAsReadAndHandled,
+	markFollowRequestNotificationsAsReadAndHandled,
 };
