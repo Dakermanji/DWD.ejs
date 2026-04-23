@@ -125,7 +125,10 @@ export async function findActionableByIdForRecipient(
 		WHERE usn.id = $1
 			AND usn.recipient_id = $2
 			AND usn.is_handled = FALSE
-			AND ufr.status = 'pending'
+			AND (
+				(usn.type = 'follow_request' AND ufr.status = 'pending')
+				OR usn.type = 'follow_started'
+			)
 		LIMIT 1;
 	`;
 
@@ -179,10 +182,36 @@ export async function markAsHandled(notificationId, recipientId) {
 	return result.rowCount > 0;
 }
 
+/**
+ * Mark one notification as read and handled for its recipient.
+ *
+ * @param {string} notificationId
+ * @param {string} recipientId
+ * @returns {Promise<boolean>}
+ */
+export async function markAsReadAndHandled(notificationId, recipientId) {
+	const q = `
+		UPDATE user_social_notifications
+		SET
+			is_read = TRUE,
+			read_at = COALESCE(read_at, NOW()),
+			is_handled = TRUE,
+			handled_at = COALESCE(handled_at, NOW()),
+			updated_at = NOW()
+		WHERE id = $1
+			AND recipient_id = $2
+			AND is_handled = FALSE;
+	`;
+
+	const result = await query(q, [notificationId, recipientId]);
+	return result.rowCount > 0;
+}
+
 export default {
 	create,
 	findByRecipient,
 	findActionableByIdForRecipient,
 	markAsRead,
 	markAsHandled,
+	markAsReadAndHandled,
 };
