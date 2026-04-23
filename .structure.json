@@ -21,7 +21,7 @@
 			"logger.js",
 			"mailer.js",
 			"middlewares.js",
-			"navbar",
+			"navbar.js",
 			"process.js",
 			"routes.js",
 			"views.js"
@@ -46,21 +46,21 @@
 	},
 	"locales": {
 		"ar": [
-			"authjson",
+			"auth.json",
 			"common.json",
 			"home.json",
 			"layout.json",
 			"social.json"
 		],
 		"en": [
-			"authjson",
+			"auth.json",
 			"common.json",
 			"home.json",
 			"layout.json",
 			"social.json"
 		],
 		"fr": [
-			"authjson",
+			"auth.json",
 			"common.json",
 			"home.json",
 			"layout.json",
@@ -91,7 +91,11 @@
 		"AuthToken.js",
 		"SignupSecurity.js",
 		"User.js",
-		"UserProvider.js"
+		"UserBlocks.js",
+		"UserFollowRequests.js",
+		"UserFollows.js",
+		"UserProvider.js",
+		"UserSocialNotifications.js"
 	],
 	"node_modules": [],
 	"patches": ["connect-flash+0.1.1.patch", "passport-oauth2+1.8.0.patch"],
@@ -105,7 +109,7 @@
 				"portfolio.css",
 				"services.css"
 			],
-			"modals": ["auth-tabs.json", "main.css"],
+			"modals": ["auth-tabs.css", "main.css"],
 			"partials": ["brands.css"],
 			"root": [
 				"base.css",
@@ -200,7 +204,7 @@
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
-		"Home": [
+		"home": [
 			"_about.ejs",
 			"_contact.ejs",
 			"_hero.ejs",
@@ -236,7 +240,7 @@
 				"_setPassword.ejs"
 			]
 		},
-		"partials": ["_csrf", "_discord.ejs", "_github.ejs", "_google.ejs"],
+		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
 		"social": ["_follow_request.ejs", "main.ejs"],
 		"~": ["error.ejs"]
 	},
