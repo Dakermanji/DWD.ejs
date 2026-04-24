@@ -78,6 +78,7 @@ export async function findByRecipient(recipientId, limit = 20, offset = 0) {
 		SELECT
 			${baseFieldsWithAlias('usn')},
 			u.username AS actor_username,
+			u.email AS actor_email,
 			ufr.requester_id,
 			ufr.target_id,
 			ufr.status AS follow_request_status
@@ -114,6 +115,7 @@ export async function findActionableByIdForRecipient(
 		SELECT
 			${baseFieldsWithAlias('usn')},
 			u.username AS actor_username,
+			u.email AS actor_email,
 			ufr.requester_id,
 			ufr.target_id,
 			ufr.status AS follow_request_status

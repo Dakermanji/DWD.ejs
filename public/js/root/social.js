@@ -64,6 +64,7 @@ function renderNotifications(notifications) {
 	}
 
 	notificationsBody.appendChild(list);
+	initTooltipsIn(notificationsBody);
 }
 
 function createNotificationItem(notification) {
@@ -72,7 +73,7 @@ function createNotificationItem(notification) {
 
 	const title = document.createElement('div');
 	title.className = 'fw-semibold pe-4';
-	title.textContent = buildNotificationTitle(notification);
+	title.append(...buildNotificationTitleParts(notification));
 
 	const meta = document.createElement('div');
 	meta.className = 'small text-body-secondary mt-1';
@@ -94,19 +95,38 @@ function createNotificationItem(notification) {
 	return item;
 }
 
-function buildNotificationTitle(notification) {
+function buildNotificationTitleParts(notification) {
 	const actorName =
 		notification.actor_username || notificationsBody.dataset.someoneLabel;
+	const actor = document.createElement('span');
+	actor.className = 'social-notification-actor';
+	actor.textContent = actorName;
+
+	if (notification.actor_email) {
+		actor.classList.add('has-tooltip');
+		actor.dataset.bsTitle = notification.actor_email;
+		actor.tabIndex = 0;
+	}
 
 	if (notification.type === 'follow_request') {
-		return `${actorName} ${notificationsBody.dataset.followRequestLabel}`;
+		return [
+			actor,
+			document.createTextNode(
+				` ${notificationsBody.dataset.followRequestLabel}`,
+			),
+		];
 	}
 
 	if (notification.type === 'follow_started') {
-		return `${actorName} ${notificationsBody.dataset.followStartedLabel}`;
+		return [
+			actor,
+			document.createTextNode(
+				` ${notificationsBody.dataset.followStartedLabel}`,
+			),
+		];
 	}
 
-	return actorName;
+	return [actor];
 }
 
 function formatNotificationDate(value) {
@@ -256,7 +276,7 @@ function createActionButton(config) {
 		: `social-action ${config.className} has-tooltip`;
 	button.dataset.socialAction = config.payload.name;
 	button.dataset.socialPayload = JSON.stringify(config.payload);
-	button.setAttribute('title', config.label);
+	button.dataset.bsTitle = config.label;
 	button.setAttribute('aria-label', config.label);
 
 	const icon = document.createElement('i');
@@ -269,11 +289,6 @@ function createActionButton(config) {
 		text.textContent = config.label;
 		button.appendChild(text);
 	}
-
-	bootstrap.Tooltip.getOrCreateInstance(button, {
-		trigger: 'hover',
-		delay: { show: 1000, hide: 0 },
-	});
 
 	return button;
 }

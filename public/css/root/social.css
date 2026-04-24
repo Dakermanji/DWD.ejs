@@ -135,7 +135,8 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	border-color: var(--border-subtle);
 	transition:
 		background-color var(--transition-time-method),
-		border-color var(--transition-time-method);
+		border-color var(--transition-time-method),
+		transform var(--transition-time-method);
 }
 
 #socialNotificationsBody .list-group-item:hover {
@@ -148,6 +149,26 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 
 #socialNotificationsBody .text-body-secondary {
 	color: var(--color-text-muted) !important;
+}
+
+.social-notification-actor {
+	color: var(--color-primary);
+	text-decoration: underline;
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--color-primary) 38%,
+		transparent
+	);
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.16em;
+	cursor: help;
+}
+
+.social-notification-actor:hover,
+.social-notification-actor:focus-visible {
+	color: var(--color-secondary);
+	outline: none;
+	text-decoration-color: currentColor;
 }
 
 #socialNotificationsBody .spinner-border {
@@ -176,8 +197,7 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	transition:
 		color var(--transition-time-method),
 		background-color var(--transition-time-method),
-		border-color var(--transition-time-method),
-		transform var(--transition-time-method);
+		border-color var(--transition-time-method);
 }
 
 .social-action:hover,
@@ -185,7 +205,6 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	color: var(--color-text-inverse);
 	background-color: var(--social-action-color);
 	border-color: var(--social-action-color);
-	transform: translateY(-1px);
 }
 
 .social-action:disabled {

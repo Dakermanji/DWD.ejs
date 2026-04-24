@@ -93,6 +93,7 @@ h6 {
 	--bs-tooltip-padding-x: 0.5rem;
 	--bs-tooltip-padding-y: 0.35rem;
 	--bs-tooltip-opacity: 0.98;
+	z-index: 10050;
 }
 
 [data-theme='dark'] .tooltip {

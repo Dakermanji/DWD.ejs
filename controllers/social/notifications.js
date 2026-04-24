@@ -56,6 +56,7 @@ function serializeNotification(notification) {
 		type: notification.type,
 		actor_id: notification.actor_id,
 		actor_username: notification.actor_username,
+		actor_email: notification.actor_email,
 		follow_request_id: notification.follow_request_id,
 		follow_request_status: notification.follow_request_status,
 		created_at: notification.created_at,
