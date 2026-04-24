@@ -78,7 +78,7 @@
 	animation: mouse-dot-fade 700ms ease-out forwards;
 	will-change: transform, opacity;
 	pointer-events: none;
-	z-index: 9999;
+	z-index: 2000;
 }
 
 section {

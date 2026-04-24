@@ -1,21 +1,248 @@
 /*! public/css/root/social.css */
 
-.social-panel {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	width: 320px;
-	z-index: 1050;
-	transform: translateX(-100%);
+#socialPanel {
+	color: var(--color-text-body);
+	background:
+		linear-gradient(
+			180deg,
+			color-mix(in srgb, var(--color-secondary) 10%, transparent),
+			transparent 12rem
+		),
+		var(--bg-section);
+	border-color: var(--border-soft);
+	box-shadow: var(--shadow-card);
+	z-index: 9999;
 }
 
-html[dir='rtl'] .social-panel {
+html[dir='rtl'] #socialPanel {
 	right: 0;
 	left: auto;
-	transform: translateX(100%);
 }
 
-html[dir='ltr'] .social-panel {
+html[dir='ltr'] #socialPanel {
 	left: 0;
 	right: auto;
+}
+
+#socialPanel .offcanvas-header {
+	border-bottom: 1px solid var(--border-soft);
+	background-color: color-mix(in srgb, var(--bg-section) 88%, transparent);
+}
+
+html[dir='rtl'] .offcanvas-header .btn-close {
+	margin-left: calc(-0.5 * var(--bs-offcanvas-padding-x));
+	margin-right: auto;
+}
+
+#socialPanel .offcanvas-title {
+	color: var(--color-primary);
+	font-family: var(--font-family-headers);
+	font-weight: 600;
+	text-shadow: var(--shadow-text-soft);
+}
+
+#socialPanel .offcanvas-body {
+	background-color: var(--bg-section);
+}
+
+#socialPanel .form-control {
+	color: var(--color-text-body);
+	background-color: var(--bg-card);
+	border-color: var(--border-soft);
+}
+
+#socialPanel .form-control::placeholder {
+	color: var(--color-text-muted);
+}
+
+#socialPanel .form-control:focus {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 0.2rem
+		color-mix(in srgb, var(--color-primary) 24%, transparent);
+}
+
+#socialPanel .input-group .btn-primary {
+	color: var(--color-text-inverse);
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
+}
+
+#socialPanel .input-group .btn-primary:hover,
+#socialPanel .input-group .btn-primary:focus-visible {
+	background-color: var(--color-primary-hover);
+	border-color: var(--color-primary-hover);
+}
+
+#socialAccordion {
+	border: 1px solid var(--border-soft);
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+	background-color: var(--bg-card);
+}
+
+#socialAccordion .accordion-item {
+	color: var(--color-text-body);
+	background-color: var(--bg-card);
+	border-color: var(--border-soft);
+}
+
+#socialAccordion .accordion-button {
+	color: var(--color-text-body);
+	background-color: var(--bg-card);
+	box-shadow: none;
+	transition:
+		color var(--transition-time-method),
+		background-color var(--transition-time-method);
+}
+
+#socialAccordion .accordion-button:hover {
+	color: var(--color-secondary);
+	background-color: var(--bg-pill-hover);
+}
+
+html[dir='rtl'] #socialPanel .accordion-button::after {
+	margin-right: auto;
+	margin-left: 0;
+}
+
+#socialAccordion .accordion-button:not(.collapsed) {
+	color: var(--color-primary);
+	background-color: color-mix(
+		in srgb,
+		var(--color-primary) 14%,
+		var(--bg-card)
+	);
+	box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
+	box-shadow: inset -3px 0 0 var(--color-primary);
+}
+
+#socialAccordion .accordion-body {
+	color: var(--color-text-body);
+	background-color: var(--bg-card);
+}
+
+#socialNotificationsBody .list-group {
+	background-color: transparent;
+}
+
+#socialNotificationsBody .list-group-item {
+	padding: 0.5rem;
+	color: var(--color-text-body);
+	background-color: transparent;
+	border-color: var(--border-subtle);
+	transition:
+		background-color var(--transition-time-method),
+		border-color var(--transition-time-method);
+}
+
+#socialNotificationsBody .list-group-item:hover {
+	background-color: color-mix(
+		in srgb,
+		var(--color-secondary) 8%,
+		transparent
+	);
+}
+
+#socialNotificationsBody .text-body-secondary {
+	color: var(--color-text-muted) !important;
+}
+
+#socialNotificationsBody .spinner-border {
+	color: var(--color-primary) !important;
+}
+
+#socialNotificationsBody .alert-danger {
+	color: #7f1d1d;
+	background-color: color-mix(in srgb, #dc3545 13%, var(--bg-card));
+	border-color: color-mix(in srgb, #dc3545 34%, var(--border-soft));
+}
+
+.social-action {
+	--social-action-color: var(--color-text-muted);
+	--social-action-bg: transparent;
+	--social-action-border: var(--border-soft);
+	width: 2rem;
+	height: 2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--social-action-border);
+	border-radius: var(--radius-sm);
+	color: var(--social-action-color);
+	background-color: var(--social-action-bg);
+	transition:
+		color var(--transition-time-method),
+		background-color var(--transition-time-method),
+		border-color var(--transition-time-method),
+		transform var(--transition-time-method);
+}
+
+.social-action:hover,
+.social-action:focus-visible {
+	color: var(--color-text-inverse);
+	background-color: var(--social-action-color);
+	border-color: var(--social-action-color);
+	transform: translateY(-1px);
+}
+
+.social-action:disabled {
+	pointer-events: none;
+	opacity: 0.6;
+	transform: none;
+}
+
+.social-action--accept {
+	--social-action-color: #198754;
+	--social-action-border: color-mix(in srgb, #198754 40%, var(--border-soft));
+}
+
+.social-action--follow-back {
+	--social-action-color: var(--color-secondary);
+	--social-action-border: color-mix(
+		in srgb,
+		var(--color-secondary) 42%,
+		var(--border-soft)
+	);
+}
+
+.social-action--decline,
+.social-action--default {
+	--social-action-color: var(--color-text-muted);
+	--social-action-border: var(--border-soft);
+}
+
+.social-action--block {
+	--social-action-color: #dc3545;
+	--social-action-border: color-mix(in srgb, #dc3545 40%, var(--border-soft));
+}
+
+.social-action--floating {
+	position: absolute;
+	inset-block-start: 0.65rem;
+	inset-inline-end: 0;
+	width: 1.65rem;
+	height: 1.65rem;
+	border-color: transparent;
+	background-color: transparent;
+}
+
+.social-action--ignore {
+	--social-action-color: var(--color-text-muted);
+}
+
+.social-action--ignore:hover,
+.social-action--ignore:focus-visible {
+	color: #dc3545;
+	background-color: color-mix(in srgb, #dc3545 12%, transparent);
+	border-color: transparent;
+	transform: none;
+}
+
+[data-theme='dark'] #socialNotificationsBody .alert-danger {
+	color: #ffd6dc;
+	background-color: color-mix(in srgb, #dc3545 18%, var(--bg-card));
+	border-color: color-mix(in srgb, #dc3545 38%, var(--border-soft));
 }

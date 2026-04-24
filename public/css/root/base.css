@@ -144,3 +144,23 @@ h6 {
 .btn-action-secondary:focus {
 	background: var(--color-secondary-hover);
 }
+
+[dir='rtl'] .input-group:not(.has-validation) > :first-child {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-top-right-radius: var(--bs-border-radius) !important;
+	border-bottom-right-radius: var(--bs-border-radius) !important;
+}
+
+[dir='rtl'] .input-group:not(.has-validation) > :last-child {
+	margin-right: calc(-1 * var(--bs-border-width));
+	margin-left: 0;
+	border-top-left-radius: var(--bs-border-radius) !important;
+	border-bottom-left-radius: var(--bs-border-radius) !important;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+[dir='rtl'] input::placeholder {
+	text-align: right;
+}

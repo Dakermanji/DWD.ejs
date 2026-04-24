@@ -68,7 +68,7 @@ function renderNotifications(notifications) {
 
 function createNotificationItem(notification) {
 	const item = document.createElement('article');
-	item.className = 'list-group-item px-0 position-relative';
+	item.className = 'list-group-item position-relative';
 
 	const title = document.createElement('div');
 	title.className = 'fw-semibold pe-4';
@@ -197,6 +197,7 @@ function normalizeActionConfig(action) {
 	if (action.name === 'accept_follow_request') {
 		return {
 			...baseConfig,
+			className: 'social-action--accept',
 			icon: 'bi-check2',
 			label: notificationsBody.dataset.acceptLabel,
 		};
@@ -205,6 +206,7 @@ function normalizeActionConfig(action) {
 	if (action.name === 'follow_back') {
 		return {
 			...baseConfig,
+			className: 'social-action--follow-back',
 			icon: 'bi-repeat',
 			label: notificationsBody.dataset.followBackLabel,
 		};
@@ -213,6 +215,7 @@ function normalizeActionConfig(action) {
 	if (action.name === 'reject_follow_request') {
 		return {
 			...baseConfig,
+			className: 'social-action--decline',
 			icon: 'bi-x-lg',
 			label: notificationsBody.dataset.declineLabel,
 		};
@@ -221,6 +224,7 @@ function normalizeActionConfig(action) {
 	if (action.name === 'block_user') {
 		return {
 			...baseConfig,
+			className: 'social-action--block',
 			icon: 'bi-ban',
 			label: notificationsBody.dataset.blockLabel,
 		};
@@ -229,6 +233,7 @@ function normalizeActionConfig(action) {
 	if (action.name === 'ignore_notification') {
 		return {
 			...baseConfig,
+			className: 'social-action--ignore',
 			icon: 'bi-x',
 			label: notificationsBody.dataset.ignoreLabel,
 			floating: true,
@@ -237,6 +242,7 @@ function normalizeActionConfig(action) {
 
 	return {
 		...baseConfig,
+		className: 'social-action--default',
 		icon: 'bi-circle',
 		label: action.name,
 	};
@@ -246,8 +252,8 @@ function createActionButton(config) {
 	const button = document.createElement('button');
 	button.type = 'button';
 	button.className = config.floating
-		? 'btn btn-sm btn-link text-body-secondary p-0 position-absolute top-0 end-0 has-tooltip'
-		: 'btn btn-sm btn-outline-secondary has-tooltip';
+		? `social-action social-action--floating ${config.className} has-tooltip`
+		: `social-action ${config.className} has-tooltip`;
 	button.dataset.socialAction = config.payload.name;
 	button.dataset.socialPayload = JSON.stringify(config.payload);
 	button.setAttribute('title', config.label);

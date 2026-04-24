@@ -11,10 +11,9 @@
 		<label for="follow-request" class="form-label">
 			<%= t('social:followRequest.title') %>
 		</label>
+		<input type="hidden" name="returnTo" value="<%= currentUrl %>">
 
 		<div class="input-group">
-			<input type="hidden" name="returnTo" value="<%= currentUrl %>">
-
 			<input
 				id="follow-request"
 				class="form-control"
