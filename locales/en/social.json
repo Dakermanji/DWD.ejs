@@ -10,8 +10,8 @@
 		"loading": "Loading notifications...",
 		"empty": "No notifications yet.",
 		"error": "Could not load notifications.",
-		"follow_request": "sent you a follow request.",
-		"follow_started": "is following you now.",
+		"follow_request": "{{user}} sent you a follow request.",
+		"follow_started": "{{user}} is following you now.",
 		"someone": "Someone",
 		"action_error": "Could not update this notification.",
 		"actions": {

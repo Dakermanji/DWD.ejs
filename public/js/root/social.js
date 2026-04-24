@@ -109,24 +109,45 @@ function buildNotificationTitleParts(notification) {
 	}
 
 	if (notification.type === 'follow_request') {
-		return [
+		return buildTemplateParts(
+			notificationsBody.dataset.followRequestLabel,
 			actor,
-			document.createTextNode(
-				` ${notificationsBody.dataset.followRequestLabel}`,
-			),
-		];
+		);
 	}
 
 	if (notification.type === 'follow_started') {
-		return [
+		return buildTemplateParts(
+			notificationsBody.dataset.followStartedLabel,
 			actor,
-			document.createTextNode(
-				` ${notificationsBody.dataset.followStartedLabel}`,
-			),
-		];
+		);
 	}
 
 	return [actor];
+}
+
+function buildTemplateParts(template, actor) {
+	const marker = '{{user}}';
+	const fallback = [actor];
+
+	if (!template || !template.includes(marker)) {
+		fallback.push(document.createTextNode(` ${template || ''}`));
+		return fallback;
+	}
+
+	const parts = template.split(marker);
+	const nodes = [];
+
+	parts.forEach((part, index) => {
+		if (part) {
+			nodes.push(document.createTextNode(part));
+		}
+
+		if (index < parts.length - 1) {
+			nodes.push(actor);
+		}
+	});
+
+	return nodes;
 }
 
 function formatNotificationDate(value) {

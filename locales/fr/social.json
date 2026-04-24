@@ -10,8 +10,8 @@
 		"loading": "Chargement des notifications...",
 		"empty": "Aucune notification pour le moment.",
 		"error": "Impossible de charger les notifications.",
-		"follow_request": "vous a envoyé une demande de suivi.",
-		"follow_started": "vous suit maintenant.",
+		"follow_request": "{{user}} vous a envoyé une demande de suivi.",
+		"follow_started": "{{user}} vous suit maintenant.",
 		"someone": "Quelqu’un",
 		"action_error": "Impossible de mettre à jour cette notification.",
 		"actions": {

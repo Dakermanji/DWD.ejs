@@ -10,8 +10,8 @@
 		"loading": "جارٍ تحميل الإشعارات...",
 		"empty": "لا توجد إشعارات بعد.",
 		"error": "تعذر تحميل الإشعارات.",
-		"follow_request": "أرسل لك طلب متابعة.",
-		"follow_started": "أصبح يتابعك الآن.",
+		"follow_request": "أرسل {{user}} لك طلب متابعة.",
+		"follow_started": "أصبح {{user}} يتابعك الآن.",
 		"someone": "شخص ما",
 		"action_error": "تعذر تحديث هذا الإشعار.",
 		"actions": {

@@ -153,14 +153,6 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 
 .social-notification-actor {
 	color: var(--color-primary);
-	text-decoration: underline;
-	text-decoration-color: color-mix(
-		in srgb,
-		var(--color-primary) 38%,
-		transparent
-	);
-	text-decoration-thickness: 0.08em;
-	text-underline-offset: 0.16em;
 	cursor: help;
 }
 
@@ -168,7 +160,6 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 .social-notification-actor:focus-visible {
 	color: var(--color-secondary);
 	outline: none;
-	text-decoration-color: currentColor;
 }
 
 #socialNotificationsBody .spinner-border {
