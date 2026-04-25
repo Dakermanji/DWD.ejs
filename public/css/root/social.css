@@ -151,6 +151,10 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	color: var(--color-text-muted) !important;
 }
 
+.social-notification-title {
+	padding-inline-end: 2rem;
+}
+
 .social-notification-actor {
 	color: var(--color-primary);
 	cursor: help;

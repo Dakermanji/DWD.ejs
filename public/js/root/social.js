@@ -72,7 +72,7 @@ function createNotificationItem(notification) {
 	item.className = 'list-group-item position-relative';
 
 	const title = document.createElement('div');
-	title.className = 'fw-semibold pe-4';
+	title.className = 'fw-semibold social-notification-title';
 	title.append(...buildNotificationTitleParts(notification));
 
 	const meta = document.createElement('div');
