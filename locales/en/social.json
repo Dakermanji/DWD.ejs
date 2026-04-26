@@ -12,6 +12,8 @@
 		"error": "Could not load notifications.",
 		"follow_request": "{{user}} sent you a follow request.",
 		"follow_started": "{{user}} is following you now.",
+		"follow_request_accepted": "{{user}} accepted your follow request.",
+		"follow_request_accepted_followed_back": "{{user}} accepted your follow request and followed you back.",
 		"someone": "Someone",
 		"action_error": "Could not update this notification.",
 		"actions": {

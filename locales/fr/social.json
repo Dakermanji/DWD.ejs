@@ -12,6 +12,8 @@
 		"error": "Impossible de charger les notifications.",
 		"follow_request": "{{user}} vous a envoyé une demande de suivi.",
 		"follow_started": "{{user}} vous suit maintenant.",
+		"follow_request_accepted": "{{user}} a accepté votre demande de suivi.",
+		"follow_request_accepted_followed_back": "{{user}} a accepté votre demande de suivi et vous suit en retour.",
 		"someone": "Quelqu’un",
 		"action_error": "Impossible de mettre à jour cette notification.",
 		"actions": {

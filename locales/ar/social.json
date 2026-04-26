@@ -12,6 +12,8 @@
 		"error": "تعذر تحميل الإشعارات.",
 		"follow_request": "أرسل {{user}} لك طلب متابعة.",
 		"follow_started": "أصبح {{user}} يتابعك الآن.",
+		"follow_request_accepted": "قبل {{user}} طلب المتابعة الخاص بك.",
+		"follow_request_accepted_followed_back": "قبل {{user}} طلب المتابعة الخاص بك وأصبح يتابعك بالمقابل.",
 		"someone": "شخص ما",
 		"action_error": "تعذر تحديث هذا الإشعار.",
 		"actions": {

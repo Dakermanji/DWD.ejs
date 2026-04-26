@@ -122,6 +122,20 @@ function buildNotificationTitleParts(notification) {
 		);
 	}
 
+	if (notification.type === 'follow_request_accepted') {
+		return buildTemplateParts(
+			notificationsBody.dataset.followRequestAcceptedLabel,
+			actor,
+		);
+	}
+
+	if (notification.type === 'follow_request_accepted_followed_back') {
+		return buildTemplateParts(
+			notificationsBody.dataset.followRequestAcceptedFollowedBackLabel,
+			actor,
+		);
+	}
+
 	return [actor];
 }
 
@@ -343,10 +357,12 @@ async function runSocialAction(button) {
 			}),
 		});
 
-		const payload = await response.json();
+		const responsePayload = await response.json();
 
-		if (!response.ok || !payload?.ok) {
-			throw new Error(payload?.error || 'Notification action failed');
+		if (!response.ok || !responsePayload?.ok) {
+			throw new Error(
+				responsePayload?.error || 'Notification action failed',
+			);
 		}
 
 		await loadNotifications();
