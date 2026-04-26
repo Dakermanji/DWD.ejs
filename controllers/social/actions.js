@@ -4,6 +4,16 @@ import UserBlocksModel from '../../models/UserBlocks.js';
 import UserFollowRequestsModel from '../../models/UserFollowRequests.js';
 import UserFollowsModel from '../../models/UserFollows.js';
 import UserSocialNotificationsModel from '../../models/UserSocialNotifications.js';
+import {
+	buildActionContext,
+	getFollowRequestActorId,
+	getFollowRequestId,
+	getPendingNotificationFollowRequestId,
+	getTargetUserId,
+	requireFollowRequestId,
+	requireNotificationContext,
+	requireTargetUserId,
+} from './actionContext.js';
 
 const SOCIAL_ACTIONS = new Set([
 	'accept_follow_request',
@@ -57,13 +67,15 @@ export async function postSocialAction(req, res, next) {
 			return;
 		}
 
-		await runSocialAction({
+		const context = await buildActionContext({
 			actorId,
 			action,
 			targetUserId,
 			followRequestId,
 			notificationId,
 		});
+
+		await runSocialAction(context);
 
 		res.json({
 			ok: true,
@@ -94,24 +106,12 @@ export async function postSocialAction(req, res, next) {
  * }} params
  * @returns {Promise<void>}
  */
-async function runSocialAction({
-	actorId,
-	action,
-	targetUserId,
-	followRequestId,
-	notificationId,
-}) {
-	// When a notification is present, use owned notification context as the
-	// source of truth for requester / request identifiers.
-	const notificationContext = notificationId
-		? await requireNotificationOwnership(notificationId, actorId)
-		: null;
+async function runSocialAction(context) {
+	const { actorId, action, targetUserId, notificationId } = context;
 
 	if (action === 'accept_follow_request') {
-		const effectiveTargetUserId =
-			notificationContext?.requester_id || targetUserId;
-		const effectiveFollowRequestId =
-			notificationContext?.follow_request_id || followRequestId;
+		const effectiveTargetUserId = getFollowRequestActorId(context);
+		const effectiveFollowRequestId = getFollowRequestId(context);
 
 		await requireTargetUserId(effectiveTargetUserId);
 		await requireFollowRequestId(effectiveFollowRequestId);
@@ -140,41 +140,44 @@ async function runSocialAction({
 	}
 
 	if (action === 'follow_back') {
-		const effectiveTargetUserId =
-			notificationContext?.requester_id || targetUserId;
-		const effectiveFollowRequestId =
-			notificationContext?.follow_request_id || followRequestId;
+		const effectiveTargetUserId = getFollowRequestActorId(context);
+		const effectiveFollowRequestId = getFollowRequestId(context);
 
 		await requireTargetUserId(effectiveTargetUserId);
-		await requireFollowRequestId(effectiveFollowRequestId);
 
-		const accepted = await UserFollowRequestsModel.accept(
-			effectiveFollowRequestId,
-			actorId,
-		);
-		if (!accepted) {
-			throw new Error('Follow request was not accepted');
+		if (effectiveFollowRequestId) {
+			const accepted = await UserFollowRequestsModel.accept(
+				effectiveFollowRequestId,
+				actorId,
+			);
+			if (!accepted) {
+				throw new Error('Follow request was not accepted');
+			}
 		}
 
-		await UserFollowsModel.create(effectiveTargetUserId, actorId);
 		await UserFollowsModel.create(actorId, effectiveTargetUserId);
+
+		if (effectiveFollowRequestId) {
+			await UserFollowsModel.create(effectiveTargetUserId, actorId);
+		}
 
 		if (notificationId) {
 			await markNotificationHandled(notificationId, actorId);
 		}
 
-		await UserSocialNotificationsModel.create({
-			recipientId: effectiveTargetUserId,
-			actorId,
-			type: 'follow_request_accepted_followed_back',
-			followRequestId: effectiveFollowRequestId,
-		});
+		if (effectiveFollowRequestId) {
+			await UserSocialNotificationsModel.create({
+				recipientId: effectiveTargetUserId,
+				actorId,
+				type: 'follow_request_accepted_followed_back',
+				followRequestId: effectiveFollowRequestId,
+			});
+		}
 		return;
 	}
 
 	if (action === 'reject_follow_request') {
-		const effectiveFollowRequestId =
-			notificationContext?.follow_request_id || followRequestId;
+		const effectiveFollowRequestId = getFollowRequestId(context);
 
 		await requireFollowRequestId(effectiveFollowRequestId);
 
@@ -193,12 +196,9 @@ async function runSocialAction({
 	}
 
 	if (action === 'block_user') {
-		const effectiveTargetUserId =
-			getNotificationTargetUserId(notificationContext) || targetUserId;
+		const effectiveTargetUserId = getTargetUserId(context);
 		const effectiveFollowRequestId =
-			notificationContext?.type === 'follow_request'
-				? notificationContext.follow_request_id
-				: followRequestId;
+			getPendingNotificationFollowRequestId(context);
 
 		await requireTargetUserId(effectiveTargetUserId);
 
@@ -224,7 +224,7 @@ async function runSocialAction({
 	}
 
 	if (action === 'ignore_notification') {
-		await requireNotificationOwnership(notificationId, actorId);
+		await requireNotificationContext(context);
 		await markNotificationHandled(notificationId, actorId);
 		return;
 	}
@@ -248,50 +248,6 @@ async function runSocialAction({
 	}
 }
 
-function getNotificationTargetUserId(notification) {
-	if (!notification) {
-		return null;
-	}
-
-	if (notification.type === 'follow_request') {
-		return notification.requester_id;
-	}
-
-	return notification.actor_id;
-}
-
-/**
- * Require an actionable notification owned by the recipient.
- *
- * Responsibilities:
- * - ensure a notification id was provided
- * - verify notification ownership
- * - verify the notification is still actionable
- *
- * @param {string | null} notificationId
- * @param {string} recipientId
- * @returns {Promise<object>}
- */
-async function requireNotificationOwnership(notificationId, recipientId) {
-	if (!notificationId) {
-		throw new Error('notificationId is required for this social action');
-	}
-
-	const notification =
-		await UserSocialNotificationsModel.findActionableByIdForRecipient(
-			notificationId,
-			recipientId,
-		);
-
-	if (!notification) {
-		throw new Error(
-			'Notification was not found or is no longer actionable',
-		);
-	}
-
-	return notification;
-}
-
 /**
  * Mark a notification as read and handled.
  *
@@ -312,29 +268,5 @@ async function markNotificationHandled(notificationId, recipientId) {
 
 	if (!updated) {
 		throw new Error('Notification could not be marked as handled');
-	}
-}
-
-/**
- * Require a target user id for actions that operate on another user.
- *
- * @param {string | null} targetUserId
- * @returns {Promise<void>}
- */
-async function requireTargetUserId(targetUserId) {
-	if (!targetUserId) {
-		throw new Error('targetUserId is required for this social action');
-	}
-}
-
-/**
- * Require a follow request id for actions that resolve a request.
- *
- * @param {string | null} followRequestId
- * @returns {Promise<void>}
- */
-async function requireFollowRequestId(followRequestId) {
-	if (!followRequestId) {
-		throw new Error('followRequestId is required for this social action');
 	}
 }
