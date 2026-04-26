@@ -26,6 +26,7 @@ BEGIN
 			'follow_started',
 			'follow_request',
 			'follow_request_accepted',
+			'follow_request_accepted_followed_back',
 			'follow_request_rejected'
 		);
 	END IF;

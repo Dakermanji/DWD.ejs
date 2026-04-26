@@ -88,6 +88,7 @@ export async function findByRecipient(recipientId, limit = 20, offset = 0) {
 		LEFT JOIN user_follow_requests ufr
 			ON ufr.id = usn.follow_request_id
 		WHERE usn.recipient_id = $1
+			AND usn.is_handled = FALSE
 		ORDER BY usn.created_at DESC
 		LIMIT $2 OFFSET $3;
 	`;
@@ -130,6 +131,8 @@ export async function findActionableByIdForRecipient(
 			AND (
 				(usn.type = 'follow_request' AND ufr.status = 'pending')
 				OR usn.type = 'follow_started'
+				OR usn.type = 'follow_request_accepted'
+				OR usn.type = 'follow_request_accepted_followed_back'
 			)
 		LIMIT 1;
 	`;
