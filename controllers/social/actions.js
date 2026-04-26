@@ -129,6 +129,13 @@ async function runSocialAction({
 		if (notificationId) {
 			await markNotificationHandled(notificationId, actorId);
 		}
+
+		await UserSocialNotificationsModel.create({
+			recipientId: effectiveTargetUserId,
+			actorId,
+			type: 'follow_request_accepted',
+			followRequestId: effectiveFollowRequestId,
+		});
 		return;
 	}
 
@@ -156,11 +163,11 @@ async function runSocialAction({
 			await markNotificationHandled(notificationId, actorId);
 		}
 
-		// Notify the original requester that the actor is now following them.
 		await UserSocialNotificationsModel.create({
 			recipientId: effectiveTargetUserId,
 			actorId,
-			type: 'follow_started',
+			type: 'follow_request_accepted_followed_back',
+			followRequestId: effectiveFollowRequestId,
 		});
 		return;
 	}
@@ -187,11 +194,11 @@ async function runSocialAction({
 
 	if (action === 'block_user') {
 		const effectiveTargetUserId =
-			notificationContext?.requester_id ||
-			notificationContext?.actor_id ||
-			targetUserId;
+			getNotificationTargetUserId(notificationContext) || targetUserId;
 		const effectiveFollowRequestId =
-			notificationContext?.follow_request_id || followRequestId;
+			notificationContext?.type === 'follow_request'
+				? notificationContext.follow_request_id
+				: followRequestId;
 
 		await requireTargetUserId(effectiveTargetUserId);
 
@@ -239,6 +246,18 @@ async function runSocialAction({
 		await UserBlocksModel.remove(actorId, targetUserId);
 		return;
 	}
+}
+
+function getNotificationTargetUserId(notification) {
+	if (!notification) {
+		return null;
+	}
+
+	if (notification.type === 'follow_request') {
+		return notification.requester_id;
+	}
+
+	return notification.actor_id;
 }
 
 /**

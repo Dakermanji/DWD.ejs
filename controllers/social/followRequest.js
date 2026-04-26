@@ -133,7 +133,8 @@ export async function followRequest(req, res, next) {
 			await UserSocialNotificationsModel.create({
 				recipientId: receiverId,
 				actorId: senderId,
-				type: 'follow_started',
+				type: 'follow_request_accepted_followed_back',
+				followRequestId: receiverPendingRequest.id,
 			});
 
 			return success(req, res, FOLLOWING_NOW_SUCCESS_KEY, {

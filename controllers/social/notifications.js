@@ -74,7 +74,7 @@ function serializeNotification(notification) {
  *
  * Notes:
  * - follow_request actions are only available when pending
- * - follow_started supports limited actions (block / ignore)
+ * - resolved follow notifications support limited actions (block / ignore)
  *
  * @param {object} notification
  * @returns {Array<{
@@ -123,8 +123,11 @@ function getNotificationActions(notification) {
 		];
 	}
 
-	// Follow started: limited actions (no request context)
-	if (notification.type === 'follow_started') {
+	if (
+		notification.type === 'follow_started' ||
+		notification.type === 'follow_request_accepted' ||
+		notification.type === 'follow_request_accepted_followed_back'
+	) {
 		return [
 			{
 				name: 'block_user',
