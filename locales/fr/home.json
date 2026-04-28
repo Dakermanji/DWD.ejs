@@ -2,14 +2,14 @@
 	"title": "Accueil",
 	"hero": {
 		"canadaFlag": "Drapeau du Canada",
-		"intro": "Bonjour, je suis Behnam <span class='brand-color'>D</span>akermanji du Canada",
-		"role": "<span class='brand-color'>D</span>éveloppeur <span class='brand-color'>W</span>eb Full Stack"
+		"intro": "Des plateformes web fiables avec une architecture backend sécurisée.",
+		"role": "Systèmes <span class='brand-color'>W</span>eb sécurisés & Backend"
 	},
 	"about": {
 		"title": "À propos de moi",
 		"image": "Maple Coder, une mascotte castor sympathique portant un hoodie bleu avec une feuille d’érable et codant sur un ordinateur portable",
 		"description": [
-			"Bonjour, je m'appelle Behnam Dakermanji, développeur web basé à Montréal, Canada. Mon parcours dans le domaine technologique est loin d'être traditionnel. J'ai initialement étudié la médecine et exercé comme médecin en Syrie, mais ma passion de longue date pour la programmation m'a finalement conduit à me réorienter vers le développement web après mon arrivée au Canada en 2019.",
+			"Bonjour, je m'appelle Behnam Dakermanji, développeur de systèmes web sécurisés et backend basé à Montréal, Canada. Mon parcours dans le domaine technologique est loin d'être traditionnel. J'ai initialement étudié la médecine et exercé comme médecin en Syrie, mais ma passion de longue date pour la programmation m'a finalement conduit à me réorienter vers le développement web après mon arrivée au Canada en 2019.",
 			"Depuis, j'ai développé mes compétences grâce à un apprentissage continu, des formations en ligne et des études formelles, obtenant plusieurs diplômes en programmation web à l'Université Concordia. J'aime créer des expériences web pratiques et centrées sur l'utilisateur, tout en résolvant des problèmes concrets avec des solutions propres et efficaces.",
 			"Sur le plan professionnel, j'ai travaillé comme consultant informatique, contribué à plusieurs projets freelance et acquis une expérience précieuse dans différents rôles. Je m'intéresse particulièrement à la création d'applications fiables, accessibles et bien structurées, combinant des fonctionnalités solides avec une expérience utilisateur fluide."
 		],
@@ -33,7 +33,7 @@
 				},
 				{
 					"period": "2019 - Présent",
-					"role_company": "Développeur web freelance pour <strong><em>petites entreprises et projets indépendants</em></strong>"
+					"role_company": "Développeur freelance en systèmes web sécurisés et backend pour <strong><em>petites entreprises et projets indépendants</em></strong>"
 				}
 			],
 			"skills": [
