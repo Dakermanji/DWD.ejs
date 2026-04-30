@@ -227,9 +227,19 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 }
 
 .social-action--decline,
-.social-action--default {
+.social-action--default,
+.social-action--unfollow {
 	--social-action-color: var(--color-text-muted);
 	--social-action-border: var(--border-soft);
+}
+
+.social-action--remove-both {
+	--social-action-color: var(--color-primary);
+	--social-action-border: color-mix(
+		in srgb,
+		var(--color-primary) 42%,
+		var(--border-soft)
+	);
 }
 
 .social-action--block {

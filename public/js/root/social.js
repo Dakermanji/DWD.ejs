@@ -4,6 +4,8 @@ const notificationsCollapse = document.getElementById('socialNotifications');
 const notificationsBody = document.getElementById('socialNotificationsBody');
 const blockedCollapse = document.getElementById('socialBlocked');
 const blockedBody = document.getElementById('socialBlockedBody');
+const followeesCollapse = document.getElementById('socialFollowees');
+const followeesBody = document.getElementById('socialFolloweesBody');
 
 if (notificationsCollapse && notificationsBody) {
 	notificationsCollapse.addEventListener('show.bs.collapse', () => {
@@ -26,6 +28,21 @@ if (blockedCollapse && blockedBody) {
 	});
 
 	blockedBody.addEventListener('click', (event) => {
+		const button = event.target.closest('[data-social-action]');
+
+		if (!button) return;
+
+		event.preventDefault();
+		void runSocialAction(button);
+	});
+}
+
+if (followeesCollapse && followeesBody) {
+	followeesCollapse.addEventListener('show.bs.collapse', () => {
+		void loadFollowees();
+	});
+
+	followeesBody.addEventListener('click', (event) => {
 		const button = event.target.closest('[data-social-action]');
 
 		if (!button) return;
@@ -95,6 +112,36 @@ async function loadBlockedUsers() {
 	}
 }
 
+async function loadFollowees() {
+	const url = followeesBody.dataset.url;
+
+	renderLoadingState(followeesBody);
+
+	try {
+		const response = await fetch(url, {
+			headers: {
+				Accept: 'application/json',
+			},
+			credentials: 'same-origin',
+		});
+
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}`);
+		}
+
+		const payload = await response.json();
+
+		if (!payload?.ok || !Array.isArray(payload.followees)) {
+			throw new Error('Invalid followees payload');
+		}
+
+		renderFollowees(payload.followees);
+	} catch (error) {
+		console.error('Failed to load followees', error);
+		renderMessage(followeesBody, followeesBody.dataset.errorLabel);
+	}
+}
+
 function renderNotifications(notifications) {
 	notificationsBody.replaceChildren();
 
@@ -131,6 +178,25 @@ function renderBlockedUsers(blockedUsers) {
 
 	blockedBody.appendChild(list);
 	initTooltipsIn(blockedBody);
+}
+
+function renderFollowees(followees) {
+	followeesBody.replaceChildren();
+
+	if (followees.length === 0) {
+		renderMessage(followeesBody, followeesBody.dataset.emptyLabel);
+		return;
+	}
+
+	const list = document.createElement('div');
+	list.className = 'list-group list-group-flush';
+
+	for (const followee of followees) {
+		list.appendChild(createFolloweeItem(followee));
+	}
+
+	followeesBody.appendChild(list);
+	initTooltipsIn(followeesBody);
 }
 
 function createNotificationItem(notification) {
@@ -189,6 +255,45 @@ function createBlockedUserItem(blockedUser) {
 	const actions = createSocialActions(
 		getBlockedUserActions(blockedUser),
 		blockedBody,
+	);
+
+	item.append(title, meta);
+
+	if (actions.inlineActions) {
+		item.appendChild(actions.inlineActions);
+	}
+
+	return item;
+}
+
+function createFolloweeItem(followee) {
+	const item = document.createElement('article');
+	item.className = 'list-group-item';
+
+	const title = document.createElement('div');
+	title.className = 'fw-semibold social-user-title';
+
+	const userName = document.createElement('span');
+	userName.className = 'social-user-name';
+	userName.textContent = followee.username || followeesBody.dataset.someoneLabel;
+
+	if (followee.email) {
+		userName.classList.add('has-tooltip');
+		userName.dataset.bsTitle = followee.email;
+		userName.tabIndex = 0;
+	}
+
+	title.appendChild(userName);
+
+	const meta = document.createElement('div');
+	meta.className = 'small text-body-secondary mt-1';
+	meta.textContent = formatTemplate(followeesBody.dataset.followedAtLabel, {
+		date: formatNotificationDate(followee.followed_at),
+	});
+
+	const actions = createSocialActions(
+		getFolloweeActions(followee),
+		followeesBody,
 	);
 
 	item.append(title, meta);
@@ -329,6 +434,14 @@ function getBlockedUserActions(blockedUser) {
 		: [];
 }
 
+function getFolloweeActions(followee) {
+	return Array.isArray(followee.actions)
+		? followee.actions.map((action) =>
+				normalizeActionConfig(action, followeesBody),
+			)
+		: [];
+}
+
 function normalizeActionConfig(action, sectionBody = notificationsBody) {
 	const baseConfig = {
 		payload: action,
@@ -396,6 +509,24 @@ function normalizeActionConfig(action, sectionBody = notificationsBody) {
 			className: 'social-action--follow-back',
 			icon: 'bi-person-plus',
 			label: sectionBody.dataset.unblockFollowRequestLabel,
+		};
+	}
+
+	if (action.name === 'unfollow_user') {
+		return {
+			...baseConfig,
+			className: 'social-action--unfollow',
+			icon: 'bi-person-dash',
+			label: sectionBody.dataset.unfollowLabel,
+		};
+	}
+
+	if (action.name === 'remove_follow_relationships') {
+		return {
+			...baseConfig,
+			className: 'social-action--remove-both',
+			icon: 'bi-people',
+			label: sectionBody.dataset.removeBothLabel,
 		};
 	}
 
@@ -486,6 +617,10 @@ async function runSocialAction(button) {
 }
 
 function reloadSocialSection(section) {
+	if (section === 'followees') {
+		return loadFollowees();
+	}
+
 	if (section === 'blocked') {
 		return loadBlockedUsers();
 	}

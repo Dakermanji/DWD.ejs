@@ -1,6 +1,38 @@
 //! models/UserFollows.js
 
-import { query } from '../config/database.js';
+import { query, queryRows } from '../config/database.js';
+
+const BASE_FIELDS = ['id', 'follower_id', 'followee_id', 'created_at'];
+const baseFieldsWithAlias = (alias) =>
+	BASE_FIELDS.map((field) => `${alias}.${field}`).join(', ');
+
+/**
+ * Find users followed by one follower.
+ *
+ * @param {string} followerId
+ * @returns {Promise<Array>}
+ */
+export async function findFolloweesByFollower(followerId) {
+	const q = `
+		SELECT
+			${baseFieldsWithAlias('uf')},
+			u.username AS followee_username,
+			u.email AS followee_email,
+			EXISTS (
+				SELECT 1
+				FROM user_follows mutual
+				WHERE mutual.follower_id = uf.followee_id
+					AND mutual.followee_id = uf.follower_id
+			) AS is_mutual
+		FROM user_follows uf
+		INNER JOIN users u
+			ON u.id = uf.followee_id
+		WHERE uf.follower_id = $1
+		ORDER BY uf.created_at DESC;
+	`;
+
+	return queryRows(q, [followerId]);
+}
 
 /**
  * Check whether one user already follows another.
@@ -77,6 +109,7 @@ export async function removeOneDirection(followerId, followeeId) {
 }
 
 export default {
+	findFolloweesByFollower,
 	exists,
 	create,
 	removeBothDirections,

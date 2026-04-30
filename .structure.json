@@ -45,6 +45,7 @@
 			"actionContext.js",
 			"actions.js",
 			"blocked.js",
+			"followees.js",
 			"followRequest.js",
 			"notifications.js"
 		],
@@ -260,6 +261,7 @@
 		"social": [
 			"_blocked.ejs",
 			"_follow_request.ejs",
+			"_followees.ejs",
 			"_notifications.ejs",
 			"main.ejs"
 		],

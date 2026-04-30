@@ -37,6 +37,20 @@
 			"unblock_follow_request": "Unblock and request to follow"
 		}
 	},
+	"followees": {
+		"title": "Following",
+		"loading": "Loading followed users...",
+		"empty": "You are not following anyone yet.",
+		"error": "Could not load followed users.",
+		"someone": "Someone",
+		"followed_at": "Followed {{date}}",
+		"action_error": "Could not update this followed user.",
+		"actions": {
+			"unfollow": "Unfollow",
+			"remove_both": "Remove both follows",
+			"block": "Block"
+		}
+	},
 	"error": {
 		"cannot_follow_self": "You cannot follow yourself.",
 		"you_blocked_this_user": "You have blocked this user. Remove the block first.",

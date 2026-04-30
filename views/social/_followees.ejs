@@ -1,0 +1,38 @@
+<!--! views/social/_followees.ejs -->
+<div class="accordion-item">
+	<h3 class="accordion-header">
+		<button
+			class="accordion-button collapsed"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#socialFollowees"
+			aria-expanded="false"
+			aria-controls="socialFollowees"
+		>
+			<%= t('social:followees.title') %>
+		</button>
+	</h3>
+	<div
+		id="socialFollowees"
+		class="accordion-collapse collapse"
+		data-bs-parent="#socialAccordion"
+	>
+		<div
+			class="accordion-body"
+			id="socialFolloweesBody"
+			data-social-section-body
+			data-section="followees"
+			data-url="/social/followees"
+			data-action-url="/social/actions"
+			data-loading-label="<%= t('social:followees.loading') %>"
+			data-empty-label="<%= t('social:followees.empty') %>"
+			data-error-label="<%= t('social:followees.error') %>"
+			data-someone-label="<%= t('social:followees.someone') %>"
+			data-followed-at-label="<%= t('social:followees.followed_at') %>"
+			data-unfollow-label="<%= t('social:followees.actions.unfollow') %>"
+			data-remove-both-label="<%= t('social:followees.actions.remove_both') %>"
+			data-block-label="<%= t('social:followees.actions.block') %>"
+			data-action-error-label="<%= t('social:followees.action_error') %>"
+		></div>
+	</div>
+</div>

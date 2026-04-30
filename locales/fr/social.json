@@ -37,6 +37,20 @@
 			"unblock_follow_request": "Débloquer et envoyer une demande de suivi"
 		}
 	},
+	"followees": {
+		"title": "Abonnements",
+		"loading": "Chargement des utilisateurs suivis...",
+		"empty": "Vous ne suivez encore personne.",
+		"error": "Impossible de charger les utilisateurs suivis.",
+		"someone": "Quelqu’un",
+		"followed_at": "Suivi le {{date}}",
+		"action_error": "Impossible de mettre à jour cet utilisateur suivi.",
+		"actions": {
+			"unfollow": "Ne plus suivre",
+			"remove_both": "Supprimer les deux suivis",
+			"block": "Bloquer"
+		}
+	},
 	"error": {
 		"cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",
 		"you_blocked_this_user": "Vous avez bloqué cet utilisateur. Supprimez le blocage d’abord.",
