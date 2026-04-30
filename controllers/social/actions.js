@@ -23,6 +23,7 @@ const SOCIAL_ACTIONS = new Set([
 	'ignore_notification',
 	'unfollow_user',
 	'remove_follower',
+	'remove_follow_relationships',
 	'unblock_user',
 	'unblock_and_follow_request',
 ]);
@@ -239,6 +240,12 @@ async function runSocialAction(context) {
 	if (action === 'remove_follower') {
 		await requireTargetUserId(targetUserId);
 		await UserFollowsModel.removeOneDirection(targetUserId, actorId);
+		return;
+	}
+
+	if (action === 'remove_follow_relationships') {
+		await requireTargetUserId(targetUserId);
+		await UserFollowsModel.removeBothDirections(actorId, targetUserId);
 		return;
 	}
 
