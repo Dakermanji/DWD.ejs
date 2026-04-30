@@ -24,6 +24,7 @@ const SOCIAL_ACTIONS = new Set([
 	'unfollow_user',
 	'remove_follower',
 	'unblock_user',
+	'unblock_and_follow_request',
 ]);
 
 /**
@@ -243,9 +244,107 @@ async function runSocialAction(context) {
 
 	if (action === 'unblock_user') {
 		await requireTargetUserId(targetUserId);
-		await UserBlocksModel.remove(actorId, targetUserId);
+		const unblocked = await UserBlocksModel.remove(actorId, targetUserId);
+		if (!unblocked) {
+			throw new Error('User was not blocked');
+		}
 		return;
 	}
+
+	if (action === 'unblock_and_follow_request') {
+		await requireTargetUserId(targetUserId);
+		const unblocked = await UserBlocksModel.remove(actorId, targetUserId);
+		if (!unblocked) {
+			throw new Error('User was not blocked');
+		}
+		await requestFollowAfterUnblock(actorId, targetUserId);
+		return;
+	}
+}
+
+/**
+ * Request or create a follow after removing a block.
+ *
+ * @param {string} requesterId
+ * @param {string} targetId
+ * @returns {Promise<void>}
+ */
+async function requestFollowAfterUnblock(requesterId, targetId) {
+	const targetBlockedRequester = await UserBlocksModel.exists(
+		targetId,
+		requesterId,
+	);
+	if (targetBlockedRequester) return;
+
+	const alreadyFollowing = await UserFollowsModel.exists(
+		requesterId,
+		targetId,
+	);
+	if (alreadyFollowing) return;
+
+	const requesterPendingRequest = await UserFollowRequestsModel.findPending(
+		requesterId,
+		targetId,
+	);
+	if (requesterPendingRequest) return;
+
+	const targetPendingRequest = await UserFollowRequestsModel.findPending(
+		targetId,
+		requesterId,
+	);
+	if (targetPendingRequest) {
+		const accepted = await UserFollowRequestsModel.accept(
+			targetPendingRequest.id,
+			requesterId,
+		);
+		if (!accepted) {
+			throw new Error('Could not accept reverse pending follow request');
+		}
+
+		await UserFollowsModel.create(targetId, requesterId);
+		await UserFollowsModel.create(requesterId, targetId);
+		await UserSocialNotificationsModel.markFollowRequestNotificationsAsReadAndHandled(
+			targetPendingRequest.id,
+			requesterId,
+		);
+
+		await UserSocialNotificationsModel.create({
+			recipientId: targetId,
+			actorId: requesterId,
+			type: 'follow_request_accepted_followed_back',
+			followRequestId: targetPendingRequest.id,
+		});
+		return;
+	}
+
+	const targetAlreadyFollowingRequester = await UserFollowsModel.exists(
+		targetId,
+		requesterId,
+	);
+	if (targetAlreadyFollowingRequester) {
+		await UserFollowsModel.create(requesterId, targetId);
+		await UserSocialNotificationsModel.create({
+			recipientId: targetId,
+			actorId: requesterId,
+			type: 'follow_started',
+		});
+		return;
+	}
+
+	const followRequest = await UserFollowRequestsModel.create({
+		requesterId,
+		targetId,
+	});
+	if (!followRequest) {
+		throw new Error('Could not create follow request');
+	}
+
+	await UserSocialNotificationsModel.create({
+		recipientId: targetId,
+		actorId: requesterId,
+		type: 'follow_request',
+		followRequestId: followRequest.id,
+	});
 }
 
 /**

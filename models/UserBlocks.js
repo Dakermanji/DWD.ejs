@@ -1,6 +1,32 @@
 //! models/UserBlocks.js
 
-import { query } from '../config/database.js';
+import { query, queryRows } from '../config/database.js';
+
+const BASE_FIELDS = ['id', 'blocker_id', 'blocked_id', 'created_at'];
+const baseFieldsWithAlias = (alias) =>
+	BASE_FIELDS.map((field) => `${alias}.${field}`).join(', ');
+
+/**
+ * Find users blocked by one blocker.
+ *
+ * @param {string} blockerId
+ * @returns {Promise<Array>}
+ */
+export async function findByBlocker(blockerId) {
+	const q = `
+		SELECT
+			${baseFieldsWithAlias('ub')},
+			u.username AS blocked_username,
+			u.email AS blocked_email
+		FROM user_blocks ub
+		INNER JOIN users u
+			ON u.id = ub.blocked_id
+		WHERE ub.blocker_id = $1
+		ORDER BY ub.created_at DESC;
+	`;
+
+	return queryRows(q, [blockerId]);
+}
 
 /**
  * Check whether one user has blocked another.
@@ -59,6 +85,7 @@ export async function remove(blockerId, blockedId) {
 }
 
 export default {
+	findByBlocker,
 	exists,
 	create,
 	remove,
