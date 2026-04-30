@@ -136,6 +136,14 @@
 		],
 		"images": {
 			"flags": ["ca.svg", "qc.svg", "sy.svg"],
+			"logos": [
+				"solid_dark.png",
+				"solid_light.png",
+				"transparent_dark.png",
+				"transparent_dark.svg",
+				"transparent_light.png",
+				"transparent_light.svg"
+			],
 			"home": {
 				"portfolio": {
 					"book_reviews": [
@@ -219,6 +227,7 @@
 			"main.ejs"
 		],
 		"layouts": [
+			"_brandLogo.ejs",
 			"_company_name.ejs",
 			"_flash.ejs",
 			"_footer.ejs",

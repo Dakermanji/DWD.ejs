@@ -2,11 +2,11 @@
 <footer class='footer fixed-bottom ui-bar' role="contentinfo">
 	<div class="container text-center">
 		<p id='rights' class="mb-0">
-			&copy; <%= new Date().getFullYear() %> <%- include('_company_name')
-			%>. <%= t('footer.rights') %>
-		</p>
-		<p class="mb-0 small">
-			<%= t('footer.legal') %>
+			&copy; <%= new Date().getFullYear() %>
+			<span class="footer-brand">
+				<%- include('_company_name') %>
+			</span>.
+			<%= t('footer.rights') %>
 		</p>
 		<a
 			href="#top"

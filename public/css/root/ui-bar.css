@@ -4,6 +4,62 @@ nav .brand {
 	font-size: 1.3rem;
 }
 
+.navbar-brand {
+	display: inline-flex;
+	align-items: center;
+}
+
+.brand {
+	display: inline-flex;
+	align-items: baseline;
+}
+
+.brand-logo {
+	display: inline-flex;
+	align-items: baseline;
+	justify-content: center;
+	flex: 0 0 auto;
+	inline-size: 1.25em;
+	block-size: 1.25em;
+	vertical-align: -0.22em;
+	transform: translateY(2px);
+}
+
+.brand-logo-img {
+	display: none;
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: contain;
+}
+
+.brand-logo-img-light {
+	display: block;
+}
+
+[data-theme='dark'] .brand-logo-img-light {
+	display: none;
+}
+
+[data-theme='dark'] .brand-logo-img-dark {
+	display: block;
+}
+
+.footer-brand {
+	display: inline-flex;
+	align-items: baseline;
+	justify-content: center;
+	vertical-align: middle;
+}
+
+.footer-brand .brand-logo {
+	inline-size: 1.15em;
+	block-size: 1.15em;
+}
+
+.footer-brand .brand {
+	font-size: inherit;
+}
+
 .nav-item {
 	margin-inline-end: 10px;
 }
