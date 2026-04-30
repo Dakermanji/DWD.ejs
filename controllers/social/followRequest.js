@@ -108,10 +108,8 @@ export async function followRequest(req, res, next) {
 		}
 
 		// 9. Existing pending request by receiver -> accept it and follow back
-		const receiverPendingRequest = await UserFollowRequestsModel.findPending(
-			receiverId,
-			senderId,
-		);
+		const receiverPendingRequest =
+			await UserFollowRequestsModel.findPending(receiverId, senderId);
 		if (receiverPendingRequest) {
 			const accepted = await UserFollowRequestsModel.accept(
 				receiverPendingRequest.id,
