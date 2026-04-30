@@ -44,6 +44,7 @@
 		"social": [
 			"actionContext.js",
 			"actions.js",
+			"blocked.js",
 			"followRequest.js",
 			"notifications.js"
 		],
@@ -256,7 +257,12 @@
 			]
 		},
 		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
-		"social": ["_follow_request.ejs", "_notifications.ejs", "main.ejs"],
+		"social": [
+			"_blocked.ejs",
+			"_follow_request.ejs",
+			"_notifications.ejs",
+			"main.ejs"
+		],
 		"~": ["error.ejs"]
 	},
 	"~": [

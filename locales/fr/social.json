@@ -24,6 +24,19 @@
 			"ignore": "Ignorer"
 		}
 	},
+	"blocked": {
+		"title": "Bloqués",
+		"loading": "Chargement des utilisateurs bloqués...",
+		"empty": "Aucun utilisateur bloqué.",
+		"error": "Impossible de charger les utilisateurs bloqués.",
+		"someone": "Quelqu’un",
+		"blocked_at": "Bloqué le {{date}}",
+		"action_error": "Impossible de mettre à jour cet utilisateur bloqué.",
+		"actions": {
+			"unblock": "Débloquer",
+			"unblock_follow_request": "Débloquer et envoyer une demande de suivi"
+		}
+	},
 	"error": {
 		"cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",
 		"you_blocked_this_user": "Vous avez bloqué cet utilisateur. Supprimez le blocage d’abord.",

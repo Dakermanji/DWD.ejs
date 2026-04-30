@@ -1,0 +1,37 @@
+<!--! views/social/_blocked.ejs -->
+<div class="accordion-item">
+	<h3 class="accordion-header">
+		<button
+			class="accordion-button collapsed"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#socialBlocked"
+			aria-expanded="false"
+			aria-controls="socialBlocked"
+		>
+			<%= t('social:blocked.title') %>
+		</button>
+	</h3>
+	<div
+		id="socialBlocked"
+		class="accordion-collapse collapse"
+		data-bs-parent="#socialAccordion"
+	>
+		<div
+			class="accordion-body"
+			id="socialBlockedBody"
+			data-social-section-body
+			data-section="blocked"
+			data-url="/social/blocked"
+			data-action-url="/social/actions"
+			data-loading-label="<%= t('social:blocked.loading') %>"
+			data-empty-label="<%= t('social:blocked.empty') %>"
+			data-error-label="<%= t('social:blocked.error') %>"
+			data-someone-label="<%= t('social:blocked.someone') %>"
+			data-blocked-at-label="<%= t('social:blocked.blocked_at') %>"
+			data-unblock-label="<%= t('social:blocked.actions.unblock') %>"
+			data-unblock-follow-request-label="<%= t('social:blocked.actions.unblock_follow_request') %>"
+			data-action-error-label="<%= t('social:blocked.action_error') %>"
+		></div>
+	</div>
+</div>

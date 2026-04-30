@@ -124,11 +124,11 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	background-color: var(--bg-card);
 }
 
-#socialNotificationsBody .list-group {
+[data-social-section-body] .list-group {
 	background-color: transparent;
 }
 
-#socialNotificationsBody .list-group-item {
+[data-social-section-body] .list-group-item {
 	padding: 0.5rem;
 	color: var(--color-text-body);
 	background-color: transparent;
@@ -139,7 +139,7 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 		transform var(--transition-time-method);
 }
 
-#socialNotificationsBody .list-group-item:hover {
+[data-social-section-body] .list-group-item:hover {
 	background-color: color-mix(
 		in srgb,
 		var(--color-secondary) 8%,
@@ -147,30 +147,34 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	);
 }
 
-#socialNotificationsBody .text-body-secondary {
+[data-social-section-body] .text-body-secondary {
 	color: var(--color-text-muted) !important;
 }
 
-.social-notification-title {
+.social-notification-title,
+.social-user-title {
 	padding-inline-end: 2rem;
 }
 
-.social-notification-actor {
+.social-notification-actor,
+.social-user-name {
 	color: var(--color-primary);
 	cursor: help;
 }
 
 .social-notification-actor:hover,
-.social-notification-actor:focus-visible {
+.social-notification-actor:focus-visible,
+.social-user-name:hover,
+.social-user-name:focus-visible {
 	color: var(--color-secondary);
 	outline: none;
 }
 
-#socialNotificationsBody .spinner-border {
+[data-social-section-body] .spinner-border {
 	color: var(--color-primary) !important;
 }
 
-#socialNotificationsBody .alert-danger {
+[data-social-section-body] .alert-danger {
 	color: #7f1d1d;
 	background-color: color-mix(in srgb, #dc3545 13%, var(--bg-card));
 	border-color: color-mix(in srgb, #dc3545 34%, var(--border-soft));
@@ -233,6 +237,15 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	--social-action-border: color-mix(in srgb, #dc3545 40%, var(--border-soft));
 }
 
+.social-action--unblock {
+	--social-action-color: var(--color-secondary);
+	--social-action-border: color-mix(
+		in srgb,
+		var(--color-secondary) 42%,
+		var(--border-soft)
+	);
+}
+
 .social-action--floating {
 	position: absolute;
 	inset-block-start: 0.65rem;
@@ -255,7 +268,7 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 	transform: none;
 }
 
-[data-theme='dark'] #socialNotificationsBody .alert-danger {
+[data-theme='dark'] [data-social-section-body] .alert-danger {
 	color: #ffd6dc;
 	background-color: color-mix(in srgb, #dc3545 18%, var(--bg-card));
 	border-color: color-mix(in srgb, #dc3545 38%, var(--border-soft));

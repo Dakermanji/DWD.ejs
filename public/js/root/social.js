@@ -2,6 +2,8 @@
 
 const notificationsCollapse = document.getElementById('socialNotifications');
 const notificationsBody = document.getElementById('socialNotificationsBody');
+const blockedCollapse = document.getElementById('socialBlocked');
+const blockedBody = document.getElementById('socialBlockedBody');
 
 if (notificationsCollapse && notificationsBody) {
 	notificationsCollapse.addEventListener('show.bs.collapse', () => {
@@ -18,10 +20,25 @@ if (notificationsCollapse && notificationsBody) {
 	});
 }
 
+if (blockedCollapse && blockedBody) {
+	blockedCollapse.addEventListener('show.bs.collapse', () => {
+		void loadBlockedUsers();
+	});
+
+	blockedBody.addEventListener('click', (event) => {
+		const button = event.target.closest('[data-social-action]');
+
+		if (!button) return;
+
+		event.preventDefault();
+		void runSocialAction(button);
+	});
+}
+
 async function loadNotifications() {
 	const url = notificationsBody.dataset.url;
 
-	renderLoadingState();
+	renderLoadingState(notificationsBody);
 
 	try {
 		const response = await fetch(url, {
@@ -44,7 +61,37 @@ async function loadNotifications() {
 		renderNotifications(payload.notifications);
 	} catch (error) {
 		console.error('Failed to load social notifications', error);
-		renderMessage(notificationsBody.dataset.errorLabel);
+		renderMessage(notificationsBody, notificationsBody.dataset.errorLabel);
+	}
+}
+
+async function loadBlockedUsers() {
+	const url = blockedBody.dataset.url;
+
+	renderLoadingState(blockedBody);
+
+	try {
+		const response = await fetch(url, {
+			headers: {
+				Accept: 'application/json',
+			},
+			credentials: 'same-origin',
+		});
+
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}`);
+		}
+
+		const payload = await response.json();
+
+		if (!payload?.ok || !Array.isArray(payload.blocked)) {
+			throw new Error('Invalid blocked users payload');
+		}
+
+		renderBlockedUsers(payload.blocked);
+	} catch (error) {
+		console.error('Failed to load blocked users', error);
+		renderMessage(blockedBody, blockedBody.dataset.errorLabel);
 	}
 }
 
@@ -52,7 +99,7 @@ function renderNotifications(notifications) {
 	notificationsBody.replaceChildren();
 
 	if (notifications.length === 0) {
-		renderMessage(notificationsBody.dataset.emptyLabel);
+		renderMessage(notificationsBody, notificationsBody.dataset.emptyLabel);
 		return;
 	}
 
@@ -65,6 +112,25 @@ function renderNotifications(notifications) {
 
 	notificationsBody.appendChild(list);
 	initTooltipsIn(notificationsBody);
+}
+
+function renderBlockedUsers(blockedUsers) {
+	blockedBody.replaceChildren();
+
+	if (blockedUsers.length === 0) {
+		renderMessage(blockedBody, blockedBody.dataset.emptyLabel);
+		return;
+	}
+
+	const list = document.createElement('div');
+	list.className = 'list-group list-group-flush';
+
+	for (const blockedUser of blockedUsers) {
+		list.appendChild(createBlockedUserItem(blockedUser));
+	}
+
+	blockedBody.appendChild(list);
+	initTooltipsIn(blockedBody);
 }
 
 function createNotificationItem(notification) {
@@ -90,6 +156,45 @@ function createNotificationItem(notification) {
 
 	if (inlineActions) {
 		item.appendChild(inlineActions);
+	}
+
+	return item;
+}
+
+function createBlockedUserItem(blockedUser) {
+	const item = document.createElement('article');
+	item.className = 'list-group-item';
+
+	const title = document.createElement('div');
+	title.className = 'fw-semibold social-user-title';
+
+	const userName = document.createElement('span');
+	userName.className = 'social-user-name';
+	userName.textContent = blockedUser.username || blockedBody.dataset.someoneLabel;
+
+	if (blockedUser.email) {
+		userName.classList.add('has-tooltip');
+		userName.dataset.bsTitle = blockedUser.email;
+		userName.tabIndex = 0;
+	}
+
+	title.appendChild(userName);
+
+	const meta = document.createElement('div');
+	meta.className = 'small text-body-secondary mt-1';
+	meta.textContent = formatTemplate(blockedBody.dataset.blockedAtLabel, {
+		date: formatNotificationDate(blockedUser.blocked_at),
+	});
+
+	const actions = createSocialActions(
+		getBlockedUserActions(blockedUser),
+		blockedBody,
+	);
+
+	item.append(title, meta);
+
+	if (actions.inlineActions) {
+		item.appendChild(actions.inlineActions);
 	}
 
 	return item;
@@ -177,38 +282,11 @@ function formatNotificationDate(value) {
 	}).format(date);
 }
 
-function renderMessage(message) {
-	notificationsBody.replaceChildren();
-
-	const paragraph = document.createElement('p');
-	paragraph.className = 'text-body-secondary mb-0';
-	paragraph.textContent = message;
-
-	notificationsBody.appendChild(paragraph);
-}
-
-function renderLoadingState() {
-	notificationsBody.replaceChildren();
-
-	const wrapper = document.createElement('div');
-	wrapper.className = 'd-flex align-items-center justify-content-center py-3';
-
-	const spinner = document.createElement('div');
-	spinner.className = 'spinner-border spinner-border-sm text-primary';
-	spinner.setAttribute('role', 'status');
-
-	const label = document.createElement('span');
-	label.className = 'visually-hidden';
-	label.textContent = notificationsBody.dataset.loadingLabel;
-
-	spinner.appendChild(label);
-	wrapper.appendChild(spinner);
-	notificationsBody.appendChild(wrapper);
-}
-
 function createNotificationActions(notification) {
-	const actionConfigs = getNotificationActions(notification);
+	return createSocialActions(getNotificationActions(notification), notificationsBody);
+}
 
+function createSocialActions(actionConfigs, sectionBody) {
 	if (actionConfigs.length === 0) {
 		return {
 			floatingActions: [],
@@ -221,7 +299,7 @@ function createNotificationActions(notification) {
 	const floatingActions = [];
 
 	for (const config of actionConfigs) {
-		const button = createActionButton(config);
+		const button = createActionButton(config, sectionBody);
 
 		if (config.floating) {
 			floatingActions.push(button);
@@ -243,7 +321,15 @@ function getNotificationActions(notification) {
 		: [];
 }
 
-function normalizeActionConfig(action) {
+function getBlockedUserActions(blockedUser) {
+	return Array.isArray(blockedUser.actions)
+		? blockedUser.actions.map((action) =>
+				normalizeActionConfig(action, blockedBody),
+			)
+		: [];
+}
+
+function normalizeActionConfig(action, sectionBody = notificationsBody) {
 	const baseConfig = {
 		payload: action,
 		floating: action.name === 'ignore_notification',
@@ -254,7 +340,7 @@ function normalizeActionConfig(action) {
 			...baseConfig,
 			className: 'social-action--accept',
 			icon: 'bi-check2',
-			label: notificationsBody.dataset.acceptLabel,
+			label: sectionBody.dataset.acceptLabel,
 		};
 	}
 
@@ -263,7 +349,7 @@ function normalizeActionConfig(action) {
 			...baseConfig,
 			className: 'social-action--follow-back',
 			icon: 'bi-repeat',
-			label: notificationsBody.dataset.followBackLabel,
+			label: sectionBody.dataset.followBackLabel,
 		};
 	}
 
@@ -272,7 +358,7 @@ function normalizeActionConfig(action) {
 			...baseConfig,
 			className: 'social-action--decline',
 			icon: 'bi-x-lg',
-			label: notificationsBody.dataset.declineLabel,
+			label: sectionBody.dataset.declineLabel,
 		};
 	}
 
@@ -281,7 +367,7 @@ function normalizeActionConfig(action) {
 			...baseConfig,
 			className: 'social-action--block',
 			icon: 'bi-ban',
-			label: notificationsBody.dataset.blockLabel,
+			label: sectionBody.dataset.blockLabel,
 		};
 	}
 
@@ -290,8 +376,26 @@ function normalizeActionConfig(action) {
 			...baseConfig,
 			className: 'social-action--ignore',
 			icon: 'bi-x',
-			label: notificationsBody.dataset.ignoreLabel,
+			label: sectionBody.dataset.ignoreLabel,
 			floating: true,
+		};
+	}
+
+	if (action.name === 'unblock_user') {
+		return {
+			...baseConfig,
+			className: 'social-action--unblock',
+			icon: 'bi-unlock',
+			label: sectionBody.dataset.unblockLabel,
+		};
+	}
+
+	if (action.name === 'unblock_and_follow_request') {
+		return {
+			...baseConfig,
+			className: 'social-action--follow-back',
+			icon: 'bi-person-plus',
+			label: sectionBody.dataset.unblockFollowRequestLabel,
 		};
 	}
 
@@ -303,7 +407,7 @@ function normalizeActionConfig(action) {
 	};
 }
 
-function createActionButton(config) {
+function createActionButton(config, sectionBody) {
 	const button = document.createElement('button');
 	button.type = 'button';
 	button.className = config.floating
@@ -311,6 +415,7 @@ function createActionButton(config) {
 		: `social-action ${config.className} has-tooltip`;
 	button.dataset.socialAction = config.payload.name;
 	button.dataset.socialPayload = JSON.stringify(config.payload);
+	button.dataset.socialSection = sectionBody.dataset.section;
 	button.dataset.bsTitle = config.label;
 	button.setAttribute('aria-label', config.label);
 
@@ -329,8 +434,14 @@ function createActionButton(config) {
 }
 
 async function runSocialAction(button) {
-	const url = notificationsBody.dataset.actionUrl;
+	const sectionBody = button.closest('[data-social-section-body]');
+	const url = sectionBody?.dataset.actionUrl;
 	let payload;
+
+	if (!sectionBody || !url) {
+		console.error('Social action section is missing');
+		return;
+	}
 
 	try {
 		payload = JSON.parse(button.dataset.socialPayload);
@@ -339,7 +450,7 @@ async function runSocialAction(button) {
 		return;
 	}
 
-	setActionButtonsDisabled(true);
+	setActionButtonsDisabled(sectionBody, true);
 
 	try {
 		const response = await fetch(url, {
@@ -365,17 +476,25 @@ async function runSocialAction(button) {
 			);
 		}
 
-		await loadNotifications();
+		await reloadSocialSection(sectionBody.dataset.section);
 	} catch (error) {
 		console.error('Failed to run social action', error);
-		renderActionError(notificationsBody.dataset.actionErrorLabel);
+		renderActionError(sectionBody, sectionBody.dataset.actionErrorLabel);
 	} finally {
-		setActionButtonsDisabled(false);
+		setActionButtonsDisabled(sectionBody, false);
 	}
 }
 
-function renderActionError(message) {
-	const existingAlert = notificationsBody.querySelector(
+function reloadSocialSection(section) {
+	if (section === 'blocked') {
+		return loadBlockedUsers();
+	}
+
+	return loadNotifications();
+}
+
+function renderActionError(sectionBody, message) {
+	const existingAlert = sectionBody.querySelector(
 		'[data-social-action-error]',
 	);
 
@@ -388,13 +507,51 @@ function renderActionError(message) {
 	alert.dataset.socialActionError = 'true';
 	alert.textContent = message;
 
-	notificationsBody.prepend(alert);
+	sectionBody.prepend(alert);
 }
 
-function setActionButtonsDisabled(disabled) {
-	notificationsBody
+function setActionButtonsDisabled(sectionBody, disabled) {
+	sectionBody
 		.querySelectorAll('[data-social-action]')
 		.forEach((button) => {
 			button.disabled = disabled;
 		});
+}
+
+function renderMessage(sectionBody, message) {
+	sectionBody.replaceChildren();
+
+	const paragraph = document.createElement('p');
+	paragraph.className = 'text-body-secondary mb-0';
+	paragraph.textContent = message;
+
+	sectionBody.appendChild(paragraph);
+}
+
+function renderLoadingState(sectionBody) {
+	sectionBody.replaceChildren();
+
+	const wrapper = document.createElement('div');
+	wrapper.className = 'd-flex align-items-center justify-content-center py-3';
+
+	const spinner = document.createElement('div');
+	spinner.className = 'spinner-border spinner-border-sm text-primary';
+	spinner.setAttribute('role', 'status');
+
+	const label = document.createElement('span');
+	label.className = 'visually-hidden';
+	label.textContent = sectionBody.dataset.loadingLabel;
+
+	spinner.appendChild(label);
+	wrapper.appendChild(spinner);
+	sectionBody.appendChild(wrapper);
+}
+
+function formatTemplate(template, values) {
+	if (!template) return '';
+
+	return Object.entries(values).reduce(
+		(result, [key, value]) => result.replaceAll(`{{${key}}}`, value || ''),
+		template,
+	);
 }

@@ -24,6 +24,19 @@
 			"ignore": "Ignore"
 		}
 	},
+	"blocked": {
+		"title": "Blocked",
+		"loading": "Loading blocked users...",
+		"empty": "No blocked users.",
+		"error": "Could not load blocked users.",
+		"someone": "Someone",
+		"blocked_at": "Blocked {{date}}",
+		"action_error": "Could not update this blocked user.",
+		"actions": {
+			"unblock": "Unblock",
+			"unblock_follow_request": "Unblock and request to follow"
+		}
+	},
 	"error": {
 		"cannot_follow_self": "You cannot follow yourself.",
 		"you_blocked_this_user": "You have blocked this user. Remove the block first.",
