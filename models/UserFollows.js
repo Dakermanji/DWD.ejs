@@ -35,6 +35,34 @@ export async function findFolloweesByFollower(followerId) {
 }
 
 /**
+ * Find users following one followee.
+ *
+ * @param {string} followeeId
+ * @returns {Promise<Array>}
+ */
+export async function findFollowersByFollowee(followeeId) {
+	const q = `
+		SELECT
+			${baseFieldsWithAlias('uf')},
+			u.username AS follower_username,
+			u.email AS follower_email,
+			EXISTS (
+				SELECT 1
+				FROM user_follows mutual
+				WHERE mutual.follower_id = uf.followee_id
+					AND mutual.followee_id = uf.follower_id
+			) AS is_mutual
+		FROM user_follows uf
+		INNER JOIN users u
+			ON u.id = uf.follower_id
+		WHERE uf.followee_id = $1
+		ORDER BY uf.created_at DESC;
+	`;
+
+	return queryRows(q, [followeeId]);
+}
+
+/**
  * Check whether one user already follows another.
  *
  * @param {string} followerId
@@ -110,6 +138,7 @@ export async function removeOneDirection(followerId, followeeId) {
 
 export default {
 	findFolloweesByFollower,
+	findFollowersByFollowee,
 	exists,
 	create,
 	removeBothDirections,

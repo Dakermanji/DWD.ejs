@@ -174,6 +174,12 @@ async function runSocialAction(context) {
 				type: 'follow_request_accepted_followed_back',
 				followRequestId: effectiveFollowRequestId,
 			});
+		} else {
+			await UserSocialNotificationsModel.create({
+				recipientId: effectiveTargetUserId,
+				actorId,
+				type: 'follow_started',
+			});
 		}
 		return;
 	}
