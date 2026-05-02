@@ -125,6 +125,12 @@ async function runSocialAction(context) {
 		await requireTargetUserId(effectiveTargetUserId);
 		await requireFollowRequestId(effectiveFollowRequestId);
 
+		if (
+			await usersBlockedEitherDirection(actorId, effectiveTargetUserId)
+		) {
+			return;
+		}
+
 		const accepted = await UserFollowRequestsModel.accept(
 			effectiveFollowRequestId,
 			actorId,
@@ -132,12 +138,6 @@ async function runSocialAction(context) {
 		if (!accepted) {
 			if (notificationId) return;
 			throw new Error('Follow request was not accepted');
-		}
-
-		if (
-			await usersBlockedEitherDirection(actorId, effectiveTargetUserId)
-		) {
-			return;
 		}
 
 		await UserFollowsModel.create(effectiveTargetUserId, actorId);
@@ -162,6 +162,15 @@ async function runSocialAction(context) {
 		await requireTargetUserId(effectiveTargetUserId);
 
 		if (effectiveFollowRequestId) {
+			if (
+				await usersBlockedEitherDirection(
+					actorId,
+					effectiveTargetUserId,
+				)
+			) {
+				return;
+			}
+
 			const accepted = await UserFollowRequestsModel.accept(
 				effectiveFollowRequestId,
 				actorId,
@@ -396,6 +405,8 @@ async function requestFollowAfterUnblock(requesterId, targetId) {
 		}
 		return;
 	}
+
+	if (await usersBlockedEitherDirection(requesterId, targetId)) return;
 
 	const followRequest = await UserFollowRequestsModel.create({
 		requesterId,
