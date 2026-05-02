@@ -90,9 +90,11 @@ async function requireNotificationOwnership(notificationId, recipientId) {
 		);
 
 	if (!notification) {
-		throw new Error(
+		const error = new Error(
 			'Notification was not found or is no longer actionable',
 		);
+		error.code = 'STALE_SOCIAL_ACTION';
+		throw error;
 	}
 
 	return notification;

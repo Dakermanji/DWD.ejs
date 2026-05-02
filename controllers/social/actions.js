@@ -83,6 +83,13 @@ export async function postSocialAction(req, res, next) {
 			ok: true,
 		});
 	} catch (error) {
+		if (error.code === 'STALE_SOCIAL_ACTION') {
+			res.json({
+				ok: true,
+			});
+			return;
+		}
+
 		next(error);
 	}
 }
@@ -123,7 +130,14 @@ async function runSocialAction(context) {
 			actorId,
 		);
 		if (!accepted) {
+			if (notificationId) return;
 			throw new Error('Follow request was not accepted');
+		}
+
+		if (
+			await usersBlockedEitherDirection(actorId, effectiveTargetUserId)
+		) {
+			return;
 		}
 
 		await UserFollowsModel.create(effectiveTargetUserId, actorId);
@@ -153,11 +167,29 @@ async function runSocialAction(context) {
 				actorId,
 			);
 			if (!accepted) {
+				if (notificationId) return;
 				throw new Error('Follow request was not accepted');
 			}
 		}
 
-		await UserFollowsModel.create(actorId, effectiveTargetUserId);
+		if (
+			await usersBlockedEitherDirection(actorId, effectiveTargetUserId)
+		) {
+			return;
+		}
+
+		if (!effectiveFollowRequestId) {
+			const targetStillFollowsActor = await UserFollowsModel.exists(
+				effectiveTargetUserId,
+				actorId,
+			);
+			if (!targetStillFollowsActor) return;
+		}
+
+		const followed = await UserFollowsModel.create(
+			actorId,
+			effectiveTargetUserId,
+		);
 
 		if (effectiveFollowRequestId) {
 			await UserFollowsModel.create(effectiveTargetUserId, actorId);
@@ -174,7 +206,7 @@ async function runSocialAction(context) {
 				type: 'follow_request_accepted_followed_back',
 				followRequestId: effectiveFollowRequestId,
 			});
-		} else {
+		} else if (followed) {
 			await UserSocialNotificationsModel.create({
 				recipientId: effectiveTargetUserId,
 				actorId,
@@ -194,6 +226,7 @@ async function runSocialAction(context) {
 			actorId,
 		);
 		if (!rejected) {
+			if (notificationId) return;
 			throw new Error('Follow request was not rejected');
 		}
 
@@ -258,21 +291,24 @@ async function runSocialAction(context) {
 	if (action === 'unblock_user') {
 		await requireTargetUserId(targetUserId);
 		const unblocked = await UserBlocksModel.remove(actorId, targetUserId);
-		if (!unblocked) {
-			throw new Error('User was not blocked');
-		}
+		if (!unblocked) return;
 		return;
 	}
 
 	if (action === 'unblock_and_follow_request') {
 		await requireTargetUserId(targetUserId);
 		const unblocked = await UserBlocksModel.remove(actorId, targetUserId);
-		if (!unblocked) {
-			throw new Error('User was not blocked');
-		}
+		if (!unblocked) return;
 		await requestFollowAfterUnblock(actorId, targetUserId);
 		return;
 	}
+}
+
+async function usersBlockedEitherDirection(userAId, userBId) {
+	const userABlockedUserB = await UserBlocksModel.exists(userAId, userBId);
+	if (userABlockedUserB) return true;
+
+	return UserBlocksModel.exists(userBId, userAId);
 }
 
 /**
