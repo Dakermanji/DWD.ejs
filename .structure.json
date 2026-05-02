@@ -46,6 +46,7 @@
 			"actions.js",
 			"blocked.js",
 			"followees.js",
+			"followers.js",
 			"followRequest.js",
 			"notifications.js"
 		],
@@ -262,6 +263,7 @@
 			"_blocked.ejs",
 			"_follow_request.ejs",
 			"_followees.ejs",
+			"_followers.ejs",
 			"_notifications.ejs",
 			"main.ejs"
 		],

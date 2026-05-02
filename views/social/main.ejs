@@ -21,29 +21,7 @@
 		<%- include('_follow_request') %>
 
 		<div class="accordion" id="socialAccordion">
-			<div class="accordion-item">
-				<h3 class="accordion-header">
-					<button
-						class="accordion-button collapsed"
-						type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#socialFollowers"
-						aria-expanded="false"
-						aria-controls="socialFollowers"
-					>
-						Followers
-					</button>
-				</h3>
-				<div
-					id="socialFollowers"
-					class="accordion-collapse collapse"
-					data-bs-parent="#socialAccordion"
-				>
-					<div class="accordion-body">
-						<!-- followers content -->
-					</div>
-				</div>
-			</div>
+			<%- include('./_followers') %>
 
 			<%- include('./_followees') %>
 

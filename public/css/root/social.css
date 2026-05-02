@@ -228,7 +228,8 @@ html[dir='rtl'] #socialAccordion .accordion-button:not(.collapsed) {
 
 .social-action--decline,
 .social-action--default,
-.social-action--unfollow {
+.social-action--unfollow,
+.social-action--remove-follower {
 	--social-action-color: var(--color-text-muted);
 	--social-action-border: var(--border-soft);
 }

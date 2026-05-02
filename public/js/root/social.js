@@ -6,6 +6,8 @@ const blockedCollapse = document.getElementById('socialBlocked');
 const blockedBody = document.getElementById('socialBlockedBody');
 const followeesCollapse = document.getElementById('socialFollowees');
 const followeesBody = document.getElementById('socialFolloweesBody');
+const followersCollapse = document.getElementById('socialFollowers');
+const followersBody = document.getElementById('socialFollowersBody');
 
 if (notificationsCollapse && notificationsBody) {
 	notificationsCollapse.addEventListener('show.bs.collapse', () => {
@@ -43,6 +45,21 @@ if (followeesCollapse && followeesBody) {
 	});
 
 	followeesBody.addEventListener('click', (event) => {
+		const button = event.target.closest('[data-social-action]');
+
+		if (!button) return;
+
+		event.preventDefault();
+		void runSocialAction(button);
+	});
+}
+
+if (followersCollapse && followersBody) {
+	followersCollapse.addEventListener('show.bs.collapse', () => {
+		void loadFollowers();
+	});
+
+	followersBody.addEventListener('click', (event) => {
 		const button = event.target.closest('[data-social-action]');
 
 		if (!button) return;
@@ -142,6 +159,36 @@ async function loadFollowees() {
 	}
 }
 
+async function loadFollowers() {
+	const url = followersBody.dataset.url;
+
+	renderLoadingState(followersBody);
+
+	try {
+		const response = await fetch(url, {
+			headers: {
+				Accept: 'application/json',
+			},
+			credentials: 'same-origin',
+		});
+
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}`);
+		}
+
+		const payload = await response.json();
+
+		if (!payload?.ok || !Array.isArray(payload.followers)) {
+			throw new Error('Invalid followers payload');
+		}
+
+		renderFollowers(payload.followers);
+	} catch (error) {
+		console.error('Failed to load followers', error);
+		renderMessage(followersBody, followersBody.dataset.errorLabel);
+	}
+}
+
 function renderNotifications(notifications) {
 	notificationsBody.replaceChildren();
 
@@ -197,6 +244,25 @@ function renderFollowees(followees) {
 
 	followeesBody.appendChild(list);
 	initTooltipsIn(followeesBody);
+}
+
+function renderFollowers(followers) {
+	followersBody.replaceChildren();
+
+	if (followers.length === 0) {
+		renderMessage(followersBody, followersBody.dataset.emptyLabel);
+		return;
+	}
+
+	const list = document.createElement('div');
+	list.className = 'list-group list-group-flush';
+
+	for (const follower of followers) {
+		list.appendChild(createFollowerItem(follower));
+	}
+
+	followersBody.appendChild(list);
+	initTooltipsIn(followersBody);
 }
 
 function createNotificationItem(notification) {
@@ -294,6 +360,45 @@ function createFolloweeItem(followee) {
 	const actions = createSocialActions(
 		getFolloweeActions(followee),
 		followeesBody,
+	);
+
+	item.append(title, meta);
+
+	if (actions.inlineActions) {
+		item.appendChild(actions.inlineActions);
+	}
+
+	return item;
+}
+
+function createFollowerItem(follower) {
+	const item = document.createElement('article');
+	item.className = 'list-group-item';
+
+	const title = document.createElement('div');
+	title.className = 'fw-semibold social-user-title';
+
+	const userName = document.createElement('span');
+	userName.className = 'social-user-name';
+	userName.textContent = follower.username || followersBody.dataset.someoneLabel;
+
+	if (follower.email) {
+		userName.classList.add('has-tooltip');
+		userName.dataset.bsTitle = follower.email;
+		userName.tabIndex = 0;
+	}
+
+	title.appendChild(userName);
+
+	const meta = document.createElement('div');
+	meta.className = 'small text-body-secondary mt-1';
+	meta.textContent = formatTemplate(followersBody.dataset.followedAtLabel, {
+		date: formatNotificationDate(follower.followed_at),
+	});
+
+	const actions = createSocialActions(
+		getFollowerActions(follower),
+		followersBody,
 	);
 
 	item.append(title, meta);
@@ -442,6 +547,14 @@ function getFolloweeActions(followee) {
 		: [];
 }
 
+function getFollowerActions(follower) {
+	return Array.isArray(follower.actions)
+		? follower.actions.map((action) =>
+				normalizeActionConfig(action, followersBody),
+			)
+		: [];
+}
+
 function normalizeActionConfig(action, sectionBody = notificationsBody) {
 	const baseConfig = {
 		payload: action,
@@ -527,6 +640,15 @@ function normalizeActionConfig(action, sectionBody = notificationsBody) {
 			className: 'social-action--remove-both',
 			icon: 'bi-people',
 			label: sectionBody.dataset.removeBothLabel,
+		};
+	}
+
+	if (action.name === 'remove_follower') {
+		return {
+			...baseConfig,
+			className: 'social-action--remove-follower',
+			icon: 'bi-person-x',
+			label: sectionBody.dataset.removeFollowerLabel,
 		};
 	}
 
@@ -617,6 +739,10 @@ async function runSocialAction(button) {
 }
 
 function reloadSocialSection(section) {
+	if (section === 'followers') {
+		return loadFollowers();
+	}
+
 	if (section === 'followees') {
 		return loadFollowees();
 	}

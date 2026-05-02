@@ -1,0 +1,40 @@
+<!--! views/social/_followers.ejs -->
+<div class="accordion-item">
+	<h3 class="accordion-header">
+		<button
+			class="accordion-button collapsed"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#socialFollowers"
+			aria-expanded="false"
+			aria-controls="socialFollowers"
+		>
+			<%= t('social:followers.title') %>
+		</button>
+	</h3>
+	<div
+		id="socialFollowers"
+		class="accordion-collapse collapse"
+		data-bs-parent="#socialAccordion"
+	>
+		<div
+			class="accordion-body"
+			id="socialFollowersBody"
+			data-social-section-body
+			data-section="followers"
+			data-url="/social/followers"
+			data-action-url="/social/actions"
+			data-loading-label="<%= t('social:followers.loading') %>"
+			data-empty-label="<%= t('social:followers.empty') %>"
+			data-error-label="<%= t('social:followers.error') %>"
+			data-someone-label="<%= t('social:followers.someone') %>"
+			data-followed-at-label="<%= t('social:followers.followed_at') %>"
+			data-unfollow-label="<%= t('social:followers.actions.unfollow') %>"
+			data-remove-follower-label="<%= t('social:followers.actions.remove') %>"
+			data-follow-back-label="<%= t('social:followers.actions.follow_back') %>"
+			data-remove-both-label="<%= t('social:followers.actions.remove_both') %>"
+			data-block-label="<%= t('social:followers.actions.block') %>"
+			data-action-error-label="<%= t('social:followers.action_error') %>"
+		></div>
+	</div>
+</div>

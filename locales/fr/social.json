@@ -51,6 +51,22 @@
 			"block": "Bloquer"
 		}
 	},
+	"followers": {
+		"title": "Abonnés",
+		"loading": "Chargement des abonnés...",
+		"empty": "Aucun abonné pour le moment.",
+		"error": "Impossible de charger les abonnés.",
+		"someone": "Quelqu’un",
+		"followed_at": "Vous suit depuis le {{date}}",
+		"action_error": "Impossible de mettre à jour cet abonné.",
+		"actions": {
+			"unfollow": "Ne plus suivre",
+			"remove": "Retirer l’abonné",
+			"follow_back": "Suivre en retour",
+			"remove_both": "Supprimer les deux suivis",
+			"block": "Bloquer"
+		}
+	},
 	"error": {
 		"cannot_follow_self": "Vous ne pouvez pas vous suivre vous-même.",
 		"you_blocked_this_user": "Vous avez bloqué cet utilisateur. Supprimez le blocage d’abord.",

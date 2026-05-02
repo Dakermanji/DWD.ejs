@@ -51,6 +51,22 @@
 			"block": "Block"
 		}
 	},
+	"followers": {
+		"title": "Followers",
+		"loading": "Loading followers...",
+		"empty": "No followers yet.",
+		"error": "Could not load followers.",
+		"someone": "Someone",
+		"followed_at": "Followed you {{date}}",
+		"action_error": "Could not update this follower.",
+		"actions": {
+			"unfollow": "Unfollow",
+			"remove": "Remove follower",
+			"follow_back": "Follow back",
+			"remove_both": "Remove both follows",
+			"block": "Block"
+		}
+	},
 	"error": {
 		"cannot_follow_self": "You cannot follow yourself.",
 		"you_blocked_this_user": "You have blocked this user. Remove the block first.",
