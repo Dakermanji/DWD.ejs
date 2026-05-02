@@ -272,18 +272,35 @@ async function runSocialAction(context) {
 
 	if (action === 'unfollow_user') {
 		await requireTargetUserId(targetUserId);
+		const isFollowing = await UserFollowsModel.exists(
+			actorId,
+			targetUserId,
+		);
+		if (!isFollowing) return;
+
 		await UserFollowsModel.removeOneDirection(actorId, targetUserId);
 		return;
 	}
 
 	if (action === 'remove_follower') {
 		await requireTargetUserId(targetUserId);
+		const isFollower = await UserFollowsModel.exists(
+			targetUserId,
+			actorId,
+		);
+		if (!isFollower) return;
+
 		await UserFollowsModel.removeOneDirection(targetUserId, actorId);
 		return;
 	}
 
 	if (action === 'remove_follow_relationships') {
 		await requireTargetUserId(targetUserId);
+		const hasFollowRelationship =
+			(await UserFollowsModel.exists(actorId, targetUserId)) ||
+			(await UserFollowsModel.exists(targetUserId, actorId));
+		if (!hasFollowRelationship) return;
+
 		await UserFollowsModel.removeBothDirections(actorId, targetUserId);
 		return;
 	}
@@ -346,9 +363,7 @@ async function requestFollowAfterUnblock(requesterId, targetId) {
 			targetPendingRequest.id,
 			requesterId,
 		);
-		if (!accepted) {
-			throw new Error('Could not accept reverse pending follow request');
-		}
+		if (!accepted) return;
 
 		await UserFollowsModel.create(targetId, requesterId);
 		await UserFollowsModel.create(requesterId, targetId);
@@ -371,12 +386,14 @@ async function requestFollowAfterUnblock(requesterId, targetId) {
 		requesterId,
 	);
 	if (targetAlreadyFollowingRequester) {
-		await UserFollowsModel.create(requesterId, targetId);
-		await UserSocialNotificationsModel.create({
-			recipientId: targetId,
-			actorId: requesterId,
-			type: 'follow_started',
-		});
+		const followed = await UserFollowsModel.create(requesterId, targetId);
+		if (followed) {
+			await UserSocialNotificationsModel.create({
+				recipientId: targetId,
+				actorId: requesterId,
+				type: 'follow_started',
+			});
+		}
 		return;
 	}
 
@@ -384,9 +401,7 @@ async function requestFollowAfterUnblock(requesterId, targetId) {
 		requesterId,
 		targetId,
 	});
-	if (!followRequest) {
-		throw new Error('Could not create follow request');
-	}
+	if (!followRequest) return;
 
 	await UserSocialNotificationsModel.create({
 		recipientId: targetId,
