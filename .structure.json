@@ -89,6 +89,7 @@
 			"parsers.js",
 			"passport.js",
 			"requestLogger.js",
+			"routeAccess.js",
 			"securityHeaders.js",
 			"session.js",
 			"staticFiles.js"

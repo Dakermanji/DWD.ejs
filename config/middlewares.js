@@ -16,6 +16,7 @@ import flash from '../middlewares/flash.js';
 import locals from '../middlewares/locals.js';
 import i18nextMiddlewares from '../middlewares/i18n.js';
 import staticFiles from '../middlewares/staticFiles.js';
+import routeAccess from '../middlewares/routeAccess.js';
 import { navbarMiddleware } from '../middlewares/navbar.js';
 
 export default function applyMiddlewares(app) {
@@ -48,4 +49,7 @@ export default function applyMiddlewares(app) {
 
 	// Enable serving static files such as stylesheets, scripts, and images
 	staticFiles(app);
+
+	// Redirect unauthenticated visitors away from protected routes
+	routeAccess(app);
 }
