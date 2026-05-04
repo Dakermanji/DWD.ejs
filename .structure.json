@@ -218,6 +218,7 @@
 		],
 		"avatar": ["dicebear.js"],
 		"contact": ["email.js"],
+		"country": ["list.js"],
 		"dashboard": ["account.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],

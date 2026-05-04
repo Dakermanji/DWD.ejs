@@ -4,6 +4,8 @@ import { sendContactEmail } from '../services/contact/email.js';
 import { fail, success } from '../services/http/response.js';
 import { isSafeString, normalizeText } from '../middlewares/validators/common.js';
 import logger from '../config/logger.js';
+import { getLocale } from '../services/i18n/locale.js';
+import { getCountryOptions } from '../services/country/list.js';
 
 /**
  * Home Controller
@@ -29,6 +31,8 @@ function normalizeSubject(value) {
  * @returns {void}
  */
 export function renderHome(req, res) {
+	const locale = getLocale(req);
+
 	res.render('home/main', {
 		titleKey: 'home:title',
 		styles: [
@@ -44,6 +48,7 @@ export function renderHome(req, res) {
 		],
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio', 'home/auth'],
 		token: req.session.token || null,
+		countryOptions: getCountryOptions(locale),
 	});
 }
 
