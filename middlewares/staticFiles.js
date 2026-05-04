@@ -33,8 +33,5 @@ export default function staticFiles(app) {
 	 */
 	app.use(express.static('public'));
 
-	app.use(
-		'/vendor/country-flag-icons',
-		express.static('node_modules/country-flag-icons'),
-	);
+	app.use('/vendor/flag-icons', express.static('node_modules/flag-icons'));
 }

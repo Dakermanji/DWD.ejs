@@ -110,8 +110,8 @@
 	"node_modules": [],
 	"patches": [
 		"connect-flash+0.1.1.patch",
-		"passport-oauth2+1.8.0.patch",
-		"patches/country-flag-icons+1.6.17.patch"
+		"flag-icons+7.5.0.patch",
+		"passport-oauth2+1.8.0.patch"
 	],
 	"public": {
 		"css": {

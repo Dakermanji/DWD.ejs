@@ -15,12 +15,11 @@
 					class="position-absolute bottom-0 end-0 rounded-circle border bg-body p-1 has-tooltip"
 					data-bs-title="<%= account.countryName %>"
 				>
-					<img
-						src="/vendor/country-flag-icons/3x2/<%= account.countryCode %>.svg"
-						alt="<%= account.countryName %>"
-						width="24"
-						height="16"
-					/>
+					<span
+						class="fi fi-<%= account.countryCode.toLowerCase() %>"
+						role="img"
+						aria-label="<%= account.countryName %>"
+					></span>
 				</span>
 			<% } %>
 		</div>
