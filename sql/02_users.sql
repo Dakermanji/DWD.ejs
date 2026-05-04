@@ -14,6 +14,13 @@
  * - Username is optional but unique if present
  * - Blocking is handled inline for quick checks during auth
  */
+DO $$
+BEGIN
+    CREATE TYPE "user_theme" AS ENUM ('system', 'light', 'dark');
+EXCEPTION
+    WHEN duplicate_object THEN NULL;
+END $$;
+
 CREATE TABLE
     IF NOT EXISTS "users" (
         "id" UUID PRIMARY KEY DEFAULT gen_random_uuid (),
@@ -31,6 +38,9 @@ CREATE TABLE
         "blocked_reason" TEXT NULL,
         -- Localization
         "locale" VARCHAR(2) NOT NULL DEFAULT 'en',
+        -- Preferences
+        "theme" "user_theme" NOT NULL DEFAULT 'system',
+        "avatar_seed" TEXT NULL,
         -- Activity tracking
         "last_signin_at" TIMESTAMPTZ NULL,
         -- Timestamps
