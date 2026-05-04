@@ -43,6 +43,7 @@
 		],
 		"social": [
 			"actionContext.js",
+			"actionRunner.js",
 			"actions.js",
 			"blocked.js",
 			"followees.js",
