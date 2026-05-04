@@ -36,6 +36,14 @@ function prefersDarkMode() {
  * @returns {'light' | 'dark' | 'system'}
  */
 function getStoredThemePreference() {
+	const root = document.documentElement;
+	const serverPreference = root.dataset.themePreference;
+	const isAuthenticated = root.dataset.authenticated === 'true';
+
+	if (isAuthenticated && THEME_VALUES.includes(serverPreference)) {
+		return serverPreference;
+	}
+
 	const storedPreference = localStorage.getItem(THEME_STORAGE_KEY);
 
 	return THEME_VALUES.includes(storedPreference)
@@ -50,6 +58,35 @@ function getStoredThemePreference() {
  */
 function setStoredThemePreference(preference) {
 	localStorage.setItem(THEME_STORAGE_KEY, preference);
+}
+
+/**
+ * Persists theme preference for signed-in users.
+ *
+ * @param {'light' | 'dark' | 'system'} preference
+ * @returns {Promise<void>}
+ */
+async function syncThemePreference(preference) {
+	const root = document.documentElement;
+
+	if (root.dataset.authenticated !== 'true') {
+		return;
+	}
+
+	const response = await fetch('/theme', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+		},
+		body: JSON.stringify({
+			theme: preference,
+		}),
+	});
+
+	if (!response.ok) {
+		throw new Error('Theme preference sync failed');
+	}
 }
 
 /**
@@ -78,6 +115,7 @@ function applyTheme(preference) {
 
 	root.setAttribute(THEME_ATTRIBUTE, resolvedTheme);
 	root.setAttribute(THEME_PREFERENCE_ATTRIBUTE, preference);
+	root.dataset.themePreference = preference;
 
 	updateThemeUI(preference);
 }
@@ -143,6 +181,9 @@ function handleThemeSelection(event) {
 
 	setStoredThemePreference(themeValue);
 	applyTheme(themeValue);
+	syncThemePreference(themeValue).catch(() => {
+		// Local state remains applied; the next signed-in page load restores DB state.
+	});
 }
 
 /**

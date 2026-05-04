@@ -1,6 +1,7 @@
 //! middlewares/locals.js
 
 import env from '../config/dotenv.js';
+import { getThemePreference } from '../services/theme/preference.js';
 
 /**
  * Locals Middleware
@@ -23,6 +24,7 @@ export default function configureLocals(app) {
 		// Authenticated user from Passport session
 		res.locals.user = req.user ?? null;
 		res.locals.isAuthenticated = req.isAuthenticated?.() ?? false;
+		res.locals.currentTheme = getThemePreference(req);
 
 		// Current route path for active navbar state
 		res.locals.currentRoute = req.path;

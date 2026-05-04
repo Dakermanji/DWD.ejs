@@ -51,7 +51,7 @@
 			"followRequest.js",
 			"notifications.js"
 		],
-		"~": ["dashboard.js", "home.js", "lang.js"]
+		"~": ["dashboard.js", "home.js", "lang.js", "theme.js"]
 	},
 	"locales": {
 		"ar": [
@@ -190,7 +190,7 @@
 			]
 		}
 	},
-	"routes": ["auth.js", "dashboard.js", "home.js", "lang.js", "social.js"],
+	"routes": ["auth.js", "dashboard.js", "home.js", "lang.js", "social.js", "theme.js"],
 	"services": {
 		"auth": [
 			"email.js",
@@ -207,7 +207,8 @@
 		],
 		"contact": ["email.js"],
 		"http": ["requestMeta.js", "response.js"],
-		"i18n": ["locale.js"]
+		"i18n": ["locale.js"],
+		"theme": ["preference.js"]
 	},
 	"sql": [
 		"01_session.sql",

@@ -133,7 +133,7 @@ async function findForLocalSignin(identifier, identifierType) {
 	}
 
 	const q = `
-		SELECT id, email, username, hashed_password, is_blocked, locale
+		SELECT id, email, username, hashed_password, is_blocked, locale, theme
 		FROM users
 		WHERE ${lookupColumn} = $1
 			AND username IS NOT NULL
@@ -197,7 +197,9 @@ async function updatePasswordById(userId, hashedPassword) {
  *   email: string,
  *   username: string | null,
  *   is_verified: boolean,
- *   is_blocked: boolean
+ *   is_blocked: boolean,
+ *   locale: string,
+ *   theme: string
  * } | null>}
  */
 async function findByIdForSession(userId) {
@@ -208,7 +210,8 @@ async function findByIdForSession(userId) {
 		username,
 		is_verified,
 		is_blocked,
-		locale
+		locale,
+		theme
     FROM users
     WHERE id = $1
     LIMIT 1;
@@ -230,7 +233,8 @@ async function findByIdForSession(userId) {
  *   username: string | null,
  *   is_verified: boolean,
  *   is_blocked: boolean,
- *   locale: string
+ *   locale: string,
+ *   theme: string
  * } | null>}
  */
 async function createOAuthUser(email, locale = 'en', isVerified = true) {
@@ -247,7 +251,8 @@ async function createOAuthUser(email, locale = 'en', isVerified = true) {
 			username,
 			is_verified,
 			is_blocked,
-			locale;
+			locale,
+			theme;
 	`;
 
 	const rows = await queryRows(q, [email, locale, isVerified]);
@@ -269,6 +274,24 @@ export async function updateLocale(userId, locale) {
 	`;
 
 	const result = await query(q, [locale, userId]);
+	return result.rowCount > 0;
+}
+
+/**
+ * Update a user's theme preference.
+ *
+ * @param {number|string} userId
+ * @param {'system'|'light'|'dark'} theme
+ * @returns {Promise<boolean>} Whether a row was updated
+ */
+export async function updateTheme(userId, theme) {
+	const q = `
+		UPDATE users
+		SET theme = $1, updated_at = NOW()
+		WHERE id = $2;
+	`;
+
+	const result = await query(q, [theme, userId]);
 	return result.rowCount > 0;
 }
 
@@ -365,6 +388,7 @@ export default {
 	findByIdForSession,
 	createOAuthUser,
 	updateLocale,
+	updateTheme,
 	updateUsernameById,
 	updateLastSignIn,
 	findByUsername,

@@ -13,6 +13,7 @@ import langRoutes from '../routes/lang.js';
 import authRoutes from '../routes/auth.js';
 import socialRoutes from '../routes/social.js';
 import dashboardRoutes from '../routes/dashboard.js';
+import themeRoutes from '../routes/theme.js';
 
 const router = Router();
 
@@ -30,5 +31,8 @@ router.use('/social', socialRoutes);
 
 // Dashboard routes
 router.use('/dashboard', dashboardRoutes);
+
+// Theme preference routes
+router.use('/theme', themeRoutes);
 
 export default router;
