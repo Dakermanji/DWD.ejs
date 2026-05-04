@@ -25,14 +25,18 @@ const INVALID_CREDENTIALS_KEY = 'auth:error.invalid_credentials';
  *   email: string,
  *   username: string
  *   locale: string,
- *   theme: string
+ *   country_code: string | null,
+ *   theme: string,
+ *   avatar_seed: string | null
  * }} user
  * @returns {{
  *   id: string,
  *   email: string,
  *   username: string
  *   locale: string,
- *   theme: string
+ *   country_code: string | null,
+ *   theme: string,
+ *   avatar_seed: string | null
  * }}
  */
 function buildSafeUser(user) {
@@ -41,7 +45,9 @@ function buildSafeUser(user) {
 		email: user.email,
 		username: user.username,
 		locale: user.locale,
+		country_code: user.country_code,
 		theme: user.theme,
+		avatar_seed: user.avatar_seed,
 	};
 }
 

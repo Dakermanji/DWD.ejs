@@ -38,6 +38,7 @@ CREATE TABLE
         "blocked_reason" TEXT NULL,
         -- Localization
         "locale" VARCHAR(2) NOT NULL DEFAULT 'en',
+        "country_code" CHAR(2) NULL,
         -- Preferences
         "theme" "user_theme" NOT NULL DEFAULT 'system',
         "avatar_seed" TEXT NULL,
@@ -48,7 +49,11 @@ CREATE TABLE
         "updated_at" TIMESTAMPTZ NOT NULL DEFAULT NOW (),
         -- Constraints
         CONSTRAINT "users_email_unique" UNIQUE ("email"),
-        CONSTRAINT "users_username_unique" UNIQUE ("username")
+        CONSTRAINT "users_username_unique" UNIQUE ("username"),
+        CONSTRAINT "users_country_code_format" CHECK (
+            "country_code" IS NULL
+            OR "country_code" ~ '^[A-Z]{2}$'
+        )
     );
 
 /**

@@ -133,7 +133,16 @@ async function findForLocalSignin(identifier, identifierType) {
 	}
 
 	const q = `
-		SELECT id, email, username, hashed_password, is_blocked, locale, theme
+		SELECT
+			id,
+			email,
+			username,
+			hashed_password,
+			is_blocked,
+			locale,
+			country_code,
+			theme,
+			avatar_seed
 		FROM users
 		WHERE ${lookupColumn} = $1
 			AND username IS NOT NULL
@@ -199,7 +208,9 @@ async function updatePasswordById(userId, hashedPassword) {
  *   is_verified: boolean,
  *   is_blocked: boolean,
  *   locale: string,
- *   theme: string
+ *   country_code: string | null,
+ *   theme: string,
+ *   avatar_seed: string | null
  * } | null>}
  */
 async function findByIdForSession(userId) {
@@ -211,7 +222,9 @@ async function findByIdForSession(userId) {
 		is_verified,
 		is_blocked,
 		locale,
-		theme
+		country_code,
+		theme,
+		avatar_seed
     FROM users
     WHERE id = $1
     LIMIT 1;
@@ -234,7 +247,9 @@ async function findByIdForSession(userId) {
  *   is_verified: boolean,
  *   is_blocked: boolean,
  *   locale: string,
- *   theme: string
+ *   country_code: string | null,
+ *   theme: string,
+ *   avatar_seed: string | null
  * } | null>}
  */
 async function createOAuthUser(email, locale = 'en', isVerified = true) {
@@ -252,7 +267,9 @@ async function createOAuthUser(email, locale = 'en', isVerified = true) {
 			is_verified,
 			is_blocked,
 			locale,
-			theme;
+			country_code,
+			theme,
+			avatar_seed;
 	`;
 
 	const rows = await queryRows(q, [email, locale, isVerified]);

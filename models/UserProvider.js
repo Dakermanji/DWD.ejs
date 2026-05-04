@@ -14,7 +14,9 @@ import { queryRows } from '../config/database.js';
  *   is_verified: boolean,
  *   is_blocked: boolean,
  *   locale: string,
- *   theme: string
+ *   country_code: string | null,
+ *   theme: string,
+ *   avatar_seed: string | null
  * } | null>}
  */
 async function findUserByProviderAccount(provider, providerUserId) {
@@ -26,7 +28,9 @@ async function findUserByProviderAccount(provider, providerUserId) {
             u.is_verified,
             u.is_blocked,
             u.locale,
-            u.theme
+            u.country_code,
+            u.theme,
+            u.avatar_seed
         FROM user_providers up
         INNER JOIN users u
             ON u.id = up.user_id
