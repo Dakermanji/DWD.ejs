@@ -182,7 +182,9 @@
 				"label": "Message",
 				"placeholder": "Write your message"
 			},
-			"submit": "Send Message"
+			"submit": "Send Message",
+			"success": "Your message has been sent.",
+			"invalid": "Please enter a subject and message within the allowed length."
 		}
 	}
 }

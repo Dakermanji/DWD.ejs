@@ -204,6 +204,7 @@
 			"tokens.js",
 			"verifyToken.js"
 		],
+		"contact": ["email.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"]
 	},

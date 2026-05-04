@@ -1,7 +1,7 @@
 //! routes/home.js
 
 import { Router } from 'express';
-import { renderHome } from '../controllers/home.js';
+import { renderHome, sendContactMessage } from '../controllers/home.js';
 
 const router = Router();
 
@@ -16,5 +16,6 @@ const router = Router();
  * Render the homepage.
  */
 router.get('/', renderHome);
+router.post('/contact', sendContactMessage);
 
 export default router;

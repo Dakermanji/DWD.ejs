@@ -182,7 +182,9 @@
 				"label": "Message",
 				"placeholder": "Écrivez votre message"
 			},
-			"submit": "Envoyer le message"
+			"submit": "Envoyer le message",
+			"success": "Votre message a été envoyé.",
+			"invalid": "Veuillez entrer un sujet et un message dans la limite autorisée."
 		}
 	}
 }
