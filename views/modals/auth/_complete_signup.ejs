@@ -9,6 +9,8 @@
 	class="modal fade"
 	id="completeSignUpModal"
 	tabindex="-1"
+	data-bs-backdrop="static"
+	data-bs-keyboard="false"
 	aria-labelledby="completeSignUpModalLabel"
 	aria-hidden="true"
 >
@@ -19,12 +21,6 @@
 				<h5 class="modal-title" id="completeSignUpModalLabel">
 					<%= t('auth:signup.complete_title') %>
 				</h5>
-				<button
-					type="button"
-					class="btn-close"
-					data-bs-dismiss="modal"
-					aria-label="Close"
-				></button>
 			</div>
 
 			<form method="POST" action="/auth/<%= action %>">
