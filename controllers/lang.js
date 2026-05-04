@@ -27,14 +27,20 @@ import { setLangCookie } from '../services/i18n/locale.js';
  */
 export async function changeLanguage(req, res) {
 	const { lang } = req.params;
+	const redirectTo = req.get('Referrer') || '/';
+
+	if (!SUPPORTED_LANGUAGE_SET.has(lang)) {
+		return res.redirect(redirectTo);
+	}
 
 	// Persist language only when it is supported by the application
 	setLangCookie(res, lang);
 
 	if (req.user && req.user.locale !== lang) {
 		await UserModel.updateLocale(req.user.id, lang);
+		req.user.locale = lang;
 	}
 
 	// Return the user to the previous page, or fallback to home
-	res.redirect(req.get('Referrer') || '/');
+	return res.redirect(redirectTo);
 }

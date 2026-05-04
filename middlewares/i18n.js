@@ -15,6 +15,7 @@
 
 import { i18next, i18nextMiddleware } from '../config/i18n.js';
 import { SUPPORTED_LANGUAGES } from '../config/languages.js';
+import { getLocale } from '../services/i18n/locale.js';
 
 const i18nextMiddlewares = (app) => {
 	/**
@@ -31,11 +32,21 @@ const i18nextMiddlewares = (app) => {
 	 * res.locals.t → translation function
 	 * res.locals.currentLang → currently resolved language
 	 */
-	app.use((req, res, next) => {
-		res.locals.t = req.t;
-		res.locals.currentLang = req.language || req.resolvedLanguage || 'en';
-		res.locals.languages = SUPPORTED_LANGUAGES;
-		next();
+	app.use(async (req, res, next) => {
+		try {
+			const currentLang = getLocale(req);
+
+			if (req.i18n && req.language !== currentLang) {
+				await req.i18n.changeLanguage(currentLang);
+			}
+
+			res.locals.t = req.t;
+			res.locals.currentLang = currentLang;
+			res.locals.languages = SUPPORTED_LANGUAGES;
+			next();
+		} catch (error) {
+			next(error);
+		}
 	});
 };
 

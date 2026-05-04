@@ -80,11 +80,7 @@ export function createOAuthVerifyCallback({
 		done,
 	) {
 		try {
-			const locale =
-				req.session?.oauthLocale ||
-				req.language ||
-				req.resolvedLanguage ||
-				'en';
+			const locale = getLocale(req);
 
 			const providerUserId = getProviderUserId(profile);
 			const profileEmail = getEmail(profile);
