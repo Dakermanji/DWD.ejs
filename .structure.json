@@ -108,7 +108,11 @@
 		"UserSocialNotifications.js"
 	],
 	"node_modules": [],
-	"patches": ["connect-flash+0.1.1.patch", "passport-oauth2+1.8.0.patch"],
+	"patches": [
+		"connect-flash+0.1.1.patch",
+		"passport-oauth2+1.8.0.patch",
+		"patches/country-flag-icons+1.6.17.patch"
+	],
 	"public": {
 		"css": {
 			"home": [
@@ -190,7 +194,14 @@
 			]
 		}
 	},
-	"routes": ["auth.js", "dashboard.js", "home.js", "lang.js", "social.js", "theme.js"],
+	"routes": [
+		"auth.js",
+		"dashboard.js",
+		"home.js",
+		"lang.js",
+		"social.js",
+		"theme.js"
+	],
 	"services": {
 		"auth": [
 			"email.js",
@@ -205,7 +216,9 @@
 			"tokens.js",
 			"verifyToken.js"
 		],
+		"avatar": ["dicebear.js"],
 		"contact": ["email.js"],
+		"dashboard": ["account.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],
 		"theme": ["preference.js"]
@@ -225,7 +238,7 @@
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
-		"dashboard": ["main.ejs"],
+		"dashboard": ["_account.ejs", "main.ejs"],
 		"home": [
 			"_about.ejs",
 			"_contact.ejs",

@@ -32,4 +32,9 @@ export default function staticFiles(app) {
 	 * Express will automatically map file paths to URLs.
 	 */
 	app.use(express.static('public'));
+
+	app.use(
+		'/vendor/country-flag-icons',
+		express.static('node_modules/country-flag-icons'),
+	);
 }

@@ -1,5 +1,7 @@
 //! controllers/dashboard.js
 
+import { buildAccountOverview } from '../services/dashboard/account.js';
+
 /**
  * Render the account dashboard shell.
  *
@@ -10,5 +12,6 @@
 export function renderDashboard(req, res) {
 	res.render('dashboard/main', {
 		titleKey: 'layout:nav.dashboard',
+		account: buildAccountOverview(req),
 	});
 }
