@@ -86,9 +86,17 @@ async function usernameExists(username) {
  * @param {string} userId
  * @param {string} username
  * @param {string} hashedPassword
+ * @param {string | null} avatarSeed
+ * @param {string | null} countryCode
  * @returns {Promise<{ id: string, username: string, email: string, is_verified: boolean } | null>}
  */
-async function completeLocalSignupById(userId, username, hashedPassword) {
+async function completeLocalSignupById(
+	userId,
+	username,
+	hashedPassword,
+	avatarSeed = null,
+	countryCode = null,
+) {
 	const lowerCasedUsername = username.toLowerCase();
 
 	const q = `
@@ -97,17 +105,29 @@ async function completeLocalSignupById(userId, username, hashedPassword) {
 			username = $1,
 			username_normalized = $2,
 			hashed_password = $3,
+			avatar_seed = $4,
+			country_code = $5,
 			updated_at = NOW()
-		WHERE id = $4
+		WHERE id = $6
 			AND username IS NULL
 			AND hashed_password IS NULL
-		RETURNING id, username, email, is_verified;
+		RETURNING
+			id,
+			username,
+			email,
+			is_verified,
+			locale,
+			country_code,
+			theme,
+			avatar_seed;
 	`;
 
 	const rows = await queryRows(q, [
 		username,
 		lowerCasedUsername,
 		hashedPassword,
+		avatarSeed,
+		countryCode,
 		userId,
 	]);
 
@@ -358,6 +378,74 @@ export async function updateUsernameById(userId, username) {
 }
 
 /**
+ * Complete OAuth signup profile fields for a specific user.
+ *
+ * @param {number|string} userId
+ * @param {string} username
+ * @param {string | null} avatarSeed
+ * @param {string | null} countryCode
+ * @returns {Promise<{
+ *   success: boolean,
+ *   user?: object,
+ *   reason?: 'auth:error.username_taken'
+ * }>}
+ */
+export async function completeOAuthSignupById(
+	userId,
+	username,
+	avatarSeed = null,
+	countryCode = null,
+) {
+	const lowerCasedUsername = username.toLowerCase();
+
+	const q = `
+		UPDATE users
+		SET
+			username = $1,
+			username_normalized = $2,
+			avatar_seed = $3,
+			country_code = $4,
+			updated_at = NOW()
+		WHERE id = $5
+			AND username IS NULL
+		RETURNING
+			id,
+			username,
+			email,
+			is_verified,
+			is_blocked,
+			locale,
+			country_code,
+			theme,
+			avatar_seed;
+	`;
+
+	try {
+		const rows = await queryRows(q, [
+			username,
+			lowerCasedUsername,
+			avatarSeed,
+			countryCode,
+			userId,
+		]);
+
+		return {
+			success: rows.length > 0,
+			user: rows[0],
+		};
+	} catch (error) {
+		if (error.code === '23505') {
+			return {
+				success: false,
+				reason: 'auth:error.username_taken',
+			};
+		}
+
+		throw error;
+	}
+}
+
+/**
  * Update last sign in for a specific user.
  *
  * @param {number} userId
@@ -407,6 +495,7 @@ export default {
 	updateLocale,
 	updateTheme,
 	updateUsernameById,
+	completeOAuthSignupById,
 	updateLastSignIn,
 	findByUsername,
 };

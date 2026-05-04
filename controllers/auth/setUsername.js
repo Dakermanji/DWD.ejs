@@ -25,25 +25,30 @@ export async function setUsername(req, res, next) {
 	try {
 		const user = req.user;
 		const username = req.body.username;
+		const { avatarSeed, countryCode } = req.body;
 
 		// check if username is already taken by another user
-		const existingUser = await UserModel.findByUsername(username);
+		const existingUser = await UserModel.usernameExists(username);
 
 		if (existingUser)
 			return fail(req, res, `auth:error.username_taken`, {
 				modal: 'complete_signup_oauth',
 			});
 
-		// persist username for current user
-		const updateResult = await UserModel.updateUsernameById(
+		// persist profile fields for current user
+		const updateResult = await UserModel.completeOAuthSignupById(
 			user.id,
 			username,
+			avatarSeed,
+			countryCode,
 		);
 
 		if (!updateResult.success)
 			return fail(req, res, updateResult.reason, {
 				modal: 'complete_signup_oauth',
 			});
+
+		Object.assign(req.user, updateResult.user);
 
 		// notify success after completing OAuth signup
 		return success(req, res, `auth:signup.completed`);

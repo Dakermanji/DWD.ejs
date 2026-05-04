@@ -33,7 +33,7 @@ import { fail } from '../../services/http/response.js';
  */
 export async function completeLocalSignup(req, res) {
 	const errors = [...(req.validationErrors || [])];
-	const { token, username, password } = req.body;
+	const { token, username, password, avatarSeed, countryCode } = req.body;
 
 	try {
 		const hasUsernameFormatError = errors.includes(
@@ -73,6 +73,8 @@ export async function completeLocalSignup(req, res) {
 			tokenResult.userId,
 			username,
 			hashedPassword,
+			avatarSeed,
+			countryCode,
 		);
 
 		if (!user) {
@@ -85,6 +87,10 @@ export async function completeLocalSignup(req, res) {
 			id: user.id,
 			email: user.email,
 			username: user.username,
+			locale: user.locale,
+			country_code: user.country_code,
+			theme: user.theme,
+			avatar_seed: user.avatar_seed,
 		};
 
 		// Consume token.
