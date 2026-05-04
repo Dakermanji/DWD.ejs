@@ -17,6 +17,7 @@ import locals from '../middlewares/locals.js';
 import i18nextMiddlewares from '../middlewares/i18n.js';
 import staticFiles from '../middlewares/staticFiles.js';
 import routeAccess from '../middlewares/routeAccess.js';
+import signupCompletionAccess from '../middlewares/signupCompletionAccess.js';
 import { navbarMiddleware } from '../middlewares/navbar.js';
 
 export default function applyMiddlewares(app) {
@@ -52,4 +53,7 @@ export default function applyMiddlewares(app) {
 
 	// Redirect unauthenticated visitors away from protected routes
 	routeAccess(app);
+
+	// Keep authenticated users without usernames in the signup completion flow
+	signupCompletionAccess(app);
 }

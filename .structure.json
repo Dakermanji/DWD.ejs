@@ -92,6 +92,7 @@
 			"routeAccess.js",
 			"securityHeaders.js",
 			"session.js",
+			"signupCompletionAccess.js",
 			"staticFiles.js"
 		]
 	},
