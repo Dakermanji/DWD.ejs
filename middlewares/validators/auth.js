@@ -14,10 +14,38 @@ import {
 import { isValidToken, normalizeToken } from './token.js';
 import { validateNoProfanity } from '../profanity/index.js';
 import { fail } from '../../services/http/response.js';
+import { isSupportedCountryCode } from '../../services/country/list.js';
 
 const ERROR_PREFIX = 'auth:error.';
 
 const MAX_PASSWORD_LENGTH = 1024;
+const MAX_AVATAR_SEED_LENGTH = 64;
+
+function normalizeOptionalAvatarSeed(value) {
+	const avatarSeed = normalizeText(value);
+
+	return avatarSeed || null;
+}
+
+function normalizeOptionalCountryCode(value) {
+	const countryCode = normalizeText(value).toUpperCase();
+
+	return countryCode || null;
+}
+
+function validateProfileFields({ avatarSeed, countryCode, errors }) {
+	if (
+		avatarSeed &&
+		(!isSafeString(avatarSeed, MAX_AVATAR_SEED_LENGTH) ||
+			!validateNoProfanity(avatarSeed))
+	) {
+		errors.push(`${ERROR_PREFIX}avatar_seed_invalid`);
+	}
+
+	if (countryCode && !isSupportedCountryCode(countryCode)) {
+		errors.push(`${ERROR_PREFIX}country_invalid`);
+	}
+}
 
 /**
  * Validated and normalized an email field from the request body.
@@ -91,6 +119,8 @@ export function validateCompleteLocalSignup(req, res, next) {
 
 	const normalizedToken = normalizeToken(token);
 	const normalizedUsername = normalizeText(username);
+	const avatarSeed = normalizeOptionalAvatarSeed(req.body?.avatarSeed);
+	const countryCode = normalizeOptionalCountryCode(req.body?.countryCode);
 
 	if (!isValidToken(token))
 		errors.push(`${ERROR_PREFIX}verify_email_invalid_link`);
@@ -106,8 +136,16 @@ export function validateCompleteLocalSignup(req, res, next) {
 	if (password !== confirmPassword)
 		errors.push(`${ERROR_PREFIX}password_mismatch`);
 
+	validateProfileFields({
+		avatarSeed,
+		countryCode,
+		errors,
+	});
+
 	req.body.token = normalizedToken;
 	req.body.username = normalizedUsername;
+	req.body.avatarSeed = avatarSeed;
+	req.body.countryCode = countryCode;
 	req.validationErrors = errors;
 	next();
 }
@@ -200,21 +238,34 @@ export function validateResetPassword(req, res, next) {
 export function validateSetUsername(req, res, next) {
 	const user = req.user;
 	const username = normalizeText(req.body?.username);
+	const avatarSeed = normalizeOptionalAvatarSeed(req.body?.avatarSeed);
+	const countryCode = normalizeOptionalCountryCode(req.body?.countryCode);
+	const errors = [];
 
 	if (!user) return fail(req, res, `${ERROR_PREFIX}auth_required`);
 
 	if (user.username) return res.redirect('/');
 
 	if (!isValidUsername(username))
-		return fail(req, res, `${ERROR_PREFIX}username_invalid`, {
-			modal: 'complete_signup_oauth',
-		});
+		errors.push(`${ERROR_PREFIX}username_invalid`);
 
 	if (!validateNoProfanity(username))
-		return fail(req, res, `${ERROR_PREFIX}username_profanity`, {
-			modal: 'complete_signup_oauth',
-		});
+		errors.push(`${ERROR_PREFIX}username_profanity`);
+
+	validateProfileFields({
+		avatarSeed,
+		countryCode,
+		errors,
+	});
+
+	if (errors.length > 0) {
+		req.flash('errors', errors);
+		req.flash('modal', 'complete_signup_oauth');
+		return res.redirect('/');
+	}
 
 	req.body.username = username;
+	req.body.avatarSeed = avatarSeed;
+	req.body.countryCode = countryCode;
 	next();
 }

@@ -5,6 +5,9 @@
 	"identifier": "Username or email",
 	"username": "Username",
 	"email": "Email",
+	"avatarSeed": "Avatar seed",
+	"country": "Country",
+	"selectCountry": "Select a country",
 	"error": {
 		"generic": "Something went wrong. Please try again.",
 		"invalid_request": "Invalid request."

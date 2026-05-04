@@ -5,6 +5,9 @@
 	"identifier": "Nom d’utilisateur ou e-mail",
 	"username": "Username",
 	"email": "E-mail",
+	"avatarSeed": "Graine d’avatar",
+	"country": "Pays",
+	"selectCountry": "Sélectionner un pays",
 	"error": {
 		"generic": "Une erreur s’est produite. Veuillez réessayer.",
 		"invalid_request": "Requête invalide."

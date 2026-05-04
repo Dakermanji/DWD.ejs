@@ -46,6 +46,34 @@
 						/>
 					</div>
 
+					<!-- Avatar seed -->
+					<div class="mb-3">
+						<label for="avatarSeed" class="form-label">
+							<%= t('common:avatarSeed') %>
+						</label>
+						<input
+							id="avatarSeed"
+							dir="ltr"
+							type="text"
+							class="form-control"
+							name="avatarSeed"
+							maxlength="64"
+						/>
+					</div>
+
+					<!-- Country -->
+					<div class="mb-3">
+						<label for="countryCode" class="form-label">
+							<%= t('common:country') %>
+						</label>
+						<select id="countryCode" class="form-select" name="countryCode">
+							<option value=""><%= t('common:selectCountry') %></option>
+							<% ;(countryOptions || []).forEach((country) => { %>
+								<option value="<%= country.code %>"><%= country.name %></option>
+							<% }) %>
+						</select>
+					</div>
+
 					<% if (isLocal) { %>
 						<%- include('./_setPassword', {token}) %>
 					<% } %>
