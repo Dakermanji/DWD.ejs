@@ -108,6 +108,7 @@
 		"UserProvider.js",
 		"UserSocialNotifications.js"
 	],
+	"models/user": ["auth.js", "preferences.js", "profile.js", "session.js"],
 	"node_modules": [],
 	"patches": [
 		"connect-flash+0.1.1.patch",
