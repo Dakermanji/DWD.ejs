@@ -5,7 +5,11 @@
 	"identifier": "اسم المستخدم أو البريد الإلكتروني",
 	"username": "اسم المستخدم",
 	"email": "البريد الإلكتروني",
+	"avatar": "الصورة الرمزية",
+	"avatarBackground": "الخلفية",
 	"avatarSeed": "بذرة الصورة الرمزية",
+	"avatarStyle": "نمط الصورة الرمزية",
+	"refreshAvatars": "تحديث الصور الرمزية",
 	"country": "البلد",
 	"selectCountry": "اختر بلدًا",
 	"error": {

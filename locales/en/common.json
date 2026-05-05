@@ -5,7 +5,11 @@
 	"identifier": "Username or email",
 	"username": "Username",
 	"email": "Email",
+	"avatar": "Avatar",
+	"avatarBackground": "Background",
 	"avatarSeed": "Avatar seed",
+	"avatarStyle": "Avatar style",
+	"refreshAvatars": "Refresh avatars",
 	"country": "Country",
 	"selectCountry": "Select a country",
 	"error": {

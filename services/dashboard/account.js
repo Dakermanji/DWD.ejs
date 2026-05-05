@@ -1,7 +1,10 @@
 //! services/dashboard/account.js
 
 import { getLocale } from '../i18n/locale.js';
-import { createUserAvatarDataUri } from '../avatar/dicebear.js';
+import {
+	createUserAvatarDataUri,
+	getUserAvatarBackground,
+} from '../avatar/dicebear.js';
 
 function normalizeCountryCode(countryCode) {
 	if (typeof countryCode !== 'string') {
@@ -39,6 +42,7 @@ export function buildAccountOverview(req) {
 		username,
 		email: user?.email || '',
 		avatar: createUserAvatarDataUri(avatarSeed),
+		avatarBackground: getUserAvatarBackground(avatarSeed),
 		countryCode,
 		countryName: getCountryName(countryCode, locale),
 	};

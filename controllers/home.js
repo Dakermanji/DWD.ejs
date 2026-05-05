@@ -6,6 +6,7 @@ import { isSafeString, normalizeText } from '../middlewares/validators/common.js
 import logger from '../config/logger.js';
 import { getLocale } from '../services/i18n/locale.js';
 import { getCountryOptions } from '../services/country/list.js';
+import { createAvatarStyleOptions } from '../services/avatar/dicebear.js';
 
 /**
  * Home Controller
@@ -49,6 +50,7 @@ export function renderHome(req, res) {
 		scripts: ['home/mouseTrailAndFollower', 'home/portfolio', 'home/auth'],
 		token: req.session.token || null,
 		countryOptions: getCountryOptions(locale),
+		avatarStyleOptions: createAvatarStyleOptions(),
 	});
 }
 

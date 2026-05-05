@@ -15,11 +15,12 @@ import { isValidToken, normalizeToken } from './token.js';
 import { validateNoProfanity } from '../profanity/index.js';
 import { fail } from '../../services/http/response.js';
 import { isSupportedCountryCode } from '../../services/country/list.js';
+import { isSupportedAvatarValue } from '../../services/avatar/dicebear.js';
 
 const ERROR_PREFIX = 'auth:error.';
 
 const MAX_PASSWORD_LENGTH = 1024;
-const MAX_AVATAR_SEED_LENGTH = 64;
+const MAX_AVATAR_SEED_LENGTH = 96;
 
 function normalizeOptionalAvatarSeed(value) {
 	const avatarSeed = normalizeText(value);
@@ -37,7 +38,7 @@ function validateProfileFields({ avatarSeed, countryCode, errors }) {
 	if (
 		avatarSeed &&
 		(!isSafeString(avatarSeed, MAX_AVATAR_SEED_LENGTH) ||
-			!validateNoProfanity(avatarSeed))
+			!isSupportedAvatarValue(avatarSeed))
 	) {
 		errors.push(`${ERROR_PREFIX}avatar_seed_invalid`);
 	}
