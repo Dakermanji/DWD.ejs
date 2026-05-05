@@ -19,6 +19,7 @@ const PUBLIC_PREFIXES = [
 	'/auth/google',
 	'/auth/github',
 	'/auth/discord',
+	'/avatar',
 	'/language',
 ];
 

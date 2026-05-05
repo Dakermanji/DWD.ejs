@@ -51,7 +51,7 @@
 			"followRequest.js",
 			"notifications.js"
 		],
-		"~": ["dashboard.js", "home.js", "lang.js", "theme.js"]
+		"~": ["avatar.js", "dashboard.js", "home.js", "lang.js", "theme.js"]
 	},
 	"locales": {
 		"ar": [
@@ -197,6 +197,7 @@
 	},
 	"routes": [
 		"auth.js",
+		"avatar.js",
 		"dashboard.js",
 		"home.js",
 		"lang.js",

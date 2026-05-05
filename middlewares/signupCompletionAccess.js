@@ -13,6 +13,7 @@ const ALLOWED_PREFIXES = [
 	'/auth/complete-local-signup',
 	'/auth/set-username',
 	'/auth/signout',
+	'/avatar',
 	'/language',
 	'/theme',
 ];
