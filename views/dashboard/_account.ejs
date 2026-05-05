@@ -5,14 +5,24 @@
 			<div
 				id="avatar"
 				class="dashboard-avatar"
-				style="background-color: <%= account.avatarBackground %>;"
+				style="background-color: <%= account.avatar.background %>;"
 			>
 				<img
-					src="<%= account.avatar %>"
+					src="<%= account.avatar.src %>"
 					alt=""
 					class="avatar-img"
 				/>
 			</div>
+			<button
+				type="button"
+				class="dashboard-avatar-edit has-tooltip"
+				data-bs-toggle="modal"
+				data-bs-target="#dashboardAvatarModal"
+				data-bs-title="<%= t('common:editAvatar') %>"
+				aria-label="<%= t('common:editAvatar') %>"
+			>
+				<i class="bi bi-pencil-fill" aria-hidden="true"></i>
+			</button>
 
 			<% if (account.countryCode) { %>
 				<span
@@ -36,3 +46,5 @@
 		</div>
 	</div>
 </section>
+
+<%- include('../modals/dashboard/_avatar_modal', { account, avatarStyleOptions }) %>

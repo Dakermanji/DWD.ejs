@@ -1,10 +1,7 @@
 //! services/dashboard/account.js
 
 import { getLocale } from '../i18n/locale.js';
-import {
-	createUserAvatarDataUri,
-	getUserAvatarBackground,
-} from '../avatar/dicebear.js';
+import { getUserAvatarProfile } from '../avatar/dicebear.js';
 
 function normalizeCountryCode(countryCode) {
 	if (typeof countryCode !== 'string') {
@@ -36,13 +33,13 @@ export function buildAccountOverview(req) {
 	const locale = getLocale(req);
 	const countryCode = normalizeCountryCode(user?.country_code);
 	const avatarSeed = user?.avatar_seed || user?.username || user?.email || 'user';
+	const avatar = getUserAvatarProfile(avatarSeed);
 	const username = user?.username || user?.email?.split('@')[0] || '';
 
 	return {
 		username,
 		email: user?.email || '',
-		avatar: createUserAvatarDataUri(avatarSeed),
-		avatarBackground: getUserAvatarBackground(avatarSeed),
+		avatar,
 		countryCode,
 		countryName: getCountryName(countryCode, locale),
 	};

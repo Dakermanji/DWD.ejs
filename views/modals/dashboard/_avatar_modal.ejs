@@ -1,0 +1,141 @@
+<!--! views/modals/dashboard/_avatar_modal.ejs -->
+
+<%
+	const currentAvatar = account.avatar;
+	const selectedStyleKey = currentAvatar.styleKey;
+%>
+
+<div
+	class="modal fade"
+	id="dashboardAvatarModal"
+	tabindex="-1"
+	aria-labelledby="dashboardAvatarModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h5 class="modal-title" id="dashboardAvatarModalLabel">
+					<%= t('common:editAvatar') %>
+				</h5>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="<%= t('common:close') %>"
+				></button>
+			</div>
+
+			<form method="POST" action="/dashboard/avatar">
+				<%- include('../../partials/_csrf') %>
+				<div class="modal-body">
+					<input
+						id="dashboardAvatarSeed"
+						type="hidden"
+						name="avatarSeed"
+						value="<%= currentAvatar.value %>"
+					/>
+
+					<div class="complete-signup-avatar dashboard-avatar-picker" data-active-style="<%= selectedStyleKey %>">
+						<div class="complete-signup-avatar__summary">
+							<div
+								class="complete-signup-avatar__preview"
+								style="--avatar-bg: <%= currentAvatar.background %>"
+							>
+								<img
+									id="dashboardAvatarPreview"
+									src="<%= currentAvatar.src %>"
+									alt=""
+								/>
+							</div>
+							<div>
+								<div class="complete-signup-avatar__label">
+									<%= t('common:avatarStyle') %>
+								</div>
+								<div
+									class="complete-signup-avatar__style-name"
+									data-avatar-style-name
+								>
+									<%= currentAvatar.styleLabel %>
+								</div>
+							</div>
+							<label
+								class="complete-signup-avatar__color has-tooltip"
+								data-bs-title="<%= t('common:avatarBackground') %>"
+							>
+								<input
+									type="color"
+									class="cursor-pointer"
+									value="<%= currentAvatar.background %>"
+									data-avatar-background
+									aria-label="<%= t('common:avatarBackground') %>"
+								/>
+							</label>
+							<button
+								type="button"
+								class="has-tooltip btn btn-outline-secondary complete-signup-avatar__refresh"
+								data-avatar-refresh
+								data-bs-title="<%= t('common:refreshAvatars') %>"
+							>
+								<i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+							</button>
+						</div>
+						<div class="complete-signup-avatar__picker">
+							<div
+								class="complete-signup-avatar__styles"
+								aria-label="<%= t('common:avatarStyle') %>"
+								dir="ltr"
+							>
+								<% avatarStyleOptions.forEach((style) => { %>
+									<button
+										type="button"
+										class="complete-signup-avatar__style <%= style.key === selectedStyleKey ? 'is-active' : '' %>"
+										data-avatar-style="<%= style.key %>"
+										data-avatar-style-label="<%= style.label %>"
+									>
+										<span class="complete-signup-avatar__style-preview">
+											<img src="<%= style.preview %>" alt="" />
+										</span>
+										<span><%= style.label %></span>
+									</button>
+								<% }) %>
+							</div>
+							<div class="complete-signup-avatar__options">
+								<% avatarStyleOptions.forEach((style) => { %>
+									<div
+										class="complete-signup-avatar__grid <%= style.key === selectedStyleKey ? '' : 'd-none' %>"
+										data-avatar-grid="<%= style.key %>"
+									>
+										<% style.options.forEach((avatar) => { %>
+											<button
+												type="button"
+												class="complete-signup-avatar__option"
+												data-avatar-value="<%= avatar.value %>"
+												data-avatar-src="<%= avatar.src %>"
+											>
+												<span>
+													<img src="<%= avatar.src %>" alt="" />
+												</span>
+											</button>
+										<% }) %>
+									</div>
+								<% }) %>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						<%= t('common:close') %>
+					</button>
+					<button type="submit" class="btn btn-action">
+						<%= t('common:saveAvatar') %>
+					</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>

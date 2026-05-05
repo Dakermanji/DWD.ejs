@@ -81,12 +81,16 @@
 										<%= selectedStyle?.label || '' %>
 									</div>
 								</div>
-								<label class="complete-signup-avatar__color">
-									<span><%= t('common:avatarBackground') %></span>
+								<label
+									class="complete-signup-avatar__color has-tooltip"
+									data-bs-title="<%= t('common:avatarBackground') %>"
+								>
 									<input
 										type="color"
+										class="cursor-pointer"
 										value="<%= selectedAvatar?.background || '#f7c59f' %>"
 										data-avatar-background
+										aria-label="<%= t('common:avatarBackground') %>"
 									/>
 								</label>
 								<button

@@ -9,7 +9,10 @@
 	"avatarBackground": "Arrière-plan",
 	"avatarSeed": "Graine d’avatar",
 	"avatarStyle": "Style d’avatar",
+	"editAvatar": "Modifier l’avatar",
 	"refreshAvatars": "Rafraîchir les avatars",
+	"saveAvatar": "Enregistrer l’avatar",
+	"avatarUpdated": "Avatar mis à jour.",
 	"country": "Pays",
 	"selectCountry": "Sélectionner un pays",
 	"error": {

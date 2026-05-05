@@ -185,6 +185,7 @@
 			}
 		},
 		"js": {
+			"dashboard": ["avatar.js"],
 			"home": ["auth.js", "mouseTrailAndFollower.js", "portfolio.js"],
 			"root": [
 				"dropdownMenu.js",
@@ -278,7 +279,8 @@
 				"_recovery.ejs",
 				"_resetPassword.ejs",
 				"_setPassword.ejs"
-			]
+			],
+			"dashboard": ["_avatar_modal.ejs"]
 		},
 		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
 		"social": [

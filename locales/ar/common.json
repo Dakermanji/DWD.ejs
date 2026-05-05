@@ -9,7 +9,10 @@
 	"avatarBackground": "الخلفية",
 	"avatarSeed": "بذرة الصورة الرمزية",
 	"avatarStyle": "نمط الصورة الرمزية",
+	"editAvatar": "تعديل الصورة الرمزية",
 	"refreshAvatars": "تحديث الصور الرمزية",
+	"saveAvatar": "حفظ الصورة الرمزية",
+	"avatarUpdated": "تم تحديث الصورة الرمزية.",
 	"country": "البلد",
 	"selectCountry": "اختر بلدًا",
 	"error": {

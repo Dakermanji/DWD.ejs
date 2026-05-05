@@ -76,15 +76,14 @@
 
 .complete-signup-avatar__color {
 	margin-inline-start: auto;
-	display: grid;
-	gap: 0.25rem;
-	font-size: 0.75rem;
-	color: var(--color-text-muted);
+	display: inline-flex;
+	align-items: center;
+	align-self: center;
 }
 
 .complete-signup-avatar__color input {
-	width: 2.75rem;
-	height: 2rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	padding: 0.125rem;
 	border: 1px solid var(--border-subtle);
 	border-radius: var(--radius-sm);
@@ -92,11 +91,12 @@
 }
 
 .complete-signup-avatar__refresh {
-	width: 2.25rem;
-	height: 2.25rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	align-self: center;
 	padding: 0;
 }
 

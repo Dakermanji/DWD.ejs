@@ -333,6 +333,25 @@ export async function updateTheme(userId, theme) {
 }
 
 /**
+ * Update a user's avatar seed by id.
+ *
+ * @param {number|string} userId
+ * @param {string} avatarSeed
+ * @returns {Promise<{ id: string, avatar_seed: string } | null>}
+ */
+export async function updateAvatarById(userId, avatarSeed) {
+	const q = `
+		UPDATE users
+		SET avatar_seed = $1, updated_at = NOW()
+		WHERE id = $2
+		RETURNING id, avatar_seed;
+	`;
+
+	const rows = await queryRows(q, [avatarSeed, userId]);
+	return rows[0] || null;
+}
+
+/**
  * Update username for a specific user.
  *
  * Responsibilities:
@@ -494,6 +513,7 @@ export default {
 	createOAuthUser,
 	updateLocale,
 	updateTheme,
+	updateAvatarById,
 	updateUsernameById,
 	completeOAuthSignupById,
 	updateLastSignIn,

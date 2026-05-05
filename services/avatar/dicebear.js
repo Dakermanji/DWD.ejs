@@ -173,6 +173,19 @@ export function getUserAvatarBackground(value) {
 	return `#${parseAvatarValue(value).background}`;
 }
 
+export function getUserAvatarProfile(value) {
+	const avatar = parseAvatarValue(value);
+
+	return {
+		value: createAvatarValue(avatar.styleKey, avatar.seed, avatar.background),
+		styleKey: avatar.styleKey,
+		styleLabel: avatar.style.label,
+		seed: avatar.seed,
+		background: `#${avatar.background}`,
+		src: createAvatarDataUri(avatar),
+	};
+}
+
 export function isSupportedAvatarValue(value) {
 	if (!value) return true;
 	if (typeof value !== 'string') return false;

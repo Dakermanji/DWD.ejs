@@ -9,7 +9,10 @@
 	"avatarBackground": "Background",
 	"avatarSeed": "Avatar seed",
 	"avatarStyle": "Avatar style",
+	"editAvatar": "Edit avatar",
 	"refreshAvatars": "Refresh avatars",
+	"saveAvatar": "Save avatar",
+	"avatarUpdated": "Avatar updated.",
 	"country": "Country",
 	"selectCountry": "Select a country",
 	"error": {

@@ -14,6 +14,27 @@
 	display: block;
 }
 
+.dashboard-avatar-edit {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 1.75rem;
+	height: 1.75rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border: 1px solid var(--border-subtle);
+	border-radius: 50%;
+	color: var(--color-text-body);
+	background-color: var(--bg-section);
+}
+
+.dashboard-avatar-edit:hover,
+.dashboard-avatar-edit:focus {
+	color: var(--color-primary);
+}
+
 .avatar-country {
 	position: absolute;
 	right: 0;
@@ -35,6 +56,11 @@
 }
 
 [dir='rtl'] .avatar-country {
+	right: auto;
+	left: 0;
+}
+
+[dir='rtl'] .dashboard-avatar-edit {
 	right: auto;
 	left: 0;
 }
