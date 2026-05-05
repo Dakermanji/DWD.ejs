@@ -3,12 +3,38 @@
 import { SUPPORTED_LANGUAGE_SET } from '../config/languages.js';
 import UserModel from '../models/User.js';
 import { setLangCookie } from '../services/i18n/locale.js';
+import { sanitizeReturnTo } from '../middlewares/validators/common.js';
 
 /**
  * Language Controller
  *
  * Contains request handlers related to language selection.
  */
+
+function getRedirectTarget(req) {
+	if (typeof req.query?.returnTo === 'string' && req.query.returnTo.trim()) {
+		return sanitizeReturnTo(req.query.returnTo);
+	}
+
+	const referrer = req.get('Referrer');
+
+	if (!referrer) {
+		return '/';
+	}
+
+	try {
+		const url = new URL(referrer);
+		const currentOrigin = `${req.protocol}://${req.get('host')}`;
+
+		if (url.origin !== currentOrigin) {
+			return '/';
+		}
+
+		return sanitizeReturnTo(`${url.pathname}${url.search}${url.hash}`);
+	} catch {
+		return sanitizeReturnTo(referrer);
+	}
+}
 
 /**
  * Update the user's language preference cookie, then redirect back.
@@ -27,7 +53,7 @@ import { setLangCookie } from '../services/i18n/locale.js';
  */
 export async function changeLanguage(req, res) {
 	const { lang } = req.params;
-	const redirectTo = req.get('Referrer') || '/';
+	const redirectTo = getRedirectTarget(req);
 
 	if (!SUPPORTED_LANGUAGE_SET.has(lang)) {
 		return res.redirect(redirectTo);
