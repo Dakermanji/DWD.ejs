@@ -2,13 +2,19 @@
 <section aria-labelledby="dashboard-account-title" class="py-4">
 	<div class="d-flex align-items-center gap-3">
 		<div class="position-relative flex-shrink-0">
-			<img
-				src="<%= account.avatar %>"
-				alt=""
-				class="rounded-circle border"
-				width="88"
-				height="88"
-			/>
+			<div
+				id="avatar"
+				class="rounded-circle border overflow-hidden"
+				style="width: 88px; height: 88px; background-color: <%= account.avatarBackground %>;"
+			>
+				<img
+					src="<%= account.avatar %>"
+					alt=""
+					class="avatar-img"
+					width="88"
+					height="88"
+				/>
+			</div>
 
 			<% if (account.countryCode) { %>
 				<span

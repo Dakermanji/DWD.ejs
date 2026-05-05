@@ -5,7 +5,7 @@
 	flex: 1;
 }
 
-[dir='rtl'] img:not(.brand-logo-img) {
+[dir='rtl'] img:not(.brand-logo-img):not(.avatar-img) {
 	transform: scaleX(-1);
 }
 
