@@ -4,25 +4,23 @@
 		<div class="position-relative flex-shrink-0">
 			<div
 				id="avatar"
-				class="rounded-circle border overflow-hidden"
-				style="width: 88px; height: 88px; background-color: <%= account.avatarBackground %>;"
+				class="dashboard-avatar"
+				style="background-color: <%= account.avatarBackground %>;"
 			>
 				<img
 					src="<%= account.avatar %>"
 					alt=""
 					class="avatar-img"
-					width="88"
-					height="88"
 				/>
 			</div>
 
 			<% if (account.countryCode) { %>
 				<span
-					class="position-absolute bottom-0 end-0 rounded-circle border bg-body p-1 has-tooltip"
+					class="avatar-country has-tooltip"
 					data-bs-title="<%= account.countryName %>"
 				>
 					<span
-						class="fi fi-<%= account.countryCode.toLowerCase() %>"
+						class="fi fi-<%= account.countryCode.toLowerCase() %> avatar-country__flag"
 						role="img"
 						aria-label="<%= account.countryName %>"
 					></span>

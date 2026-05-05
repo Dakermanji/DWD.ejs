@@ -11,6 +11,7 @@ import { buildAccountOverview } from '../services/dashboard/account.js';
  */
 export function renderDashboard(req, res) {
 	res.render('dashboard/main', {
+		styles: ['dashboard/main'],
 		titleKey: 'layout:nav.dashboard',
 		account: buildAccountOverview(req),
 	});

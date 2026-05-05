@@ -116,6 +116,7 @@
 	],
 	"public": {
 		"css": {
+			"dashboard": ["main.css"],
 			"home": [
 				"about.css",
 				"contact.css",
