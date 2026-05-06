@@ -246,7 +246,7 @@
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
-		"dashboard": ["_account.ejs", "main.ejs"],
+		"dashboard": ["_account.ejs", "_country_editor.ejs", "main.ejs"],
 		"home": [
 			"_about.ejs",
 			"_contact.ejs",

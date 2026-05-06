@@ -16,7 +16,11 @@
 	"avatarUpdated": "تم تحديث الصورة الرمزية.",
 	"country": "البلد",
 	"editName": "تعديل الاسم",
+	"editCountry": "تعديل البلد",
+	"noCountry": "لم يتم اختيار بلد",
+	"countryUpdated": "تم تحديث البلد.",
 	"saveName": "حفظ الاسم",
+	"saveCountry": "حفظ البلد",
 	"selectCountry": "اختر بلدًا",
 	"usernameUpdated": "تم تحديث الاسم.",
 	"error": {

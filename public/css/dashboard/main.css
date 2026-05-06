@@ -70,13 +70,16 @@
 }
 
 .dashboard-username__display,
-.dashboard-username__form {
+.dashboard-username__form,
+.dashboard-country__display,
+.dashboard-country__form {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 }
 
-.dashboard-username__form {
+.dashboard-username__form,
+.dashboard-country__form {
 	max-width: 24rem;
 }
 
@@ -111,4 +114,9 @@
 .dashboard-icon-button--danger:hover,
 .dashboard-icon-button--danger:focus {
 	color: var(--bs-danger);
+}
+
+.dashboard-country-picker {
+	min-width: min(18rem, 100%);
+	flex: 1;
 }

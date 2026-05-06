@@ -16,7 +16,11 @@
 	"avatarUpdated": "Avatar mis à jour.",
 	"country": "Pays",
 	"editName": "Modifier le nom",
+	"editCountry": "Modifier le pays",
+	"noCountry": "Aucun pays sélectionné",
+	"countryUpdated": "Pays mis à jour.",
 	"saveName": "Enregistrer le nom",
+	"saveCountry": "Enregistrer le pays",
 	"selectCountry": "Sélectionner un pays",
 	"usernameUpdated": "Nom mis à jour.",
 	"error": {

@@ -29,6 +29,18 @@ export async function updateAvatarById(userId, avatarSeed) {
 	return rows[0] || null;
 }
 
+export async function updateCountryById(userId, countryCode) {
+	const q = `
+		UPDATE users
+		SET country_code = $1, updated_at = NOW()
+		WHERE id = $2
+		RETURNING id, country_code;
+	`;
+
+	const rows = await queryRows(q, [countryCode, userId]);
+	return rows[0] || null;
+}
+
 export async function updateUsernameById(userId, username) {
 	const lowerCasedUsername = username.toLowerCase();
 

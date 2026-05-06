@@ -90,6 +90,24 @@
 				</form>
 			</div>
 			<p class="mb-0 text-body-muted"><%= account.email %></p>
+			<div class="dashboard-country mt-2" data-dashboard-country>
+				<div class="dashboard-country__display" data-country-display>
+					<span class="text-body-muted">
+						<%= account.countryName || t('common:noCountry') %>
+					</span>
+					<button
+						type="button"
+						class="dashboard-icon-button has-tooltip"
+						data-country-edit
+						data-country-editor-url="/dashboard/country-editor"
+						data-bs-title="<%= t('common:editCountry') %>"
+						aria-label="<%= t('common:editCountry') %>"
+					>
+						<i class="bi bi-pencil-fill" aria-hidden="true"></i>
+					</button>
+				</div>
+				<div data-country-editor></div>
+			</div>
 		</div>
 	</div>
 </section>

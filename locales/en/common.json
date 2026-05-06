@@ -16,7 +16,11 @@
 	"avatarUpdated": "Avatar updated.",
 	"country": "Country",
 	"editName": "Edit name",
+	"editCountry": "Edit country",
+	"noCountry": "No country selected",
+	"countryUpdated": "Country updated.",
 	"saveName": "Save name",
+	"saveCountry": "Save country",
 	"selectCountry": "Select a country",
 	"usernameUpdated": "Name updated.",
 	"error": {

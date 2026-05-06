@@ -1,0 +1,90 @@
+<!--! views/dashboard/_country_editor.ejs -->
+
+<form
+	class="dashboard-country__form"
+	method="POST"
+	action="/dashboard/country"
+	data-country-form
+>
+	<%- include('../partials/_csrf') %>
+	<input
+		id="dashboardCountryCode"
+		type="hidden"
+		name="countryCode"
+		value="<%= account.countryCode || '' %>"
+	/>
+	<div class="dropdown complete-signup-country dashboard-country-picker">
+		<button
+			id="dashboardCountryDropdown"
+			type="button"
+			class="form-select complete-signup-country__toggle text-start"
+			data-bs-toggle="dropdown"
+			data-bs-auto-close="true"
+			aria-expanded="false"
+		>
+			<span class="complete-signup-country__selected">
+				<% if (account.countryCode) { %>
+					<span
+						class="fi fi-<%= account.countryCode.toLowerCase() %> complete-signup-country__flag"
+						aria-hidden="true"
+					></span>
+					<span><%= account.countryName %></span>
+				<% } else { %>
+					<span class="complete-signup-country__placeholder">
+						<%= t('common:selectCountry') %>
+					</span>
+				<% } %>
+			</span>
+		</button>
+		<ul
+			class="dropdown-menu complete-signup-country__menu w-100"
+			aria-labelledby="dashboardCountryDropdown"
+		>
+			<li>
+				<button
+					type="button"
+					class="dropdown-item complete-signup-country__option"
+					data-country-code=""
+					data-country-name="<%= t('common:selectCountry') %>"
+				>
+					<span class="complete-signup-country__placeholder">
+						<%= t('common:selectCountry') %>
+					</span>
+				</button>
+			</li>
+			<% ;(countryOptions || []).forEach((country) => { %>
+				<li>
+					<button
+						type="button"
+						class="dropdown-item complete-signup-country__option"
+						data-country-code="<%= country.code %>"
+						data-country-name="<%= country.name %>"
+					>
+						<span
+							class="fi fi-<%= country.code.toLowerCase() %> complete-signup-country__flag"
+							aria-hidden="true"
+						></span>
+						<span><%= country.name %></span>
+					</button>
+				</li>
+			<% }) %>
+		</ul>
+	</div>
+	<button
+		type="submit"
+		class="dashboard-icon-button dashboard-icon-button--success has-tooltip"
+		data-bs-title="<%= t('common:saveCountry') %>"
+		aria-label="<%= t('common:saveCountry') %>"
+	>
+		<i class="bi bi-check-lg" aria-hidden="true"></i>
+	</button>
+	<button
+		type="button"
+		class="dashboard-icon-button dashboard-icon-button--danger has-tooltip"
+		data-country-cancel
+		data-bs-title="<%= t('common:cancel') %>"
+		aria-label="<%= t('common:cancel') %>"
+	>
+		<i class="bi bi-x-lg" aria-hidden="true"></i>
+	</button>
+</form>
