@@ -30,14 +30,19 @@ export async function updateAvatarById(userId, avatarSeed) {
 }
 
 export async function updateUsernameById(userId, username) {
+	const lowerCasedUsername = username.toLowerCase();
+
 	const q = `
 		UPDATE users
-		SET username = $1, updated_at = NOW()
-		WHERE id = $2;
+		SET
+			username = $1,
+			username_normalized = $2,
+			updated_at = NOW()
+		WHERE id = $3;
 	`;
 
 	try {
-		const result = await query(q, [username, userId]);
+		const result = await query(q, [username, lowerCasedUsername, userId]);
 
 		return {
 			success: result.rowCount > 0,
