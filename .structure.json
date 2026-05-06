@@ -96,19 +96,21 @@
 			"staticFiles.js"
 		]
 	},
-	"models": [
-		"AuthSecurity.js",
-		"AuthSecurityEvent.js",
-		"AuthToken.js",
-		"SignupSecurity.js",
-		"User.js",
-		"UserBlocks.js",
-		"UserFollowRequests.js",
-		"UserFollows.js",
-		"UserProvider.js",
-		"UserSocialNotifications.js"
-	],
-	"models/user": ["auth.js", "preferences.js", "profile.js", "session.js"],
+	"models": {
+		"user": ["auth.js", "preferences.js", "profile.js", "session.js"],
+		"~": [
+			"AuthSecurity.js",
+			"AuthSecurityEvent.js",
+			"AuthToken.js",
+			"SignupSecurity.js",
+			"User.js",
+			"UserBlocks.js",
+			"UserFollowRequests.js",
+			"UserFollows.js",
+			"UserProvider.js",
+			"UserSocialNotifications.js"
+		]
+	},
 	"node_modules": [],
 	"patches": [
 		"connect-flash+0.1.1.patch",
