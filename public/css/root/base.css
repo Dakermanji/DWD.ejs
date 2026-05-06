@@ -173,3 +173,7 @@ h6 {
 .cursor-pointer {
 	cursor: pointer !important;
 }
+
+.text-body-muted {
+	color: var(--color-text-muted) !important;
+}
