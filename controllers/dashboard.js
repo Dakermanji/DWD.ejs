@@ -27,6 +27,13 @@ export function renderDashboard(req, res) {
 		scripts: ['dashboard/account', 'dashboard/avatar'],
 		titleKey: 'layout:nav.dashboard',
 		account: buildAccountOverview(req),
+	});
+}
+
+export function renderAvatarModal(req, res) {
+	return res.render('modals/dashboard/_avatar_modal', {
+		layout: false,
+		account: buildAccountOverview(req),
 		avatarStyleOptions: createAvatarStyleOptions(24),
 	});
 }

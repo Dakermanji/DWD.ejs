@@ -16,8 +16,8 @@
 			<button
 				type="button"
 				class="dashboard-avatar-edit has-tooltip"
-				data-bs-toggle="modal"
-				data-bs-target="#dashboardAvatarModal"
+				data-avatar-modal-trigger
+				data-avatar-modal-url="/dashboard/avatar-modal"
 				data-bs-title="<%= t('common:editAvatar') %>"
 				aria-label="<%= t('common:editAvatar') %>"
 			>
@@ -93,5 +93,3 @@
 		</div>
 	</div>
 </section>
-
-<%- include('../modals/dashboard/_avatar_modal', { account, avatarStyleOptions }) %>

@@ -1,10 +1,18 @@
 //! public/js/dashboard/avatar.js
 
-const avatarPicker = document.querySelector('.dashboard-avatar-picker');
+const modalTrigger = document.querySelector('[data-avatar-modal-trigger]');
 
-if (avatarPicker) {
-	const input = document.querySelector('#dashboardAvatarSeed');
-	const preview = document.querySelector('#dashboardAvatarPreview');
+function initDashboardAvatarPicker(scope = document) {
+	const avatarPicker = scope.querySelector('.dashboard-avatar-picker');
+
+	if (!avatarPicker || avatarPicker.dataset.initialized === 'true') {
+		return;
+	}
+
+	avatarPicker.dataset.initialized = 'true';
+
+	const input = scope.querySelector('#dashboardAvatarSeed');
+	const preview = scope.querySelector('#dashboardAvatarPreview');
 	const previewFrame = avatarPicker.querySelector(
 		'.complete-signup-avatar__preview',
 	);
@@ -159,3 +167,67 @@ if (avatarPicker) {
 
 	setAvatarBackground(backgroundInput?.value || '#f7c59f');
 }
+
+function initTooltips(scope) {
+	if (!window.bootstrap?.Tooltip) return;
+
+	scope.querySelectorAll('.has-tooltip').forEach((element) => {
+		bootstrap.Tooltip.getOrCreateInstance(element, {
+			trigger: 'hover',
+			delay: { show: 1000, hide: 0 },
+		});
+	});
+}
+
+async function loadAvatarModal() {
+	const existingModal = document.querySelector('#dashboardAvatarModal');
+
+	if (existingModal) {
+		return existingModal;
+	}
+
+	const url = modalTrigger?.dataset.avatarModalUrl;
+
+	if (!url) {
+		return null;
+	}
+
+	modalTrigger.disabled = true;
+
+	try {
+		const response = await fetch(url, {
+			headers: { Accept: 'text/html' },
+		});
+
+		if (!response.ok) {
+			return null;
+		}
+
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = await response.text();
+
+		const modal = wrapper.querySelector('#dashboardAvatarModal');
+
+		if (!modal) {
+			return null;
+		}
+
+		document.body.append(modal);
+		initDashboardAvatarPicker(modal);
+		initTooltips(modal);
+
+		return modal;
+	} finally {
+		modalTrigger.disabled = false;
+	}
+}
+
+modalTrigger?.addEventListener('click', async () => {
+	const modal = await loadAvatarModal();
+
+	if (!modal || !window.bootstrap?.Modal) {
+		return;
+	}
+
+	bootstrap.Modal.getOrCreateInstance(modal).show();
+});
