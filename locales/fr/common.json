@@ -4,6 +4,7 @@
 	"close": "Fermer",
 	"identifier": "Nom d’utilisateur ou e-mail",
 	"username": "Username",
+	"cancel": "Annuler",
 	"email": "E-mail",
 	"avatar": "Avatar",
 	"avatarBackground": "Arrière-plan",
@@ -14,7 +15,10 @@
 	"saveAvatar": "Enregistrer l’avatar",
 	"avatarUpdated": "Avatar mis à jour.",
 	"country": "Pays",
+	"editName": "Modifier le nom",
+	"saveName": "Enregistrer le nom",
 	"selectCountry": "Sélectionner un pays",
+	"usernameUpdated": "Nom mis à jour.",
 	"error": {
 		"generic": "Une erreur s’est produite. Veuillez réessayer.",
 		"invalid_request": "Requête invalide."

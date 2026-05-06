@@ -4,6 +4,7 @@
 	"close": "إغلاق",
 	"identifier": "اسم المستخدم أو البريد الإلكتروني",
 	"username": "اسم المستخدم",
+	"cancel": "إلغاء",
 	"email": "البريد الإلكتروني",
 	"avatar": "الصورة الرمزية",
 	"avatarBackground": "الخلفية",
@@ -14,7 +15,10 @@
 	"saveAvatar": "حفظ الصورة الرمزية",
 	"avatarUpdated": "تم تحديث الصورة الرمزية.",
 	"country": "البلد",
+	"editName": "تعديل الاسم",
+	"saveName": "حفظ الاسم",
 	"selectCountry": "اختر بلدًا",
+	"usernameUpdated": "تم تحديث الاسم.",
 	"error": {
 		"generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
 		"invalid_request": "طلب غير صالح."

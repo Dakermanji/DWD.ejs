@@ -4,6 +4,7 @@
 	"close": "Close",
 	"identifier": "Username or email",
 	"username": "Username",
+	"cancel": "Cancel",
 	"email": "Email",
 	"avatar": "Avatar",
 	"avatarBackground": "Background",
@@ -14,7 +15,10 @@
 	"saveAvatar": "Save avatar",
 	"avatarUpdated": "Avatar updated.",
 	"country": "Country",
+	"editName": "Edit name",
+	"saveName": "Save name",
 	"selectCountry": "Select a country",
+	"usernameUpdated": "Name updated.",
 	"error": {
 		"generic": "Something went wrong. Please try again.",
 		"invalid_request": "Invalid request."

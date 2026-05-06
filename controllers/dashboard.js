@@ -7,8 +7,11 @@ import {
 	isSupportedAvatarValue,
 } from '../services/avatar/dicebear.js';
 import { fail, success } from '../services/http/response.js';
+import { isValidUsername, normalizeText } from '../middlewares/validators/common.js';
+import { validateNoProfanity } from '../middlewares/profanity/index.js';
 
 const AVATAR_REDIRECT = '/dashboard';
+const DASHBOARD_REDIRECT = '/dashboard';
 const MAX_AVATAR_VALUE_LENGTH = 96;
 
 /**
@@ -21,7 +24,7 @@ const MAX_AVATAR_VALUE_LENGTH = 96;
 export function renderDashboard(req, res) {
 	res.render('dashboard/main', {
 		styles: ['modals/main', 'dashboard/main'],
-		scripts: ['dashboard/avatar'],
+		scripts: ['dashboard/account', 'dashboard/avatar'],
 		titleKey: 'layout:nav.dashboard',
 		account: buildAccountOverview(req),
 		avatarStyleOptions: createAvatarStyleOptions(24),
@@ -53,5 +56,47 @@ export async function updateAvatar(req, res) {
 
 	return success(req, res, 'common:avatarUpdated', {
 		to: AVATAR_REDIRECT,
+	});
+}
+
+export async function updateUsername(req, res) {
+	const username = normalizeText(req.body?.username);
+
+	if (!isValidUsername(username)) {
+		return fail(req, res, 'auth:error.username_invalid', {
+			to: DASHBOARD_REDIRECT,
+		});
+	}
+
+	if (!validateNoProfanity(username)) {
+		return fail(req, res, 'auth:error.username_profanity', {
+			to: DASHBOARD_REDIRECT,
+		});
+	}
+
+	if (username === req.user.username) {
+		return res.redirect(DASHBOARD_REDIRECT);
+	}
+
+	const usernameTaken = await UserModel.usernameExists(username);
+
+	if (usernameTaken) {
+		return fail(req, res, 'auth:error.username_taken', {
+			to: DASHBOARD_REDIRECT,
+		});
+	}
+
+	const result = await UserModel.updateUsernameById(req.user.id, username);
+
+	if (!result.success) {
+		return fail(req, res, result.reason || 'common:error.generic', {
+			to: DASHBOARD_REDIRECT,
+		});
+	}
+
+	req.user.username = username;
+
+	return success(req, res, 'common:usernameUpdated', {
+		to: DASHBOARD_REDIRECT,
 	});
 }

@@ -64,3 +64,51 @@
 	right: auto;
 	left: 0;
 }
+
+.dashboard-account-details {
+	flex: 1;
+}
+
+.dashboard-username__display,
+.dashboard-username__form {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.dashboard-username__form {
+	max-width: 24rem;
+}
+
+.dashboard-username__input {
+	min-width: min(18rem, 100%);
+}
+
+.dashboard-icon-button {
+	width: 2rem;
+	height: 2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	padding: 0;
+	border: 1px solid var(--border-subtle);
+	border-radius: 50%;
+	color: var(--color-text-body);
+	background-color: var(--bg-section);
+}
+
+.dashboard-icon-button:hover,
+.dashboard-icon-button:focus {
+	color: var(--color-primary);
+}
+
+.dashboard-icon-button--success:hover,
+.dashboard-icon-button--success:focus {
+	color: var(--bs-success);
+}
+
+.dashboard-icon-button--danger:hover,
+.dashboard-icon-button--danger:focus {
+	color: var(--bs-danger);
+}

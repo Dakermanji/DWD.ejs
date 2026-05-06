@@ -188,7 +188,7 @@
 			}
 		},
 		"js": {
-			"dashboard": ["avatar.js"],
+			"dashboard": ["account.js", "avatar.js"],
 			"home": ["auth.js", "mouseTrailAndFollower.js", "portfolio.js"],
 			"root": [
 				"dropdownMenu.js",
