@@ -1,18 +1,18 @@
-//! routes/dashboard.js
+//! routes/profile.js
 
 import { Router } from 'express';
 import {
 	renderCountryEditor,
 	renderAvatarModal,
-	renderDashboard,
+	renderProfile,
 	updateAvatar,
 	updateCountry,
 	updateUsername,
-} from '../controllers/dashboard.js';
+} from '../controllers/profile.js';
 
 const router = Router();
 
-router.get('/', renderDashboard);
+router.get('/', renderProfile);
 router.get('/avatar-modal', renderAvatarModal);
 router.get('/country-editor', renderCountryEditor);
 router.post('/avatar', updateAvatar);

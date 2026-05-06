@@ -5,7 +5,7 @@
  * - Resolves and injects navigation items for the current route
  *
  * Notes:
- * - Designed to scale later for dashboard / authenticated sections.
+ * - Designed to scale later for profile / authenticated sections.
  */
 
 import { navbar } from '../config/navbar.js';
@@ -14,7 +14,7 @@ import { navbar } from '../config/navbar.js';
  * Extract the first URL segment from a request path.
  * Examples:
  * - "/" -> ""
- * - "/dashboard/settings" -> "dashboard"
+ * - "/profile/settings" -> "profile"
  */
 function firstSegment(path = '/') {
 	return path.replace(/^\/+/, '').split('/')[0].toLowerCase();

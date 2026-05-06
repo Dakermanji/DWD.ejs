@@ -12,7 +12,7 @@ import homeRoutes from '../routes/home.js';
 import langRoutes from '../routes/lang.js';
 import authRoutes from '../routes/auth.js';
 import socialRoutes from '../routes/social.js';
-import dashboardRoutes from '../routes/dashboard.js';
+import profileRoutes from '../routes/profile.js';
 import themeRoutes from '../routes/theme.js';
 import avatarRoutes from '../routes/avatar.js';
 
@@ -30,8 +30,8 @@ router.use('/auth', authRoutes);
 // Social routes
 router.use('/social', socialRoutes);
 
-// Dashboard routes
-router.use('/dashboard', dashboardRoutes);
+// Profile routes
+router.use('/profile', profileRoutes);
 
 // Theme preference routes
 router.use('/theme', themeRoutes);

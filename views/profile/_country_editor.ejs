@@ -1,21 +1,21 @@
-<!--! views/dashboard/_country_editor.ejs -->
+<!--! views/profile/_country_editor.ejs -->
 
 <form
-	class="dashboard-country__form"
+	class="profile-country__form"
 	method="POST"
-	action="/dashboard/country"
+	action="/profile/country"
 	data-country-form
 >
 	<%- include('../partials/_csrf') %>
 	<input
-		id="dashboardCountryCode"
+		id="profileCountryCode"
 		type="hidden"
 		name="countryCode"
 		value="<%= account.countryCode || '' %>"
 	/>
-	<div class="dropdown complete-signup-country dashboard-country-picker">
+	<div class="dropdown complete-signup-country profile-country-picker">
 		<button
-			id="dashboardCountryDropdown"
+			id="profileCountryDropdown"
 			type="button"
 			class="form-select complete-signup-country__toggle text-start"
 			data-bs-toggle="dropdown"
@@ -38,7 +38,7 @@
 		</button>
 		<ul
 			class="dropdown-menu complete-signup-country__menu w-100"
-			aria-labelledby="dashboardCountryDropdown"
+			aria-labelledby="profileCountryDropdown"
 		>
 			<li>
 				<button
@@ -72,7 +72,7 @@
 	</div>
 	<button
 		type="submit"
-		class="dashboard-icon-button dashboard-icon-button--success has-tooltip"
+		class="profile-icon-button profile-icon-button--success has-tooltip"
 		data-bs-title="<%= t('common:saveCountry') %>"
 		aria-label="<%= t('common:saveCountry') %>"
 	>
@@ -80,7 +80,7 @@
 	</button>
 	<button
 		type="button"
-		class="dashboard-icon-button dashboard-icon-button--danger has-tooltip"
+		class="profile-icon-button profile-icon-button--danger has-tooltip"
 		data-country-cancel
 		data-bs-title="<%= t('common:cancel') %>"
 		aria-label="<%= t('common:cancel') %>"

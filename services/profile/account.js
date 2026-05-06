@@ -1,4 +1,4 @@
-//! services/dashboard/account.js
+//! services/profile/account.js
 
 import { getLocale } from '../i18n/locale.js';
 import { getUserAvatarProfile } from '../avatar/dicebear.js';

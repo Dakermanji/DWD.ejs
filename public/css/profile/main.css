@@ -1,6 +1,6 @@
-/*! public/css/dashboard/main.css  */
+/*! public/css/profile/main.css  */
 
-.dashboard-avatar {
+.profile-avatar {
 	width: 88px;
 	height: 88px;
 	border: 1px solid var(--border-subtle);
@@ -8,13 +8,13 @@
 	overflow: hidden;
 }
 
-.dashboard-avatar img {
+.profile-avatar img {
 	width: 100%;
 	height: 100%;
 	display: block;
 }
 
-.dashboard-avatar-edit {
+.profile-avatar-edit {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -30,8 +30,8 @@
 	background-color: var(--bg-section);
 }
 
-.dashboard-avatar-edit:hover,
-.dashboard-avatar-edit:focus {
+.profile-avatar-edit:hover,
+.profile-avatar-edit:focus {
 	color: var(--color-primary);
 }
 
@@ -60,34 +60,34 @@
 	left: 0;
 }
 
-[dir='rtl'] .dashboard-avatar-edit {
+[dir='rtl'] .profile-avatar-edit {
 	right: auto;
 	left: 0;
 }
 
-.dashboard-account-details {
+.profile-account-details {
 	flex: 1;
 }
 
-.dashboard-username__display,
-.dashboard-username__form,
-.dashboard-country__display,
-.dashboard-country__form {
+.profile-username__display,
+.profile-username__form,
+.profile-country__display,
+.profile-country__form {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 }
 
-.dashboard-username__form,
-.dashboard-country__form {
+.profile-username__form,
+.profile-country__form {
 	max-width: 24rem;
 }
 
-.dashboard-username__input {
+.profile-username__input {
 	min-width: min(18rem, 100%);
 }
 
-.dashboard-icon-button {
+.profile-icon-button {
 	width: 2rem;
 	height: 2rem;
 	display: inline-flex;
@@ -101,22 +101,22 @@
 	background-color: var(--bg-section);
 }
 
-.dashboard-icon-button:hover,
-.dashboard-icon-button:focus {
+.profile-icon-button:hover,
+.profile-icon-button:focus {
 	color: var(--color-primary);
 }
 
-.dashboard-icon-button--success:hover,
-.dashboard-icon-button--success:focus {
+.profile-icon-button--success:hover,
+.profile-icon-button--success:focus {
 	color: var(--bs-success);
 }
 
-.dashboard-icon-button--danger:hover,
-.dashboard-icon-button--danger:focus {
+.profile-icon-button--danger:hover,
+.profile-icon-button--danger:focus {
 	color: var(--bs-danger);
 }
 
-.dashboard-country-picker {
+.profile-country-picker {
 	min-width: min(18rem, 100%);
 	flex: 1;
 }

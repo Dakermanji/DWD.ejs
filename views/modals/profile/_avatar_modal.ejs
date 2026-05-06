@@ -1,4 +1,4 @@
-<!--! views/modals/dashboard/_avatar_modal.ejs -->
+<!--! views/modals/profile/_avatar_modal.ejs -->
 
 <%
 	const currentAvatar = account.avatar;
@@ -7,16 +7,16 @@
 
 <div
 	class="modal fade"
-	id="dashboardAvatarModal"
+	id="profileAvatarModal"
 	tabindex="-1"
-	aria-labelledby="dashboardAvatarModalLabel"
+	aria-labelledby="profileAvatarModalLabel"
 	aria-hidden="true"
 >
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h5 class="modal-title" id="dashboardAvatarModalLabel">
+				<h5 class="modal-title" id="profileAvatarModalLabel">
 					<%= t('common:editAvatar') %>
 				</h5>
 				<button
@@ -27,24 +27,24 @@
 				></button>
 			</div>
 
-			<form method="POST" action="/dashboard/avatar">
+			<form method="POST" action="/profile/avatar">
 				<%- include('../../partials/_csrf') %>
 				<div class="modal-body">
 					<input
-						id="dashboardAvatarSeed"
+						id="profileAvatarSeed"
 						type="hidden"
 						name="avatarSeed"
 						value="<%= currentAvatar.value %>"
 					/>
 
-					<div class="complete-signup-avatar dashboard-avatar-picker" data-active-style="<%= selectedStyleKey %>">
+					<div class="complete-signup-avatar profile-avatar-picker" data-active-style="<%= selectedStyleKey %>">
 						<div class="complete-signup-avatar__summary">
 							<div
 								class="complete-signup-avatar__preview"
 								style="--avatar-bg: <%= currentAvatar.background %>"
 							>
 								<img
-									id="dashboardAvatarPreview"
+									id="profileAvatarPreview"
 									src="<%= currentAvatar.src %>"
 									alt=""
 								/>

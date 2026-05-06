@@ -1,9 +1,9 @@
-//! public/js/dashboard/avatar.js
+//! public/js/profile/avatar.js
 
 const modalTrigger = document.querySelector('[data-avatar-modal-trigger]');
 
-function initDashboardAvatarPicker(scope = document) {
-	const avatarPicker = scope.querySelector('.dashboard-avatar-picker');
+function initProfileAvatarPicker(scope = document) {
+	const avatarPicker = scope.querySelector('.profile-avatar-picker');
 
 	if (!avatarPicker || avatarPicker.dataset.initialized === 'true') {
 		return;
@@ -11,8 +11,8 @@ function initDashboardAvatarPicker(scope = document) {
 
 	avatarPicker.dataset.initialized = 'true';
 
-	const input = scope.querySelector('#dashboardAvatarSeed');
-	const preview = scope.querySelector('#dashboardAvatarPreview');
+	const input = scope.querySelector('#profileAvatarSeed');
+	const preview = scope.querySelector('#profileAvatarPreview');
 	const previewFrame = avatarPicker.querySelector(
 		'.complete-signup-avatar__preview',
 	);
@@ -180,7 +180,7 @@ function initTooltips(scope) {
 }
 
 async function loadAvatarModal() {
-	const existingModal = document.querySelector('#dashboardAvatarModal');
+	const existingModal = document.querySelector('#profileAvatarModal');
 
 	if (existingModal) {
 		return existingModal;
@@ -206,14 +206,14 @@ async function loadAvatarModal() {
 		const wrapper = document.createElement('div');
 		wrapper.innerHTML = await response.text();
 
-		const modal = wrapper.querySelector('#dashboardAvatarModal');
+		const modal = wrapper.querySelector('#profileAvatarModal');
 
 		if (!modal) {
 			return null;
 		}
 
 		document.body.append(modal);
-		initDashboardAvatarPicker(modal);
+		initProfileAvatarPicker(modal);
 		initTooltips(modal);
 
 		return modal;

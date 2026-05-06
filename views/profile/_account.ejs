@@ -1,10 +1,10 @@
-<!--! views/dashboard/_account.ejs -->
-<section aria-labelledby="dashboard-account-title" class="py-4">
+<!--! views/profile/_account.ejs -->
+<section aria-labelledby="profile-account-title" class="py-4">
 	<div class="d-flex align-items-center gap-3">
 		<div class="position-relative flex-shrink-0">
 			<div
 				id="avatar"
-				class="dashboard-avatar"
+				class="profile-avatar"
 				style="background-color: <%= account.avatar.background %>;"
 			>
 				<img
@@ -15,9 +15,9 @@
 			</div>
 			<button
 				type="button"
-				class="dashboard-avatar-edit has-tooltip"
+				class="profile-avatar-edit has-tooltip"
 				data-avatar-modal-trigger
-				data-avatar-modal-url="/dashboard/avatar-modal"
+				data-avatar-modal-url="/profile/avatar-modal"
 				data-bs-title="<%= t('common:editAvatar') %>"
 				aria-label="<%= t('common:editAvatar') %>"
 			>
@@ -38,15 +38,15 @@
 			<% } %>
 		</div>
 
-		<div class="min-w-0 dashboard-account-details">
-			<div class="dashboard-username" data-dashboard-username>
-				<div class="dashboard-username__display" data-username-display>
-					<h2 id="dashboard-account-title" class="h4 mb-1">
+		<div class="min-w-0 profile-account-details">
+			<div class="profile-username" data-profile-username>
+				<div class="profile-username__display" data-username-display>
+					<h2 id="profile-account-title" class="h4 mb-1">
 						<%= account.username %>
 					</h2>
 					<button
 						type="button"
-						class="dashboard-icon-button has-tooltip"
+						class="profile-icon-button has-tooltip"
 						data-username-edit
 						data-bs-title="<%= t('common:editName') %>"
 						aria-label="<%= t('common:editName') %>"
@@ -56,15 +56,15 @@
 				</div>
 
 				<form
-					class="dashboard-username__form d-none"
+					class="profile-username__form d-none"
 					method="POST"
-					action="/dashboard/username"
+					action="/profile/username"
 					data-username-form
 				>
 					<%- include('../partials/_csrf') %>
 					<input
 						type="text"
-						class="form-control dashboard-username__input"
+						class="form-control profile-username__input"
 						name="username"
 						value="<%= account.username %>"
 						required
@@ -72,7 +72,7 @@
 					/>
 					<button
 						type="submit"
-						class="dashboard-icon-button dashboard-icon-button--success has-tooltip"
+						class="profile-icon-button profile-icon-button--success has-tooltip"
 						data-bs-title="<%= t('common:saveName') %>"
 						aria-label="<%= t('common:saveName') %>"
 					>
@@ -80,7 +80,7 @@
 					</button>
 					<button
 						type="button"
-						class="dashboard-icon-button dashboard-icon-button--danger has-tooltip"
+						class="profile-icon-button profile-icon-button--danger has-tooltip"
 						data-username-cancel
 						data-bs-title="<%= t('common:cancel') %>"
 						aria-label="<%= t('common:cancel') %>"
@@ -90,16 +90,16 @@
 				</form>
 			</div>
 			<p class="mb-0 text-body-muted"><%= account.email %></p>
-			<div class="dashboard-country mt-2" data-dashboard-country>
-				<div class="dashboard-country__display" data-country-display>
+			<div class="profile-country mt-2" data-profile-country>
+				<div class="profile-country__display" data-country-display>
 					<span class="text-body-muted">
 						<%= account.countryName || t('common:noCountry') %>
 					</span>
 					<button
 						type="button"
-						class="dashboard-icon-button has-tooltip"
+						class="profile-icon-button has-tooltip"
 						data-country-edit
-						data-country-editor-url="/dashboard/country-editor"
+						data-country-editor-url="/profile/country-editor"
 						data-bs-title="<%= t('common:editCountry') %>"
 						aria-label="<%= t('common:editCountry') %>"
 					>

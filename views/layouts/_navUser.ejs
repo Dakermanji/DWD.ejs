@@ -1,22 +1,22 @@
 <!--! views/layouts/_navUser.ejs -->
 <% const keys = {
-	dashboard: t('nav.dashboard'),
+	profile: t('nav.profile'),
 	social: t('nav.social'),
 	signout: t('auth:signout.title')
 }; %>
 
 <li class="nav-item ">
 	<a
-	class="nav-link has-tooltip <%= currentRoute === '/dashboard' ? 'active' : '' %>"
-	id="dashboard"
-	href="/dashboard"
-	aria-label="<%= keys.dashboard %>"
-	data-bs-title="<%= keys.dashboard %>"
+	class="nav-link has-tooltip <%= currentRoute === '/profile' ? 'active' : '' %>"
+	id="profile"
+	href="/profile"
+	aria-label="<%= keys.profile %>"
+	data-bs-title="<%= keys.profile %>"
 	>
 		<span class="nav-icon">
 			<i class="bi bi-person-circle" aria-hidden="true"></i>
 		</span>
-		<span class="nav-text"><%= keys.dashboard %></span>
+		<span class="nav-text"><%= keys.profile %></span>
 	</a>
 </li>
 

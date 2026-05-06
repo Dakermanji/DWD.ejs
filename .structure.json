@@ -51,7 +51,7 @@
 			"followRequest.js",
 			"notifications.js"
 		],
-		"~": ["avatar.js", "dashboard.js", "home.js", "lang.js", "theme.js"]
+		"~": ["avatar.js", "profile.js", "home.js", "lang.js", "theme.js"]
 	},
 	"locales": {
 		"ar": [
@@ -119,7 +119,7 @@
 	],
 	"public": {
 		"css": {
-			"dashboard": ["main.css"],
+			"profile": ["main.css"],
 			"home": [
 				"about.css",
 				"contact.css",
@@ -188,7 +188,7 @@
 			}
 		},
 		"js": {
-			"dashboard": ["account.js", "avatar.js"],
+			"profile": ["account.js", "avatar.js"],
 			"home": ["auth.js", "mouseTrailAndFollower.js", "portfolio.js"],
 			"root": [
 				"dropdownMenu.js",
@@ -203,7 +203,7 @@
 	"routes": [
 		"auth.js",
 		"avatar.js",
-		"dashboard.js",
+		"profile.js",
 		"home.js",
 		"lang.js",
 		"social.js",
@@ -226,7 +226,7 @@
 		"avatar": ["dicebear.js"],
 		"contact": ["email.js"],
 		"country": ["list.js"],
-		"dashboard": ["account.js"],
+		"profile": ["account.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],
 		"theme": ["preference.js"]
@@ -246,7 +246,7 @@
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
-		"dashboard": ["_account.ejs", "_country_editor.ejs", "main.ejs"],
+		"profile": ["_account.ejs", "_country_editor.ejs", "main.ejs"],
 		"home": [
 			"_about.ejs",
 			"_contact.ejs",
@@ -283,7 +283,7 @@
 				"_resetPassword.ejs",
 				"_setPassword.ejs"
 			],
-			"dashboard": ["_avatar_modal.ejs"]
+			"profile": ["_avatar_modal.ejs"]
 		},
 		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
 		"social": [

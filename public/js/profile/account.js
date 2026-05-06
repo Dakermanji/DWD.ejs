@@ -1,6 +1,6 @@
-//! public/js/dashboard/account.js
+//! public/js/profile/account.js
 
-const usernameEditor = document.querySelector('[data-dashboard-username]');
+const usernameEditor = document.querySelector('[data-profile-username]');
 
 if (usernameEditor) {
 	const display = usernameEditor.querySelector('[data-username-display]');
@@ -31,7 +31,7 @@ if (usernameEditor) {
 	});
 }
 
-const countryEditor = document.querySelector('[data-dashboard-country]');
+const countryEditor = document.querySelector('[data-profile-country]');
 
 if (countryEditor) {
 	const display = countryEditor.querySelector('[data-country-display]');
@@ -40,7 +40,7 @@ if (countryEditor) {
 
 	function initCountryDropdown(scope) {
 		const dropdown = scope.querySelector('.complete-signup-country');
-		const input = scope.querySelector('#dashboardCountryCode');
+		const input = scope.querySelector('#profileCountryCode');
 		const selected = dropdown?.querySelector(
 			'.complete-signup-country__selected',
 		);
