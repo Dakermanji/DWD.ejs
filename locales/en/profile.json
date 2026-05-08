@@ -1,5 +1,9 @@
 {
 	"security": "Security",
+	"preferences": "Preferences",
+	"language": {
+		"label": "Preferred language"
+	},
 	"connectedMethods": "Connected methods",
 	"method": {
 		"connected": "Connected",

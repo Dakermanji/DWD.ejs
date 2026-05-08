@@ -1,5 +1,9 @@
 {
 	"security": "الأمان",
+	"preferences": "التفضيلات",
+	"language": {
+		"label": "اللغة المفضلة"
+	},
 	"connectedMethods": "طرق تسجيل الدخول المرتبطة",
 	"method": {
 		"connected": "مرتبطة",

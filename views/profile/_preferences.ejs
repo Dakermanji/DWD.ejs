@@ -1,0 +1,47 @@
+<!--! views/profile/_preferences.ejs -->
+<section aria-labelledby="profile-preferences-title" class="py-4 profile-section">
+	<h2 id="profile-preferences-title" class="h5 mb-3">
+		<%= t('profile:preferences') %>
+	</h2>
+
+	<div class="profile-preferences">
+		<div class="profile-preference">
+			<div class="fw-semibold"><%= t('layout:theme.trigger') %></div>
+			<div class="profile-preference-options" role="group" aria-label="<%= t('layout:theme.trigger') %>">
+				<% preferences.themes.forEach((theme) => { %>
+					<button
+						type="button"
+						class="profile-preference-option"
+						data-theme-value="<%= theme.key %>"
+						aria-label="<%= t(`layout:theme.${theme.key}`) %>"
+					>
+						<i class="bi <%= theme.icon %>" aria-hidden="true"></i>
+						<span class="theme-label"><%= t(`layout:theme.${theme.key}`) %></span>
+					</button>
+				<% }) %>
+			</div>
+		</div>
+
+		<div class="profile-preference">
+			<div class="fw-semibold"><%= t('profile:language.label') %></div>
+			<div class="profile-preference-options" role="group" aria-label="<%= t('profile:language.label') %>">
+				<% preferences.languages.forEach((lang) => { %>
+					<% const isCurrent = preferences.currentLanguage === lang.code; %>
+					<a
+						class="profile-preference-option <%= isCurrent ? 'active pe-none' : '' %>"
+						href="<%= isCurrent ? '#' : `/language/${lang.code}?returnTo=${encodeURIComponent('/profile')}` %>"
+						aria-current="<%= isCurrent ? 'true' : 'false' %>"
+					>
+						<img
+							src="/images/flags/<%= lang.flag %>.svg"
+							alt="<%= lang.code.toUpperCase() %>"
+							width="24"
+							height="16"
+						/>
+						<span><%= lang.name %></span>
+					</a>
+				<% }) %>
+			</div>
+		</div>
+	</div>
+</section>

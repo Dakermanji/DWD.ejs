@@ -229,7 +229,7 @@
 		"avatar": ["dicebear.js"],
 		"contact": ["email.js"],
 		"country": ["list.js"],
-		"profile": ["account.js"],
+		"profile": ["account.js", "preferences.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],
 		"theme": ["preference.js"]
@@ -249,7 +249,13 @@
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
-		"profile": ["_account.ejs", "_country_editor.ejs", "_security.ejs", "main.ejs"],
+		"profile": [
+			"_account.ejs",
+			"_country_editor.ejs",
+			"_preferences.ejs",
+			"_security.ejs",
+			"main.ejs"
+		],
 		"home": [
 			"_about.ejs",
 			"_contact.ejs",

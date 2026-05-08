@@ -3,6 +3,7 @@
 	<h1 id="profile-title"><%= t('layout:nav.profile') %></h1>
 	<%- include('_account', { account }) %>
 	<%- include('_security', { account }) %>
+	<%- include('_preferences', { preferences }) %>
 </section>
 
 <% if (modal === 'profile_password') { %>
