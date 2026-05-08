@@ -129,6 +129,10 @@ footer.ui-bar {
 	background-color: transparent;
 }
 
+.ui-bar .nav-link.active {
+	color: var(--color-secondary);
+}
+
 #langDropdown img {
 	margin-inline-end: 4px;
 }
