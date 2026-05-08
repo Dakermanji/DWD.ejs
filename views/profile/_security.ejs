@@ -20,4 +20,36 @@
 			<%= account.hasPassword ? t('profile:password.change') : t('profile:password.add') %>
 		</button>
 	</div>
+
+	<div class="profile-security-methods">
+		<div class="fw-semibold"><%= t('profile:connectedMethods') %></div>
+		<div class="profile-auth-methods" aria-label="<%= t('profile:connectedMethods') %>">
+			<% account.authMethods.forEach((method) => { %>
+				<span
+					class="profile-auth-method-wrap has-tooltip"
+					data-bs-title="<%= `${method.label} - ${method.connected ? t('profile:method.connected') : t('profile:method.unavailable')}` %>"
+				>
+					<button
+						type="button"
+						class="profile-auth-method <%= method.connected ? 'is-connected' : 'is-unavailable' %>"
+						disabled
+						aria-label="<%= `${method.label} - ${method.connected ? t('profile:method.connected') : t('profile:method.unavailable')}` %>"
+					>
+						<span class="profile-auth-method__icon">
+							<% if (method.partial) { %>
+								<%- include(method.partial) %>
+							<% } else { %>
+								<i class="<%= method.icon %>" aria-hidden="true"></i>
+							<% } %>
+						</span>
+						<% if (!method.connected) { %>
+							<span class="profile-auth-method__lock" aria-hidden="true">
+								<i class="bi bi-lock-fill"></i>
+							</span>
+						<% } %>
+					</button>
+				</span>
+			<% }) %>
+		</div>
+	</div>
 </section>

@@ -1,5 +1,10 @@
 {
 	"security": "Security",
+	"connectedMethods": "Connected methods",
+	"method": {
+		"connected": "Connected",
+		"unavailable": "Unavailable"
+	},
 	"password": {
 		"label": "Password",
 		"set": "Set",

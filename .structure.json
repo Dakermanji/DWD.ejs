@@ -288,7 +288,15 @@
 			],
 			"profile": ["_avatar_modal.ejs", "_password_modal.ejs"]
 		},
-		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
+		"partials": [
+			"_csrf.ejs",
+			"_discord.ejs",
+			"_discordLogo.ejs",
+			"_github.ejs",
+			"_githubLogo.ejs",
+			"_google.ejs",
+			"_googleLogo.ejs"
+		],
 		"social": [
 			"_blocked.ejs",
 			"_follow_request.ejs",

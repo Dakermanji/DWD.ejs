@@ -1,5 +1,10 @@
 {
 	"security": "الأمان",
+	"connectedMethods": "طرق تسجيل الدخول المرتبطة",
+	"method": {
+		"connected": "مرتبطة",
+		"unavailable": "غير متاحة"
+	},
 	"password": {
 		"label": "كلمة المرور",
 		"set": "مضافة",
