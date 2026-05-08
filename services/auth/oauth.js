@@ -26,6 +26,15 @@ function normalizeOAuthEmail(email) {
 	return normalizedEmail || null;
 }
 
+function getOAuthRedirect(req) {
+	const redirectTo = req.session.oauthReturnTo === '/profile' ? '/profile' : '/';
+
+	delete req.session.oauthReturnTo;
+	delete req.session.oauthIntent;
+
+	return redirectTo;
+}
+
 /**
  * Build a reusable Passport OAuth verify callback.
  *
@@ -100,6 +109,36 @@ export function createOAuthVerifyCallback({
 				return done(null, false);
 			}
 
+			if (req.session?.oauthIntent === 'link' && req.user?.id) {
+				const linkedUser =
+					await UserProviderModel.findUserByProviderAccount(
+						provider,
+						String(providerUserId),
+					);
+
+				if (linkedUser && linkedUser.id !== req.user.id) {
+					req.session.oauthLinkError = 'profile:method.alreadyLinked';
+					const sessionUser = await UserModel.findByIdForSession(req.user.id);
+
+					return done(null, sessionUser || req.user);
+				}
+
+				const existingProviderLink =
+					await UserProviderModel.findByUserAndProvider(req.user.id, provider);
+
+				if (!linkedUser && !existingProviderLink) {
+					await UserProviderModel.createLink(
+						req.user.id,
+						provider,
+						String(providerUserId),
+					);
+				}
+
+				const sessionUser = await UserModel.findByIdForSession(req.user.id);
+
+				return done(null, sessionUser || req.user);
+			}
+
 			const linkedUser =
 				await UserProviderModel.findUserByProviderAccount(
 					provider,
@@ -167,11 +206,14 @@ export function handleOAuthCallback(req, res, next, err, user) {
 
 	if (!user) {
 		req.flash('error', 'auth:error.oauth_failed');
-		return res.redirect('/');
+		return res.redirect(getOAuthRedirect(req));
 	}
 
 	const locale = getLocale(req);
 	delete req.session.oauthLocale;
+	const redirectTo = getOAuthRedirect(req);
+	const linkError = req.session.oauthLinkError;
+	delete req.session.oauthLinkError;
 
 	return req.logIn(user, (loginErr) => {
 		if (loginErr) {
@@ -186,6 +228,15 @@ export function handleOAuthCallback(req, res, next, err, user) {
 			return res.redirect('/');
 		}
 
-		return res.redirect('/');
+		if (linkError) {
+			req.flash('error', linkError);
+			return res.redirect(redirectTo);
+		}
+
+		if (redirectTo === '/profile') {
+			req.flash('success', 'profile:method.linked');
+		}
+
+		return res.redirect(redirectTo);
 	});
 }

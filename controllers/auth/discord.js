@@ -17,6 +17,13 @@ import { handleOAuthCallback } from '../../services/auth/oauth.js';
  * @returns {void}
  */
 export function discordCall(req, res, next) {
+	req.session.oauthLocale = req.language || req.resolvedLanguage || 'en';
+
+	if (req.isAuthenticated?.() && req.query?.returnTo === 'profile') {
+		req.session.oauthReturnTo = '/profile';
+		req.session.oauthIntent = 'link';
+	}
+
 	passport.authenticate('discord', {
 		scope: ['identify', 'email'],
 	})(req, res, next);
@@ -40,7 +47,7 @@ export function discordCall(req, res, next) {
  * @returns {void}
  */
 export function discordCallback(req, res, next) {
-	passport.authenticate('github', (err, user) =>
+	passport.authenticate('discord', (err, user) =>
 		handleOAuthCallback(req, res, next, err, user),
 	)(req, res, next);
 }

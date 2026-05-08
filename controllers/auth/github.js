@@ -18,6 +18,12 @@ import { handleOAuthCallback } from '../../services/auth/oauth.js';
  */
 export function githubCall(req, res, next) {
 	req.session.oauthLocale = req.language || req.resolvedLanguage || 'en';
+
+	if (req.isAuthenticated?.() && req.query?.returnTo === 'profile') {
+		req.session.oauthReturnTo = '/profile';
+		req.session.oauthIntent = 'link';
+	}
+
 	passport.authenticate('github', {
 		scope: ['user:email'],
 	})(req, res, next);

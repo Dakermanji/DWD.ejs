@@ -66,7 +66,21 @@ async function createLink(userId, provider, providerUserId) {
 	return rows[0] ?? null;
 }
 
+async function findByUserAndProvider(userId, provider) {
+	const q = `
+        SELECT user_id, provider, provider_user_id
+        FROM user_providers
+        WHERE user_id = $1
+            AND provider = $2
+        LIMIT 1;
+    `;
+
+	const rows = await queryRows(q, [userId, provider]);
+	return rows[0] ?? null;
+}
+
 export default {
 	findUserByProviderAccount,
 	createLink,
+	findByUserAndProvider,
 };

@@ -18,6 +18,12 @@ import { handleOAuthCallback } from '../../services/auth/oauth.js';
  */
 export function googleCall(req, res, next) {
 	req.session.oauthLocale = req.language || req.resolvedLanguage || 'en';
+
+	if (req.isAuthenticated?.() && req.query?.returnTo === 'profile') {
+		req.session.oauthReturnTo = '/profile';
+		req.session.oauthIntent = 'link';
+	}
+
 	passport.authenticate('google', {
 		scope: ['profile', 'email'],
 		prompt: 'select_account',
