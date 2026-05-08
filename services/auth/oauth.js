@@ -104,10 +104,12 @@ export function createOAuthVerifyCallback({
 				await UserProviderModel.findUserByProviderAccount(
 					provider,
 					String(providerUserId),
-				);
+			);
 
 			if (linkedUser) {
-				return done(null, linkedUser);
+				const sessionUser = await UserModel.findByIdForSession(linkedUser.id);
+
+				return done(null, sessionUser || linkedUser);
 			}
 
 			let user = await UserModel.findByEmailBasic(email);
