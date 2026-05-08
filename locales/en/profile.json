@@ -4,6 +4,17 @@
 	"language": {
 		"label": "Preferred language"
 	},
+	"danger": {
+		"title": "Danger Zone",
+		"deleteAccount": "Delete account",
+		"deleteAccountDescription": "Delete your account after email confirmation.",
+		"deleteAccountModal": "This starts account deletion. We will send a short-lived confirmation link to your email before deleting anything.",
+		"deleteAccountPhraseIntro": "Type this phrase to continue:",
+		"deleteAccountInput": "Confirmation phrase",
+		"sendDeleteEmail": "Send confirmation email",
+		"emailSent": "We sent an account deletion confirmation email.",
+		"deleted": "Your account has been deleted."
+	},
 	"connectedMethods": "Connected methods",
 	"method": {
 		"connected": "Connected",
@@ -25,6 +36,8 @@
 		"updated": "Password updated."
 	},
 	"error": {
-		"current_password_invalid": "Current password is incorrect."
+		"current_password_invalid": "Current password is incorrect.",
+		"deleteAccountPhrase": "The account deletion confirmation phrase did not match.",
+		"deleteAccountInvalidLink": "Invalid or expired account deletion link."
 	}
 }

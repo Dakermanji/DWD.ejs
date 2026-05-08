@@ -2,6 +2,10 @@
 
 import UserModel from '../models/User.js';
 import { buildAccountOverview } from '../services/profile/account.js';
+import {
+	getDeletionPhrase,
+	sendAccountDeletionConfirmation,
+} from '../services/profile/deletion.js';
 import { buildProfilePreferences } from '../services/profile/preferences.js';
 import {
 	createAvatarStyleOptions,
@@ -61,6 +65,28 @@ export function renderPasswordModal(req, res) {
 	return res.render('modals/profile/_password_modal', {
 		layout: false,
 		account: buildAccountOverview(req),
+	});
+}
+
+export async function requestAccountDeletion(req, res) {
+	const expectedPhrase = getDeletionPhrase(req.user.username);
+	const submittedPhrase = String(req.body?.deleteConfirmation || '').trim();
+	const modal = 'profile_delete_account';
+
+	if (submittedPhrase !== expectedPhrase) {
+		return fail(req, res, 'profile:error.deleteAccountPhrase', {
+			modal,
+			to: PROFILE_REDIRECT,
+		});
+	}
+
+	await sendAccountDeletionConfirmation({
+		user: req.user,
+		locale: getLocale(req),
+	});
+
+	return success(req, res, 'profile:danger.emailSent', {
+		to: PROFILE_REDIRECT,
 	});
 }
 

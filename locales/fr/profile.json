@@ -4,6 +4,17 @@
 	"language": {
 		"label": "Langue préférée"
 	},
+	"danger": {
+		"title": "Zone dangereuse",
+		"deleteAccount": "Supprimer le compte",
+		"deleteAccountDescription": "Supprimez votre compte après confirmation par e-mail.",
+		"deleteAccountModal": "Cette action lance la suppression du compte. Nous enverrons un lien de confirmation à durée courte à votre e-mail avant de supprimer quoi que ce soit.",
+		"deleteAccountPhraseIntro": "Saisissez cette phrase pour continuer :",
+		"deleteAccountInput": "Phrase de confirmation",
+		"sendDeleteEmail": "Envoyer l’e-mail de confirmation",
+		"emailSent": "Nous avons envoyé un e-mail de confirmation de suppression du compte.",
+		"deleted": "Votre compte a été supprimé."
+	},
 	"connectedMethods": "Méthodes connectées",
 	"method": {
 		"connected": "Connectée",
@@ -25,6 +36,8 @@
 		"updated": "Mot de passe mis à jour."
 	},
 	"error": {
-		"current_password_invalid": "Le mot de passe actuel est incorrect."
+		"current_password_invalid": "Le mot de passe actuel est incorrect.",
+		"deleteAccountPhrase": "La phrase de confirmation de suppression du compte ne correspond pas.",
+		"deleteAccountInvalidLink": "Lien de suppression du compte invalide ou expiré."
 	}
 }

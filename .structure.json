@@ -51,7 +51,14 @@
 			"followRequest.js",
 			"notifications.js"
 		],
-		"~": ["avatar.js", "profile.js", "home.js", "lang.js", "theme.js"]
+		"~": [
+			"avatar.js",
+			"deleteAccount.js",
+			"profile.js",
+			"home.js",
+			"lang.js",
+			"theme.js"
+		]
 	},
 	"locales": {
 		"ar": [
@@ -252,6 +259,7 @@
 		"profile": [
 			"_account.ejs",
 			"_country_editor.ejs",
+			"_danger.ejs",
 			"_preferences.ejs",
 			"_security.ejs",
 			"main.ejs"
@@ -292,7 +300,11 @@
 				"_resetPassword.ejs",
 				"_setPassword.ejs"
 			],
-			"profile": ["_avatar_modal.ejs", "_password_modal.ejs"]
+			"profile": [
+				"_avatar_modal.ejs",
+				"_delete_account_modal.ejs",
+				"_password_modal.ejs"
+			]
 		},
 		"partials": [
 			"_csrf.ejs",

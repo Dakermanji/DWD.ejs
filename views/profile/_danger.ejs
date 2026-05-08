@@ -1,0 +1,23 @@
+<!--! views/profile/_danger.ejs -->
+<section aria-labelledby="profile-danger-title" class="py-5 profile-section profile-danger">
+	<h2 id="profile-danger-title" class="h5 mb-3">
+		<%= t('profile:danger.title') %>
+	</h2>
+
+	<div class="profile-danger-row">
+		<div>
+			<div class="fw-semibold"><%= t('profile:danger.deleteAccount') %></div>
+			<p class="mb-0 text-body-muted">
+				<%= t('profile:danger.deleteAccountDescription') %>
+			</p>
+		</div>
+		<button
+			type="button"
+			class="btn btn-outline-danger"
+			data-bs-toggle="modal"
+			data-bs-target="#profileDeleteAccountModal"
+		>
+			<%= t('profile:danger.deleteAccount') %>
+		</button>
+	</div>
+</section>

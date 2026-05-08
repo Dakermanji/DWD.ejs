@@ -248,8 +248,24 @@
 	background-color: var(--color-bg);
 }
 
+.profile-danger-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.profile-danger .btn-outline-danger {
+	flex: 0 0 auto;
+}
+
+.profile-delete-phrase {
+	user-select: none;
+}
+
 @media (max-width: 575.98px) {
-	.profile-security-row {
+	.profile-security-row,
+	.profile-danger-row {
 		align-items: flex-start;
 		flex-direction: column;
 	}

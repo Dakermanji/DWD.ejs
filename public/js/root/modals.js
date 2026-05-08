@@ -33,6 +33,7 @@
 		complete_signup_oauth: { id: 'completeSignUpModal' },
 		reset_password: { id: 'resetPasswordModal' },
 		profile_password: { id: 'profilePasswordModal' },
+		profile_delete_account: { id: 'profileDeleteAccountModal' },
 	};
 
 	const target = MODALS[modalName];

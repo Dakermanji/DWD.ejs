@@ -4,7 +4,10 @@
 	<%- include('_account', { account }) %>
 	<%- include('_security', { account }) %>
 	<%- include('_preferences', { preferences }) %>
+	<%- include('_danger', { account }) %>
 </section>
+
+<%- include('../modals/profile/_delete_account_modal', { account }) %>
 
 <% if (modal === 'profile_password') { %>
 	<%- include('../modals/profile/_password_modal', { account }) %>

@@ -1,0 +1,63 @@
+<!--! views/modals/profile/_delete_account_modal.ejs -->
+
+<%
+	const deletePhrase = `delete_${account.username}`;
+%>
+
+<div
+	class="modal fade"
+	id="profileDeleteAccountModal"
+	tabindex="-1"
+	aria-labelledby="profileDeleteAccountModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="profileDeleteAccountModalLabel">
+					<%= t('profile:danger.deleteAccount') %>
+				</h5>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="<%= t('common:close') %>"
+				></button>
+			</div>
+
+			<form method="POST" action="/profile/delete-account">
+				<%- include('../../partials/_csrf') %>
+				<div class="modal-body">
+					<p>
+						<%= t('profile:danger.deleteAccountModal') %>
+					</p>
+					<p class="text-body-muted">
+						<%= t('profile:danger.deleteAccountPhraseIntro') %>
+						<code class="profile-delete-phrase" dir="ltr"><%= deletePhrase %></code>
+					</p>
+					<label for="profileDeleteConfirmation" class="form-label">
+						<%= t('profile:danger.deleteAccountInput') %>
+					</label>
+					<input
+						id="profileDeleteConfirmation"
+						type="text"
+						class="form-control"
+						name="deleteConfirmation"
+						required
+						autocomplete="off"
+						dir="ltr"
+					/>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						<%= t('common:cancel') %>
+					</button>
+					<button type="submit" class="btn btn-danger">
+						<%= t('profile:danger.sendDeleteEmail') %>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

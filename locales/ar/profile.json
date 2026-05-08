@@ -4,6 +4,17 @@
 	"language": {
 		"label": "اللغة المفضلة"
 	},
+	"danger": {
+		"title": "منطقة الخطر",
+		"deleteAccount": "حذف الحساب",
+		"deleteAccountDescription": "احذف حسابك بعد التأكيد عبر البريد الإلكتروني.",
+		"deleteAccountModal": "سيبدأ هذا طلب حذف الحساب. سنرسل رابط تأكيد قصير الصلاحية إلى بريدك الإلكتروني قبل حذف أي شيء.",
+		"deleteAccountPhraseIntro": "اكتب هذه العبارة للمتابعة:",
+		"deleteAccountInput": "عبارة التأكيد",
+		"sendDeleteEmail": "إرسال بريد التأكيد",
+		"emailSent": "أرسلنا بريد تأكيد حذف الحساب.",
+		"deleted": "تم حذف حسابك."
+	},
 	"connectedMethods": "طرق تسجيل الدخول المرتبطة",
 	"method": {
 		"connected": "مرتبطة",
@@ -25,6 +36,8 @@
 		"updated": "تم تحديث كلمة المرور."
 	},
 	"error": {
-		"current_password_invalid": "كلمة المرور الحالية غير صحيحة."
+		"current_password_invalid": "كلمة المرور الحالية غير صحيحة.",
+		"deleteAccountPhrase": "عبارة تأكيد حذف الحساب غير مطابقة.",
+		"deleteAccountInvalidLink": "رابط حذف الحساب غير صالح أو منتهي الصلاحية."
 	}
 }
