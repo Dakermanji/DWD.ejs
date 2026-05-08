@@ -10,6 +10,7 @@ export async function findByIdForSession(userId) {
 		username,
 		is_verified,
 		is_blocked,
+		(hashed_password IS NOT NULL) AS has_password,
 		locale,
 		country_code,
 		theme,

@@ -42,5 +42,6 @@ export function buildAccountOverview(req) {
 		avatar,
 		countryCode,
 		countryName: getCountryName(countryCode, locale),
+		hasPassword: Boolean(user?.has_password),
 	};
 }

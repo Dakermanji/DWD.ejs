@@ -82,3 +82,15 @@ export async function findByUsername(username) {
 	const result = await query(q, [username]);
 	return result.rows[0] || null;
 }
+
+export async function findPasswordById(userId) {
+	const q = `
+		SELECT id, hashed_password
+		FROM users
+		WHERE id = $1
+		LIMIT 1;
+	`;
+
+	const rows = await queryRows(q, [userId]);
+	return rows[0] || null;
+}

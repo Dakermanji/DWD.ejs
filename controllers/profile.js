@@ -6,13 +6,20 @@ import {
 	createAvatarStyleOptions,
 	isSupportedAvatarValue,
 } from '../services/avatar/dicebear.js';
-import { getCountryOptions, isSupportedCountryCode } from '../services/country/list.js';
+import {
+	getCountryOptions,
+	isSupportedCountryCode,
+} from '../services/country/list.js';
 import { getLocale } from '../services/i18n/locale.js';
 import { fail, success } from '../services/http/response.js';
-import { isValidUsername, normalizeText } from '../middlewares/validators/common.js';
+import {
+	isValidPassword,
+	isValidUsername,
+	normalizeText,
+} from '../middlewares/validators/common.js';
 import { validateNoProfanity } from '../middlewares/profanity/index.js';
+import { comparePassword, hashPassword } from '../services/auth/password.js';
 
-const AVATAR_REDIRECT = '/profile';
 const PROFILE_REDIRECT = '/profile';
 const MAX_AVATAR_VALUE_LENGTH = 96;
 
@@ -48,6 +55,13 @@ export function renderCountryEditor(req, res) {
 	});
 }
 
+export function renderPasswordModal(req, res) {
+	return res.render('modals/profile/_password_modal', {
+		layout: false,
+		account: buildAccountOverview(req),
+	});
+}
+
 export async function updateAvatar(req, res) {
 	const avatarSeed = String(req.body?.avatarSeed || '').trim();
 
@@ -57,7 +71,7 @@ export async function updateAvatar(req, res) {
 		!isSupportedAvatarValue(avatarSeed)
 	) {
 		return fail(req, res, 'auth:error.avatar_seed_invalid', {
-			to: AVATAR_REDIRECT,
+			to: PROFILE_REDIRECT,
 		});
 	}
 
@@ -65,19 +79,20 @@ export async function updateAvatar(req, res) {
 
 	if (!user) {
 		return fail(req, res, 'common:error.generic', {
-			to: AVATAR_REDIRECT,
+			to: PROFILE_REDIRECT,
 		});
 	}
 
 	req.user.avatar_seed = user.avatar_seed;
 
 	return success(req, res, 'common:avatarUpdated', {
-		to: AVATAR_REDIRECT,
+		to: PROFILE_REDIRECT,
 	});
 }
 
 export async function updateCountry(req, res) {
-	const countryCode = normalizeText(req.body?.countryCode).toUpperCase() || null;
+	const countryCode =
+		normalizeText(req.body?.countryCode).toUpperCase() || null;
 
 	if (countryCode && !isSupportedCountryCode(countryCode)) {
 		return fail(req, res, 'auth:error.country_invalid', {
@@ -138,6 +153,64 @@ export async function updateUsername(req, res) {
 	req.user.username = username;
 
 	return success(req, res, 'common:usernameUpdated', {
+		to: PROFILE_REDIRECT,
+	});
+}
+
+export async function updatePassword(req, res) {
+	const hasPassword = Boolean(req.user?.has_password);
+	const currentPassword = String(req.body?.currentPassword || '');
+	const password = String(req.body?.password || '');
+	const confirmPassword = String(req.body?.confirmPassword || '');
+	const modal = 'profile_password';
+
+	if (!isValidPassword(password)) {
+		return fail(req, res, 'auth:error.password_weak', {
+			modal,
+			to: PROFILE_REDIRECT,
+		});
+	}
+
+	if (password !== confirmPassword) {
+		return fail(req, res, 'auth:error.password_mismatch', {
+			modal,
+			to: PROFILE_REDIRECT,
+		});
+	}
+
+	if (hasPassword) {
+		const userPassword = await UserModel.findPasswordById(req.user.id);
+		const currentPasswordValid =
+			userPassword?.hashed_password &&
+			(await comparePassword(
+				currentPassword,
+				userPassword.hashed_password,
+			));
+
+		if (!currentPasswordValid) {
+			return fail(req, res, 'profile:error.current_password_invalid', {
+				modal,
+				to: PROFILE_REDIRECT,
+			});
+		}
+	}
+
+	const hashedPassword = await hashPassword(password);
+	const user = await UserModel.updatePasswordById(
+		req.user.id,
+		hashedPassword,
+	);
+
+	if (!user) {
+		return fail(req, res, 'common:error.generic', {
+			modal,
+			to: PROFILE_REDIRECT,
+		});
+	}
+
+	req.user.has_password = true;
+
+	return success(req, res, 'profile:password.updated', {
 		to: PROFILE_REDIRECT,
 	});
 }
