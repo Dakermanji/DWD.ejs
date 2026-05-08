@@ -42,6 +42,7 @@ import { googleCall, googleCallback } from '../controllers/auth/google.js';
 import { githubCall, githubCallback } from '../controllers/auth/github.js';
 import { discordCall, discordCallback } from '../controllers/auth/discord.js';
 import { setUsername } from '../controllers/auth/setUsername.js';
+import { deleteAccount } from '../controllers/auth/deleteAccount.js';
 
 const router = Router();
 
@@ -75,6 +76,9 @@ router.post(
 // Reset Password
 router.get('/reset-password', validateResetPasswordQuery, getResetPassword);
 router.post('/reset-password', validateResetPassword, postResetPassword);
+
+// Delete Account
+router.get('/delete-account', deleteAccount);
 
 // Google OAuth
 router.get('/google', googleCall);

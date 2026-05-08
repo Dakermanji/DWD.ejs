@@ -38,6 +38,13 @@ export default function configureLocals(app) {
 		// Flash locals:
 		res.locals.modal = req.flash('modal')[0] || null;
 
+		if (req.query?.deleted === 'account') {
+			res.locals.success = [
+				...(res.locals.success || []),
+				'profile:danger.deleted',
+			];
+		}
+
 		next();
 	});
 }
