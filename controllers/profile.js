@@ -2,6 +2,7 @@
 
 import UserModel from '../models/User.js';
 import { buildAccountOverview } from '../services/profile/account.js';
+import { buildProfilePreferences } from '../services/profile/preferences.js';
 import {
 	createAvatarStyleOptions,
 	isSupportedAvatarValue,
@@ -36,6 +37,7 @@ export function renderProfile(req, res) {
 		scripts: ['profile/account', 'profile/avatar'],
 		titleKey: 'layout:nav.profile',
 		account: buildAccountOverview(req),
+		preferences: buildProfilePreferences(req),
 	});
 }
 
