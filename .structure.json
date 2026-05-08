@@ -59,6 +59,7 @@
 			"common.json",
 			"home.json",
 			"layout.json",
+			"profile.json",
 			"social.json"
 		],
 		"en": [
@@ -66,6 +67,7 @@
 			"common.json",
 			"home.json",
 			"layout.json",
+			"profile.json",
 			"social.json"
 		],
 		"fr": [
@@ -73,6 +75,7 @@
 			"common.json",
 			"home.json",
 			"layout.json",
+			"profile.json",
 			"social.json"
 		]
 	},
@@ -246,7 +249,7 @@
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
-		"profile": ["_account.ejs", "_country_editor.ejs", "main.ejs"],
+		"profile": ["_account.ejs", "_country_editor.ejs", "_security.ejs", "main.ejs"],
 		"home": [
 			"_about.ejs",
 			"_contact.ejs",
@@ -283,7 +286,7 @@
 				"_resetPassword.ejs",
 				"_setPassword.ejs"
 			],
-			"profile": ["_avatar_modal.ejs"]
+			"profile": ["_avatar_modal.ejs", "_password_modal.ejs"]
 		},
 		"partials": ["_csrf.ejs", "_discord.ejs", "_github.ejs", "_google.ejs"],
 		"social": [

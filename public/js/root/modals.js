@@ -32,6 +32,7 @@
 		complete_signup_local: { id: 'completeSignUpModal' },
 		complete_signup_oauth: { id: 'completeSignUpModal' },
 		reset_password: { id: 'resetPasswordModal' },
+		profile_password: { id: 'profilePasswordModal' },
 	};
 
 	const target = MODALS[modalName];

@@ -161,3 +161,56 @@ if (countryEditor) {
 		target?.classList.remove('d-none');
 	});
 }
+
+const passwordModalTrigger = document.querySelector('[data-password-modal-trigger]');
+
+async function loadPasswordModal() {
+	const existingModal = document.querySelector('#profilePasswordModal');
+
+	if (existingModal) {
+		return existingModal;
+	}
+
+	const url = passwordModalTrigger?.dataset.passwordModalUrl;
+
+	if (!url) {
+		return null;
+	}
+
+	passwordModalTrigger.disabled = true;
+
+	try {
+		const response = await fetch(url, {
+			headers: { Accept: 'text/html' },
+		});
+
+		if (!response.ok) {
+			return null;
+		}
+
+		const wrapper = document.createElement('div');
+		wrapper.innerHTML = await response.text();
+
+		const modal = wrapper.querySelector('#profilePasswordModal');
+
+		if (!modal) {
+			return null;
+		}
+
+		document.body.append(modal);
+
+		return modal;
+	} finally {
+		passwordModalTrigger.disabled = false;
+	}
+}
+
+passwordModalTrigger?.addEventListener('click', async () => {
+	const modal = await loadPasswordModal();
+
+	if (!modal || !window.bootstrap?.Modal) {
+		return;
+	}
+
+	bootstrap.Modal.getOrCreateInstance(modal).show();
+});

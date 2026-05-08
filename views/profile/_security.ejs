@@ -1,0 +1,23 @@
+<!--! views/profile/_security.ejs -->
+<section aria-labelledby="profile-security-title" class="py-4 profile-section">
+	<h2 id="profile-security-title" class="h5 mb-3">
+		<%= t('profile:security') %>
+	</h2>
+
+	<div class="profile-security-row">
+		<div>
+			<div class="fw-semibold"><%= t('profile:password.label') %></div>
+			<p class="mb-0 text-body-muted">
+				<%= account.hasPassword ? t('profile:password.set') : t('profile:password.notSet') %>
+			</p>
+		</div>
+		<button
+			type="button"
+			class="btn btn-action"
+			data-password-modal-trigger
+			data-password-modal-url="/profile/password-modal"
+		>
+			<%= account.hasPassword ? t('profile:password.change') : t('profile:password.add') %>
+		</button>
+	</div>
+</section>

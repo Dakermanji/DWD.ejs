@@ -121,3 +121,21 @@
 	min-width: min(18rem, 100%);
 	flex: 1;
 }
+
+.profile-section {
+	border-top: 1px solid var(--border-subtle);
+}
+
+.profile-security-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+@media (max-width: 575.98px) {
+	.profile-security-row {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"security": "Security",
+	"password": {
+		"label": "Password",
+		"set": "Set",
+		"notSet": "Not set",
+		"add": "Add password",
+		"change": "Change password",
+		"current": "Current password",
+		"new": "New password",
+		"confirm": "Confirm password",
+		"save": "Save password",
+		"updated": "Password updated."
+	},
+	"error": {
+		"current_password_invalid": "Current password is incorrect."
+	}
+}
