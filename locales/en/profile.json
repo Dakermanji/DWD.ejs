@@ -3,7 +3,10 @@
 	"connectedMethods": "Connected methods",
 	"method": {
 		"connected": "Connected",
-		"unavailable": "Unavailable"
+		"unavailable": "Unavailable",
+		"link": "Link account",
+		"linked": "Login method linked.",
+		"alreadyLinked": "This login method is already linked to another account."
 	},
 	"password": {
 		"label": "Password",

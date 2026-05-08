@@ -3,7 +3,10 @@
 	"connectedMethods": "طرق تسجيل الدخول المرتبطة",
 	"method": {
 		"connected": "مرتبطة",
-		"unavailable": "غير متاحة"
+		"unavailable": "غير متاحة",
+		"link": "ربط الحساب",
+		"linked": "تم ربط طريقة تسجيل الدخول.",
+		"alreadyLinked": "طريقة تسجيل الدخول هذه مرتبطة بحساب آخر."
 	},
 	"password": {
 		"label": "كلمة المرور",

@@ -162,7 +162,9 @@ if (countryEditor) {
 	});
 }
 
-const passwordModalTrigger = document.querySelector('[data-password-modal-trigger]');
+const passwordModalTriggers = document.querySelectorAll(
+	'[data-password-modal-trigger]',
+);
 
 async function loadPasswordModal() {
 	const existingModal = document.querySelector('#profilePasswordModal');
@@ -171,13 +173,18 @@ async function loadPasswordModal() {
 		return existingModal;
 	}
 
-	const url = passwordModalTrigger?.dataset.passwordModalUrl;
+	const trigger = [...passwordModalTriggers].find(
+		(item) => item.dataset.passwordModalUrl,
+	);
+	const url = trigger?.dataset.passwordModalUrl;
 
 	if (!url) {
 		return null;
 	}
 
-	passwordModalTrigger.disabled = true;
+	passwordModalTriggers.forEach((item) => {
+		item.disabled = true;
+	});
 
 	try {
 		const response = await fetch(url, {
@@ -201,16 +208,20 @@ async function loadPasswordModal() {
 
 		return modal;
 	} finally {
-		passwordModalTrigger.disabled = false;
+		passwordModalTriggers.forEach((item) => {
+			item.disabled = false;
+		});
 	}
 }
 
-passwordModalTrigger?.addEventListener('click', async () => {
-	const modal = await loadPasswordModal();
+passwordModalTriggers.forEach((passwordModalTrigger) => {
+	passwordModalTrigger.addEventListener('click', async () => {
+		const modal = await loadPasswordModal();
 
-	if (!modal || !window.bootstrap?.Modal) {
-		return;
-	}
+		if (!modal || !window.bootstrap?.Modal) {
+			return;
+		}
 
-	bootstrap.Modal.getOrCreateInstance(modal).show();
+		bootstrap.Modal.getOrCreateInstance(modal).show();
+	});
 });

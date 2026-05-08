@@ -27,27 +27,61 @@
 			<% account.authMethods.forEach((method) => { %>
 				<span
 					class="profile-auth-method-wrap has-tooltip"
-					data-bs-title="<%= `${method.label} - ${method.connected ? t('profile:method.connected') : t('profile:method.unavailable')}` %>"
+					data-bs-title="<%= `${method.label} - ${method.connected ? t('profile:method.connected') : method.href || method.action ? t('profile:method.link') : t('profile:method.unavailable')}` %>"
 				>
-					<button
-						type="button"
-						class="profile-auth-method <%= method.connected ? 'is-connected' : 'is-unavailable' %>"
-						disabled
-						aria-label="<%= `${method.label} - ${method.connected ? t('profile:method.connected') : t('profile:method.unavailable')}` %>"
-					>
-						<span class="profile-auth-method__icon">
-							<% if (method.partial) { %>
-								<%- include(method.partial) %>
-							<% } else { %>
-								<i class="<%= method.icon %>" aria-hidden="true"></i>
-							<% } %>
-						</span>
-						<% if (!method.connected) { %>
-							<span class="profile-auth-method__lock" aria-hidden="true">
-								<i class="bi bi-lock-fill"></i>
+					<% if (method.connected || (!method.href && !method.action)) { %>
+						<button
+							type="button"
+							class="profile-auth-method <%= method.connected ? 'is-connected' : 'is-unavailable' %>"
+							disabled
+							aria-label="<%= `${method.label} - ${method.connected ? t('profile:method.connected') : t('profile:method.unavailable')}` %>"
+						>
+							<span class="profile-auth-method__icon">
+								<% if (method.partial) { %>
+									<%- include(method.partial) %>
+								<% } else { %>
+									<i class="<%= method.icon %>" aria-hidden="true"></i>
+								<% } %>
 							</span>
-						<% } %>
-					</button>
+							<% if (!method.connected) { %>
+								<span class="profile-auth-method__badge" aria-hidden="true">
+									<i class="bi bi-lock-fill"></i>
+								</span>
+							<% } %>
+						</button>
+					<% } else if (method.action === 'password-modal') { %>
+						<button
+							type="button"
+							class="profile-auth-method is-linkable"
+							data-password-modal-trigger
+							data-password-modal-url="/profile/password-modal"
+							aria-label="<%= `${method.label} - ${t('profile:method.link')}` %>"
+						>
+							<span class="profile-auth-method__icon">
+								<i class="<%= method.icon %>" aria-hidden="true"></i>
+							</span>
+							<span class="profile-auth-method__badge" aria-hidden="true">
+								<i class="bi bi-plus-lg"></i>
+							</span>
+						</button>
+					<% } else { %>
+						<a
+							class="profile-auth-method is-linkable"
+							href="<%= method.href %>"
+							aria-label="<%= `${method.label} - ${t('profile:method.link')}` %>"
+						>
+							<span class="profile-auth-method__icon">
+								<% if (method.partial) { %>
+									<%- include(method.partial) %>
+								<% } else { %>
+									<i class="<%= method.icon %>" aria-hidden="true"></i>
+								<% } %>
+							</span>
+							<span class="profile-auth-method__badge" aria-hidden="true">
+								<i class="bi bi-plus-lg"></i>
+							</span>
+						</a>
+					<% } %>
 				</span>
 			<% }) %>
 		</div>

@@ -3,7 +3,10 @@
 	"connectedMethods": "Méthodes connectées",
 	"method": {
 		"connected": "Connectée",
-		"unavailable": "Indisponible"
+		"unavailable": "Indisponible",
+		"link": "Lier le compte",
+		"linked": "Méthode de connexion liée.",
+		"alreadyLinked": "Cette méthode de connexion est déjà liée à un autre compte."
 	},
 	"password": {
 		"label": "Mot de passe",

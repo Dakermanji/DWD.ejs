@@ -8,21 +8,25 @@ const AUTH_METHODS = [
 		key: 'email',
 		label: 'Email',
 		icon: 'bi bi-envelope-fill',
+		action: 'password-modal',
 	},
 	{
 		key: 'google',
 		label: 'Google',
 		partial: '../partials/_googleLogo',
+		href: '/auth/google?returnTo=profile',
 	},
 	{
 		key: 'github',
 		label: 'GitHub',
 		partial: '../partials/_githubLogo',
+		href: '/auth/github?returnTo=profile',
 	},
 	{
 		key: 'discord',
 		label: 'Discord',
 		partial: '../partials/_discordLogo',
+		href: '/auth/discord?returnTo=profile',
 	},
 ];
 
