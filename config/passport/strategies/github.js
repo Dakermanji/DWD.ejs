@@ -30,7 +30,7 @@ async function resolveGithubEmail({ accessToken }) {
 			Accept: 'application/vnd.github+json',
 			Authorization: `Bearer ${accessToken}`,
 			'X-GitHub-Api-Version': '2022-11-28',
-			'User-Agent': 'DWD.ejs',
+			'User-Agent': 'DakermanjiSolutions',
 		},
 	});
 

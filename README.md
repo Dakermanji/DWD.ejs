@@ -1,6 +1,6 @@
-# DWD.ejs
+# Dakermanji Solutions
 
-DWD.ejs is a personal showcase website and full-stack Express/EJS playground. It started as a portfolio, but the codebase now also explores production-style account flows: local auth, OAuth, profile settings, social relationships, language/theme preferences, and token-based email confirmations.
+Dakermanji Solutions is a personal showcase website and full-stack Express/EJS playground. It started as a portfolio, but the codebase now also explores production-style account flows: local auth, OAuth, profile settings, social relationships, language/theme preferences, and token-based email confirmations.
 
 The app is intentionally server-rendered. EJS handles views, Bootstrap handles the UI layer, PostgreSQL stores account/session data, and Passport powers local and OAuth authentication.
 
@@ -45,9 +45,9 @@ The app is intentionally server-rendered. EJS handles views, Bootstrap handles t
 - Connected login methods for Email, Google, GitHub, and Discord
 - Preferences for theme and preferred language
 - Danger Zone account deletion flow:
-  - type `delete_{username}` first
-  - receive a short-lived email confirmation token
-  - confirm deletion from the email link
+    - type `delete_{username}` first
+    - receive a short-lived email confirmation token
+    - confirm deletion from the email link
 
 ### Social Layer
 

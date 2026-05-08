@@ -52,7 +52,7 @@ export default function configureSession(app) {
 			 * Custom name avoids the default `connect.sid`
 			 * and makes the app cookie easier to identify.
 			 */
-			name: 'DWD.sid',
+			name: 'ds.sid',
 
 			/**
 			 * Secret used to sign the session ID cookie

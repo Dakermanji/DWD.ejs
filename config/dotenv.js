@@ -54,7 +54,7 @@ const env = {
 	DB_PORT: Number(optionalEnv('DB_PORT', 5432)),
 
 	/** PostgreSQL database name */
-	DB_NAME: optionalEnv('DB_NAME', 'dwd_ejs'),
+	DB_NAME: optionalEnv('DB_NAME', 'DakermanjiSolutions'),
 
 	/** PostgreSQL username */
 	DB_USER: optionalEnv('DB_USER', 'postgres'),

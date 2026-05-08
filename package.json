@@ -1,5 +1,5 @@
 {
-	"name": "dwd.ejs",
+	"name": "dakermanji_solutions",
 	"version": "1.0.0",
 	"description": "",
 	"main": "server.js",
@@ -13,7 +13,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Dakermanji/DWD.ejs.git"
+		"url": "git+https://github.com/Dakermanji/DakermanjiSolutions.git"
 	},
 	"keywords": [
 		"portfolio",
@@ -33,9 +33,9 @@
 	"license": "MIT",
 	"type": "module",
 	"bugs": {
-		"url": "https://github.com/Dakermanji/DWD.ejs/issues"
+		"url": "https://github.com/Dakermanji/DakermanjiSolutions/issues"
 	},
-	"homepage": "https://github.com/Dakermanji/DWD.ejs",
+	"homepage": "https://github.com/Dakermanji/DakermanjiSolutions",
 	"dependencies": {
 		"@2toad/profanity": "^3.3.0",
 		"@dicebear/collection": "^9.4.2",
