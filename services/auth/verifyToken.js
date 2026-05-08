@@ -6,6 +6,7 @@ import tokens from '../../services/auth/tokens.js';
 export const tokenTypes = {
 	signup: 'signup_verification',
 	passwordReset: 'password_reset',
+	accountDeletion: 'account_deletion',
 };
 
 /**

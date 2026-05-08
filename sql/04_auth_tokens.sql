@@ -18,10 +18,13 @@ BEGIN
 	IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'auth_token_type') THEN
 		CREATE TYPE auth_token_type AS ENUM (
 			'signup_verification',
-			'password_reset'
+			'password_reset',
+			'account_deletion'
 		);
 	END IF;
 END$$;
+
+ALTER TYPE auth_token_type ADD VALUE IF NOT EXISTS 'account_deletion';
 
 CREATE TABLE IF NOT EXISTS "auth_tokens" (
 	"id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import AuthTokenModel from '../../models/AuthToken.js';
 
 export const AUTH_EXPIRY_TIME = 1000 * 60 * 60 * 6; // unit is ms, result is 6 hours
+export const ACCOUNT_DELETION_EXPIRY_TIME = 1000 * 60 * 15; // 15 minutes
 
 /**
  * Create a secure random token for auth flows.
@@ -38,14 +39,19 @@ export function hashAuthToken(token) {
  *
  * @param {Object} params
  * @param {string} params.userId
- * @param {'password_reset'|'signup_verification'} params.type
+ * @param {'password_reset'|'signup_verification'|'account_deletion'} params.type
+ * @param {number} [params.expiresIn]
  * @returns {Promise<{
  *   token: string,
  *   record: object,
  *   action: 'created' | 'rotated'
  * }>}
  */
-export async function prepareRecoveryToken({ userId, type }) {
+export async function prepareRecoveryToken({
+	userId,
+	type,
+	expiresIn = AUTH_EXPIRY_TIME,
+}) {
 	const existing = await AuthTokenModel.findLatestUnusedByUserIdAndType(
 		userId,
 		type,
@@ -53,7 +59,7 @@ export async function prepareRecoveryToken({ userId, type }) {
 
 	const token = createAuthToken();
 	const tokenHash = hashAuthToken(token);
-	const expiresAt = new Date(Date.now() + AUTH_EXPIRY_TIME);
+	const expiresAt = new Date(Date.now() + expiresIn);
 
 	// If an unused token exists → rotate it
 	if (existing) {
@@ -89,4 +95,5 @@ export default {
 	createAuthToken,
 	hashAuthToken,
 	AUTH_EXPIRY_TIME,
+	ACCOUNT_DELETION_EXPIRY_TIME,
 };

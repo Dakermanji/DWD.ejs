@@ -90,7 +90,31 @@ export async function sendRecoveryIntentEmail({
 	});
 }
 
+export async function sendAccountDeletionEmail({
+	email,
+	token,
+	locale = 'en',
+}) {
+	const contentMap = emailContent.accountDeletionEmailContent;
+	const safeLocale = Object.hasOwn(contentMap, locale) ? locale : 'en';
+	const url = `${env.CLIENT_URL}/auth/delete-account?token=${encodeURIComponent(token)}&lang=${safeLocale}`;
+	const content = contentMap[safeLocale];
+
+	await transporter.sendMail({
+		from: env.EMAIL_ADMIN,
+		to: email,
+		subject: content.subject,
+		html: content.html(url),
+	});
+
+	logger.success('Account deletion email sent', {
+		type: 'mail',
+		email,
+	});
+}
+
 export default {
 	sendSignupEmail,
 	sendRecoveryIntentEmail,
+	sendAccountDeletionEmail,
 };

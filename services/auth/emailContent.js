@@ -74,7 +74,46 @@ const resetPasswordEmailContent = {
 	},
 };
 
+const accountDeletionEmailContent = {
+	en: {
+		subject: 'Confirm account deletion',
+		html: (url) => `
+			<div dir="ltr">
+				<p>You requested to delete your account.</p>
+				<p>Click the link below to confirm account deletion:</p>
+				<p><a href="${url}">${url}</a></p>
+				<p>This link expires in 15 minutes. If you did not request this, you can safely ignore this email.</p>
+			</div>
+		`,
+	},
+
+	ar: {
+		subject: 'تأكيد حذف الحساب',
+		html: (url) => `
+			<div dir="rtl">
+				<p>لقد طلبت حذف حسابك.</p>
+				<p>اضغط على الرابط أدناه لتأكيد حذف الحساب:</p>
+				<p><a href="${url}">${url}</a></p>
+				<p>تنتهي صلاحية هذا الرابط خلال 15 دقيقة. إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة بأمان.</p>
+			</div>
+		`,
+	},
+
+	fr: {
+		subject: 'Confirmez la suppression du compte',
+		html: (url) => `
+			<div dir="ltr">
+				<p>Vous avez demandé à supprimer votre compte.</p>
+				<p>Cliquez sur le lien ci-dessous pour confirmer la suppression du compte :</p>
+				<p><a href="${url}">${url}</a></p>
+				<p>Ce lien expire dans 15 minutes. Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet e-mail.</p>
+			</div>
+		`,
+	},
+};
+
 export default {
 	signupEmailContent,
 	resetPasswordEmailContent,
+	accountDeletionEmailContent,
 };
