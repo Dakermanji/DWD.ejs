@@ -17,6 +17,8 @@ if (socialPanel) {
 	});
 }
 
+connectSocialSocket();
+
 if (notificationsCollapse && notificationsBody) {
 	notificationsCollapse.addEventListener('show.bs.collapse', () => {
 		void loadNotifications();
@@ -224,6 +226,36 @@ async function loadSocialCounts() {
 	} catch (error) {
 		console.error('Failed to load social counts', error);
 	}
+}
+
+function connectSocialSocket() {
+	if (typeof window.io !== 'function') return;
+
+	const socket = window.io({
+		withCredentials: true,
+	});
+
+	socket.on('social:counts:changed', () => {
+		void refreshLiveSocialState();
+	});
+}
+
+async function refreshLiveSocialState() {
+	await loadSocialCounts();
+
+	const openSection = getOpenSocialSection();
+	if (openSection) {
+		await reloadSocialSection(openSection);
+	}
+}
+
+function getOpenSocialSection() {
+	if (followersCollapse?.classList.contains('show')) return 'followers';
+	if (followeesCollapse?.classList.contains('show')) return 'followees';
+	if (blockedCollapse?.classList.contains('show')) return 'blocked';
+	if (notificationsCollapse?.classList.contains('show')) return 'notifications';
+
+	return null;
 }
 
 function updateSocialCounts(counts) {
