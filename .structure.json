@@ -24,6 +24,7 @@
 			"navbar.js",
 			"process.js",
 			"routes.js",
+			"socket.js",
 			"views.js"
 		]
 	},

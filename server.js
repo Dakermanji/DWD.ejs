@@ -18,6 +18,7 @@ import registerProcessHandlers from './config/process.js';
 import app from './config/express.js';
 import logger from './config/logger.js';
 import { testDatabaseConnection } from './config/database.js';
+import configureSocket from './config/socket.js';
 
 /**
  * Bootstrap and start the server
@@ -47,6 +48,8 @@ async function startServer() {
 				type: 'server',
 			});
 		});
+
+		configureSocket(server);
 
 		/**
 		 * Register global process-level error handlers
