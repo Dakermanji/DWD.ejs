@@ -46,6 +46,7 @@
 			"actionRunner.js",
 			"actions.js",
 			"blocked.js",
+			"counts.js",
 			"followees.js",
 			"followers.js",
 			"followRequest.js",

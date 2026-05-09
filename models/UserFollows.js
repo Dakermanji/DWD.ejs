@@ -35,6 +35,23 @@ export async function findFolloweesByFollower(followerId) {
 }
 
 /**
+ * Count users followed by one follower.
+ *
+ * @param {string} followerId
+ * @returns {Promise<number>}
+ */
+export async function countFolloweesByFollower(followerId) {
+	const q = `
+		SELECT COUNT(*)::int AS count
+		FROM user_follows
+		WHERE follower_id = $1;
+	`;
+
+	const rows = await queryRows(q, [followerId]);
+	return rows[0]?.count || 0;
+}
+
+/**
  * Find users following one followee.
  *
  * @param {string} followeeId
@@ -60,6 +77,23 @@ export async function findFollowersByFollowee(followeeId) {
 	`;
 
 	return queryRows(q, [followeeId]);
+}
+
+/**
+ * Count users following one followee.
+ *
+ * @param {string} followeeId
+ * @returns {Promise<number>}
+ */
+export async function countFollowersByFollowee(followeeId) {
+	const q = `
+		SELECT COUNT(*)::int AS count
+		FROM user_follows
+		WHERE followee_id = $1;
+	`;
+
+	const rows = await queryRows(q, [followeeId]);
+	return rows[0]?.count || 0;
 }
 
 /**
@@ -138,7 +172,9 @@ export async function removeOneDirection(followerId, followeeId) {
 
 export default {
 	findFolloweesByFollower,
+	countFolloweesByFollower,
 	findFollowersByFollowee,
+	countFollowersByFollowee,
 	exists,
 	create,
 	removeBothDirections,

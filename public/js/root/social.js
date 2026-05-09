@@ -8,6 +8,14 @@ const followeesCollapse = document.getElementById('socialFollowees');
 const followeesBody = document.getElementById('socialFolloweesBody');
 const followersCollapse = document.getElementById('socialFollowers');
 const followersBody = document.getElementById('socialFollowersBody');
+const socialPanel = document.getElementById('socialPanel');
+const socialCountBadges = document.querySelectorAll('[data-social-count]');
+
+if (socialPanel) {
+	socialPanel.addEventListener('show.bs.offcanvas', () => {
+		void loadSocialCounts();
+	});
+}
 
 if (notificationsCollapse && notificationsBody) {
 	notificationsCollapse.addEventListener('show.bs.collapse', () => {
@@ -92,6 +100,7 @@ async function loadNotifications() {
 			throw new Error('Invalid notifications payload');
 		}
 
+		updateSocialCount('notifications', payload.notifications.length);
 		renderNotifications(payload.notifications);
 	} catch (error) {
 		console.error('Failed to load social notifications', error);
@@ -122,6 +131,7 @@ async function loadBlockedUsers() {
 			throw new Error('Invalid blocked users payload');
 		}
 
+		updateSocialCount('blocked', payload.blocked.length);
 		renderBlockedUsers(payload.blocked);
 	} catch (error) {
 		console.error('Failed to load blocked users', error);
@@ -152,6 +162,7 @@ async function loadFollowees() {
 			throw new Error('Invalid followees payload');
 		}
 
+		updateSocialCount('following', payload.followees.length);
 		renderFollowees(payload.followees);
 	} catch (error) {
 		console.error('Failed to load followees', error);
@@ -182,11 +193,55 @@ async function loadFollowers() {
 			throw new Error('Invalid followers payload');
 		}
 
+		updateSocialCount('followers', payload.followers.length);
 		renderFollowers(payload.followers);
 	} catch (error) {
 		console.error('Failed to load followers', error);
 		renderMessage(followersBody, followersBody.dataset.errorLabel);
 	}
+}
+
+async function loadSocialCounts() {
+	try {
+		const response = await fetch('/social/counts', {
+			headers: {
+				Accept: 'application/json',
+			},
+			credentials: 'same-origin',
+		});
+
+		if (!response.ok) {
+			throw new Error(`Request failed with status ${response.status}`);
+		}
+
+		const payload = await response.json();
+
+		if (!payload?.ok || !payload.counts) {
+			throw new Error('Invalid social counts payload');
+		}
+
+		updateSocialCounts(payload.counts);
+	} catch (error) {
+		console.error('Failed to load social counts', error);
+	}
+}
+
+function updateSocialCounts(counts) {
+	for (const [key, value] of Object.entries(counts)) {
+		updateSocialCount(key, value);
+	}
+}
+
+function updateSocialCount(key, value) {
+	const count = Number(value) || 0;
+
+	socialCountBadges.forEach((badge) => {
+		if (badge.dataset.socialCount !== key) return;
+
+		badge.textContent = new Intl.NumberFormat(
+			document.documentElement.lang || 'en',
+		).format(count);
+	});
 }
 
 function renderNotifications(notifications) {
@@ -730,6 +785,7 @@ async function runSocialAction(button) {
 		}
 
 		await reloadSocialSection(sectionBody.dataset.section);
+		await loadSocialCounts();
 	} catch (error) {
 		console.error('Failed to run social action', error);
 		renderActionError(sectionBody, sectionBody.dataset.actionErrorLabel);

@@ -2,6 +2,7 @@
 
 import express from 'express';
 import { validateFollowRequest } from '../middlewares/validators/social.js';
+import { getSocialCounts } from '../controllers/social/counts.js';
 import { followRequest } from '../controllers/social/followRequest.js';
 import { getBlocked } from '../controllers/social/blocked.js';
 import { getFollowees } from '../controllers/social/followees.js';
@@ -11,6 +12,7 @@ import { postSocialAction } from '../controllers/social/actions.js';
 
 const router = express.Router();
 
+router.get('/counts', getSocialCounts);
 router.get('/notifications', getNotifications);
 router.get('/blocked', getBlocked);
 router.get('/followees', getFollowees);

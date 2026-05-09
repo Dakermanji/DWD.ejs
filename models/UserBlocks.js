@@ -29,6 +29,23 @@ export async function findByBlocker(blockerId) {
 }
 
 /**
+ * Count users blocked by one blocker.
+ *
+ * @param {string} blockerId
+ * @returns {Promise<number>}
+ */
+export async function countByBlocker(blockerId) {
+	const q = `
+		SELECT COUNT(*)::int AS count
+		FROM user_blocks
+		WHERE blocker_id = $1;
+	`;
+
+	const rows = await queryRows(q, [blockerId]);
+	return rows[0]?.count || 0;
+}
+
+/**
  * Check whether one user has blocked another.
  *
  * @param {string} blockerId
@@ -86,6 +103,7 @@ export async function remove(blockerId, blockedId) {
 
 export default {
 	findByBlocker,
+	countByBlocker,
 	exists,
 	create,
 	remove,

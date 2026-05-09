@@ -97,6 +97,24 @@ export async function findByRecipient(recipientId, limit = 20, offset = 0) {
 }
 
 /**
+ * Count unhandled notifications for one recipient.
+ *
+ * @param {string} recipientId
+ * @returns {Promise<number>}
+ */
+export async function countUnhandledByRecipient(recipientId) {
+	const q = `
+		SELECT COUNT(*)::int AS count
+		FROM user_social_notifications
+		WHERE recipient_id = $1
+			AND is_handled = FALSE;
+	`;
+
+	const rows = await queryRows(q, [recipientId]);
+	return rows[0]?.count || 0;
+}
+
+/**
  * Find one actionable notification for its recipient.
  *
  * Responsibilities:
@@ -244,6 +262,7 @@ export async function markFollowRequestNotificationsAsReadAndHandled(
 export default {
 	create,
 	findByRecipient,
+	countUnhandledByRecipient,
 	findActionableByIdForRecipient,
 	markAsRead,
 	markAsHandled,
