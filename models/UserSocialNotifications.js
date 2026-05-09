@@ -60,6 +60,73 @@ export async function create({
 }
 
 /**
+ * Ensure a pending follow request has a visible notification.
+ *
+ * @param {{
+ *   recipientId: string,
+ *   actorId: string,
+ *   followRequestId: string
+ * }} params
+ * @returns {Promise}
+ */
+export async function ensureFollowRequestNotification({
+	recipientId,
+	actorId,
+	followRequestId,
+}) {
+	const restoreQ = `
+		UPDATE user_social_notifications
+		SET
+			is_read = FALSE,
+			read_at = NULL,
+			is_handled = FALSE,
+			handled_at = NULL,
+			updated_at = NOW()
+		WHERE recipient_id = $1
+			AND actor_id = $2
+			AND follow_request_id = $3
+			AND type = 'follow_request'
+			AND is_handled = TRUE
+		RETURNING ${baseFieldsSQL};
+	`;
+
+	const restoredRows = await queryRows(restoreQ, [
+		recipientId,
+		actorId,
+		followRequestId,
+	]);
+
+	if (restoredRows[0]) return restoredRows[0];
+
+	const existingQ = `
+		SELECT ${baseFieldsSQL}
+		FROM user_social_notifications
+		WHERE recipient_id = $1
+			AND actor_id = $2
+			AND follow_request_id = $3
+			AND type = 'follow_request'
+			AND is_handled = FALSE
+		ORDER BY created_at DESC
+		LIMIT 1;
+	`;
+
+	const existingRows = await queryRows(existingQ, [
+		recipientId,
+		actorId,
+		followRequestId,
+	]);
+
+	if (existingRows[0]) return existingRows[0];
+
+	return create({
+		recipientId,
+		actorId,
+		type: 'follow_request',
+		followRequestId,
+	});
+}
+
+/**
  * Find notifications for one recipient.
  *
  * Responsibilities:
@@ -261,6 +328,7 @@ export async function markFollowRequestNotificationsAsReadAndHandled(
 
 export default {
 	create,
+	ensureFollowRequestNotification,
 	findByRecipient,
 	countUnhandledByRecipient,
 	findActionableByIdForRecipient,

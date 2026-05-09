@@ -3,7 +3,9 @@
 import { query, queryRows } from '../../config/database.js';
 
 export async function usernameExists(username) {
-	const lowerCasedUsername = username.toLowerCase();
+	const normalizedUsername = String(username ?? '')
+		.trim()
+		.toLowerCase();
 
 	const q = `
 		SELECT 1
@@ -12,7 +14,7 @@ export async function usernameExists(username) {
 		LIMIT 1;
 	`;
 
-	const result = await query(q, [lowerCasedUsername]);
+	const result = await query(q, [normalizedUsername]);
 
 	return result.rowCount > 0;
 }
@@ -72,14 +74,19 @@ export async function updateUsernameById(userId, username) {
 }
 
 export async function findByUsername(username) {
+	const normalizedUsername = String(username ?? '')
+		.trim()
+		.toLowerCase();
+
 	const q = `
 		SELECT id, username, email
 		FROM users
-		WHERE username = $1
+		WHERE username_normalized = $1
 		LIMIT 1;
 	`;
 
-	const result = await query(q, [username]);
+	const result = await query(q, [normalizedUsername]);
+	console.log(result);
 	return result.rows[0] || null;
 }
 

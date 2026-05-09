@@ -102,6 +102,14 @@ export async function followRequest(req, res, next) {
 			receiverId,
 		);
 		if (senderPendingRequest) {
+			await UserSocialNotificationsModel.ensureFollowRequestNotification({
+				recipientId: receiverId,
+				actorId: senderId,
+				followRequestId: senderPendingRequest.id,
+			});
+
+			emitSocialCountsChanged([receiverId]);
+
 			return success(req, res, GENERIC_SUCCESS_KEY, {
 				modal: 'social',
 				to: returnTo,

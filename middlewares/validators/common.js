@@ -98,7 +98,7 @@ export const parseIdentifier = (value) => {
 
 	if (isValidUsername(username)) {
 		return {
-			identifier: username,
+			identifier: normalizeText(username, { lower: true }),
 			identifierType: 'username',
 		};
 	}
