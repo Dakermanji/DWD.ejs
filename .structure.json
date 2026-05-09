@@ -241,6 +241,7 @@
 		"profile": ["account.js", "preferences.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],
+		"social": ["live.js"],
 		"theme": ["preference.js"]
 	},
 	"sql": [

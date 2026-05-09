@@ -5,6 +5,7 @@ import UserBlocksModel from '../../models/UserBlocks.js';
 import UserFollowsModel from '../../models/UserFollows.js';
 import UserFollowRequestsModel from '../../models/UserFollowRequests.js';
 import UserSocialNotificationsModel from '../../models/UserSocialNotifications.js';
+import { emitSocialCountsChanged } from '../../services/social/live.js';
 import { fail, success } from '../../services/http/response.js';
 
 const GENERIC_SUCCESS_KEY = 'social:followRequest.success';
@@ -135,6 +136,8 @@ export async function followRequest(req, res, next) {
 				followRequestId: receiverPendingRequest.id,
 			});
 
+			emitSocialCountsChanged([senderId, receiverId]);
+
 			return success(req, res, FOLLOWING_NOW_SUCCESS_KEY, {
 				modal: 'social',
 				to: returnTo,
@@ -154,6 +157,8 @@ export async function followRequest(req, res, next) {
 				actorId: senderId,
 				type: 'follow_started',
 			});
+
+			emitSocialCountsChanged([senderId, receiverId]);
 
 			return success(req, res, FOLLOWING_NOW_SUCCESS_KEY, {
 				modal: 'social',
@@ -180,6 +185,8 @@ export async function followRequest(req, res, next) {
 		if (!notification) {
 			throw new Error('Could not create follow request notification');
 		}
+
+		emitSocialCountsChanged([senderId, receiverId]);
 
 		// 13. Success
 		return success(req, res, GENERIC_SUCCESS_KEY, {

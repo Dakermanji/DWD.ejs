@@ -1,7 +1,8 @@
 //! controllers/social/actions.js
 
-import { buildActionContext } from './actionContext.js';
+import { buildActionContext, getTargetUserId } from './actionContext.js';
 import { runSocialAction, SOCIAL_ACTIONS } from './actionRunner.js';
+import { emitSocialCountsChanged } from '../../services/social/live.js';
 
 /**
  * Handle one shared social action.
@@ -53,6 +54,7 @@ export async function postSocialAction(req, res, next) {
 		});
 
 		await runSocialAction(context);
+		emitSocialCountsChanged([actorId, getTargetUserId(context)]);
 
 		res.json({
 			ok: true,
