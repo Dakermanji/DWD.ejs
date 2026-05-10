@@ -1,1 +1,166 @@
 <!--! views/weather/main.ejs -->
+<%
+	const hasForecast = Array.isArray(forecastDays) && forecastDays.length > 0;
+	const activeDay = hasForecast ? forecastDays[0] : null;
+	const pageBackgroundImage = activeDay?.backgroundImage || '';
+	const pageStyle = pageBackgroundImage ? ` style="--weather-bg-image: url('${pageBackgroundImage}')"` : '';
+%>
+
+<section class="weather-page" aria-labelledby="weather-title"<%- pageStyle %>>
+	<div class="weather-shell">
+		<div class="weather-hero">
+			<div>
+				<p class="weather-kicker">Weather</p>
+				<h1 id="weather-title" class="weather-location">
+					<span
+						class="fi fi-<%= location.countryCode.toLowerCase() %> weather-location__flag"
+						role="img"
+						aria-label="<%= location.country %>"
+					></span>
+					<span>
+						<%= location.city %>, <%= location.state %>, <%= location.country %>
+					</span>
+				</h1>
+			</div>
+
+			<div class="weather-mascot" aria-hidden="true">
+				<img
+					src="<%= activeDay?.mascotImage || '/images/weather/maple-coder-weather-default.png' %>"
+					alt=""
+				/>
+			</div>
+		</div>
+
+		<form class="weather-search" action="/weather" method="get">
+			<label class="visually-hidden" for="weather-city">City</label>
+			<div class="input-group">
+				<span class="input-group-text"><i class="bi bi-search"></i></span>
+				<input
+					id="weather-city"
+					class="form-control"
+					type="search"
+					name="city"
+					value="<%= location.city %>"
+					placeholder="Search city"
+					autocomplete="address-level2"
+				/>
+				<button class="btn btn-action" type="submit">Search</button>
+			</div>
+
+			<div class="weather-units" role="group" aria-label="Temperature unit">
+				<input
+					class="btn-check"
+					type="radio"
+					name="unit"
+					id="weather-unit-metric"
+					value="metric"
+					<%= unit === 'metric' ? 'checked' : '' %>
+				/>
+				<label class="btn btn-action-outline" for="weather-unit-metric">Metric</label>
+
+				<input
+					class="btn-check"
+					type="radio"
+					name="unit"
+					id="weather-unit-imperial"
+					value="imperial"
+					<%= unit === 'imperial' ? 'checked' : '' %>
+				/>
+				<label class="btn btn-action-outline" for="weather-unit-imperial">Imperial</label>
+			</div>
+		</form>
+
+		<% if (hasForecast) { %>
+			<ul class="nav nav-tabs weather-tabs" id="weatherForecastTabs" role="tablist">
+				<% forecastDays.forEach((day, index) => { %>
+					<li class="nav-item" role="presentation">
+						<button
+							class="nav-link <%= index === 0 ? 'active' : '' %>"
+							id="<%= day.id %>-tab"
+							data-bs-toggle="tab"
+							data-bs-target="#<%= day.id %>-panel"
+							type="button"
+							role="tab"
+							aria-controls="<%= day.id %>-panel"
+							aria-selected="<%= index === 0 ? 'true' : 'false' %>"
+						>
+							<i class="bi <%= day.icon %>"></i>
+							<span><%= day.label %></span>
+						</button>
+					</li>
+				<% }) %>
+			</ul>
+
+			<div class="tab-content weather-panels" id="weatherForecastTabContent">
+				<% forecastDays.forEach((day, index) => { %>
+					<%
+						const panelStyle = day.backgroundImage
+							? ` style="--weather-panel-bg-image: url('${day.backgroundImage}')"`
+							: '';
+						const precipitationLabel = day.precipitation
+							? `${day.precipitation.volume} mm ${day.precipitation.type}`
+							: null;
+						const weatherMetrics = [
+							{ icon: 'bi-thermometer-half', label: 'Temperature', value: `${day.temp}°` },
+							{ icon: 'bi-thermometer-sun', label: 'Feels like', value: `${day.feelsLike}°` },
+							{ icon: 'bi-thermometer-high', label: 'Min / max', value: `${day.low}° / ${day.high}°` },
+							{ icon: 'bi-droplet-fill', label: 'Humidity', value: `${day.humidity}%` },
+							{ icon: 'bi-speedometer2', label: 'Pressure', value: `${day.pressure} hPa` },
+							{ icon: 'bi-wind', label: 'Wind', value: `${day.wind} km/h` },
+							{ icon: 'bi-compass', label: 'Direction / gusts', value: `${day.windDirection}, ${day.windGust} km/h` },
+							{ icon: 'bi-clouds-fill', label: 'Cloudiness', value: `${day.cloudiness}%` },
+							{ icon: 'bi-eye-fill', label: 'Visibility', value: `${day.visibility} km` },
+							{ icon: 'bi-sunrise-fill', label: 'Sunrise', value: day.sunrise },
+							{ icon: 'bi-sunset-fill', label: 'Sunset', value: day.sunset },
+							{ icon: 'bi-cloud-fill', label: 'Condition', value: day.condition },
+						];
+
+						if (precipitationLabel) {
+							weatherMetrics.push({
+								icon: day.precipitation.type === 'snow' ? 'bi-cloud-snow-fill' : 'bi-cloud-rain-heavy-fill',
+								label: 'Precipitation',
+								value: precipitationLabel,
+							});
+						}
+					%>
+					<article
+						class="tab-pane fade weather-panel <%= index === 0 ? 'show active' : '' %>"
+						id="<%= day.id %>-panel"
+						role="tabpanel"
+						aria-labelledby="<%= day.id %>-tab"
+						tabindex="0"
+						<%- panelStyle %>
+					>
+						<div class="weather-panel__main">
+							<i
+								class="has-tooltip bi <%= day.icon %>"
+								data-bs-title="<%= day.condition %>: <%= day.description %>"
+								data-bs-toggle="tooltip"
+							></i>
+							<div>
+								<p class="weather-panel__day"><%= day.label %></p>
+								<p class="weather-panel__temp"><%= day.temp %>°</p>
+								<p class="weather-panel__summary"><%= day.summary %></p>
+							</div>
+						</div>
+
+						<div class="weather-metrics">
+							<% weatherMetrics.forEach((metric) => { %>
+								<div class="weather-metric">
+									<i class="bi <%= metric.icon %>" aria-hidden="true"></i>
+									<span><%= metric.label %></span>
+									<strong><%= metric.value %></strong>
+								</div>
+							<% }) %>
+						</div>
+					</article>
+				<% }) %>
+			</div>
+		<% } else { %>
+			<div class="weather-empty">
+				<i class="bi bi-cloud"></i>
+				<p>Search for a city to see the five-day forecast.</p>
+			</div>
+		<% } %>
+	</div>
+</section>
