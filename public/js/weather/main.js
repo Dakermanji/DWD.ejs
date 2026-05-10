@@ -22,9 +22,6 @@ function getLocationInputs(form) {
 	return {
 		latitude: form?.querySelector('[data-weather-latitude]'),
 		longitude: form?.querySelector('[data-weather-longitude]'),
-		state: form?.querySelector('[data-weather-state]'),
-		country: form?.querySelector('[data-weather-country]'),
-		countryCode: form?.querySelector('[data-weather-country-code]'),
 	};
 }
 
@@ -69,9 +66,6 @@ function selectCity(city) {
 
 	if (inputs.latitude) inputs.latitude.value = city.latitude || '';
 	if (inputs.longitude) inputs.longitude.value = city.longitude || '';
-	if (inputs.state) inputs.state.value = city.state || '';
-	if (inputs.country) inputs.country.value = city.country || '';
-	if (inputs.countryCode) inputs.countryCode.value = city.countryCode || '';
 
 	hideCityResults();
 	form.requestSubmit();
