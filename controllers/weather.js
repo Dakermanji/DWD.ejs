@@ -139,6 +139,60 @@ const location = {
 	countryCode: 'CA',
 };
 
+const cityResults = [
+	{
+		city: 'Montreal',
+		state: 'Quebec',
+		country: 'Canada',
+		countryCode: 'CA',
+		latitude: 45.5017,
+		longitude: -73.5673,
+	},
+	{
+		city: 'Moncton',
+		state: 'New Brunswick',
+		country: 'Canada',
+		countryCode: 'CA',
+		latitude: 46.0878,
+		longitude: -64.7782,
+	},
+	{
+		city: 'Monterey',
+		state: 'California',
+		country: 'United States',
+		countryCode: 'US',
+		latitude: 36.6002,
+		longitude: -121.8947,
+	},
+	{
+		city: 'Monroe',
+		state: 'Louisiana',
+		country: 'United States',
+		countryCode: 'US',
+		latitude: 32.5093,
+		longitude: -92.1193,
+	},
+	{
+		city: 'Montpellier',
+		state: 'Occitanie',
+		country: 'France',
+		countryCode: 'FR',
+		latitude: 43.6119,
+		longitude: 3.8772,
+	},
+];
+
+function normalizeSearch(value) {
+	return String(value || '').trim().toLocaleLowerCase();
+}
+
+function formatCityResult(city) {
+	return {
+		...city,
+		label: [city.city, city.state, city.country].filter(Boolean).join(', '),
+	};
+}
+
 export function renderWeather(req, res) {
 	res.render('weather/main', {
 		titleKey: 'Weather',
@@ -147,5 +201,26 @@ export function renderWeather(req, res) {
 		location,
 		unit: 'metric',
 		forecastDays,
+	});
+}
+
+export function searchCities(req, res) {
+	const query = normalizeSearch(req.query?.query);
+
+	if (query.length < 3) {
+		return res.json({
+			ok: true,
+			cities: [],
+		});
+	}
+
+	const cities = cityResults
+		.filter((city) => formatCityResult(city).label.toLocaleLowerCase().includes(query))
+		.slice(0, 6)
+		.map(formatCityResult);
+
+	return res.json({
+		ok: true,
+		cities,
 	});
 }

@@ -89,6 +89,7 @@ main.container:has(.weather-page) {
 }
 
 .weather-search {
+	position: relative;
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 0.75rem;
@@ -109,6 +110,50 @@ main.container:has(.weather-page) {
 	width: 2.75rem;
 	flex: 0 0 auto;
 	padding-inline: 0;
+}
+
+.weather-city-results {
+	position: absolute;
+	top: calc(100% + 0.35rem);
+	left: 0;
+	z-index: 20;
+	width: min(100%, calc(100% - 6.55rem));
+	max-height: 16rem;
+	overflow-y: auto;
+	border: 1px solid var(--border-soft);
+	border-radius: var(--radius-sm);
+	background-color: var(--bg-section);
+	box-shadow: var(--shadow-card);
+}
+
+.weather-city-option {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.65rem 0.8rem;
+	border: 0;
+	color: var(--color-text-body);
+	background: transparent;
+	text-align: start;
+}
+
+.weather-city-option:hover,
+.weather-city-option:focus,
+.weather-city-option.is-active {
+	background-color: var(--bg-pill-hover);
+}
+
+.weather-city-option__flag {
+	flex: 0 0 auto;
+	box-shadow: 0 0.08rem 0.25rem rgb(0 0 0 / 18%);
+}
+
+.weather-city-option__label {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .weather-units {
@@ -293,6 +338,10 @@ main.container:has(.weather-page) {
 
 	.weather-search {
 		grid-template-columns: 1fr;
+	}
+
+	.weather-city-results {
+		width: 100%;
 	}
 
 	.weather-units {

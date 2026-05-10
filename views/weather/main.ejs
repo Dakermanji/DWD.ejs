@@ -35,6 +35,9 @@
 			<label class="visually-hidden" for="weather-city">City</label>
 			<input type="hidden" name="latitude" data-weather-latitude />
 			<input type="hidden" name="longitude" data-weather-longitude />
+			<input type="hidden" name="state" data-weather-state />
+			<input type="hidden" name="country" data-weather-country />
+			<input type="hidden" name="countryCode" data-weather-country-code />
 			<div class="input-group">
 				<span class="input-group-text"><i class="bi bi-search"></i></span>
 				<input
@@ -42,9 +45,12 @@
 					class="form-control"
 					type="search"
 					name="city"
-					value="<%= location.city %>"
 					placeholder="Search city"
 					autocomplete="address-level2"
+					aria-autocomplete="list"
+					aria-controls="weather-city-results"
+					aria-expanded="false"
+					data-weather-city-input
 				/>
 				<button
 					class="btn btn-action-outline weather-current-location has-tooltip"
@@ -55,8 +61,15 @@
 				>
 					<i class="bi bi-crosshair" aria-hidden="true"></i>
 				</button>
-				<button class="btn btn-action" type="submit">Search</button>
 			</div>
+			<div
+				id="weather-city-results"
+				class="weather-city-results"
+				role="listbox"
+				aria-label="City results"
+				data-weather-city-results
+				hidden
+			></div>
 
 			<div class="weather-units" role="group" aria-label="Temperature unit">
 				<input
