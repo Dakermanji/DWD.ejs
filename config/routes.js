@@ -15,6 +15,7 @@ import socialRoutes from '../routes/social.js';
 import profileRoutes from '../routes/profile.js';
 import themeRoutes from '../routes/theme.js';
 import avatarRoutes from '../routes/avatar.js';
+import weatherRoutes from '../routes/weather.js';
 
 const router = Router();
 
@@ -38,5 +39,8 @@ router.use('/theme', themeRoutes);
 
 // Avatar option routes
 router.use('/avatar', avatarRoutes);
+
+// Weather routes
+router.use('/weather', weatherRoutes);
 
 export default router;
