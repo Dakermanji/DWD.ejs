@@ -31,6 +31,7 @@
 	"controllers": {
 		"auth": [
 			"completeLocalSignup.js",
+			"deleteAccount.js",
 			"discord.js",
 			"github.js",
 			"google.js",
@@ -55,11 +56,11 @@
 		],
 		"~": [
 			"avatar.js",
-			"deleteAccount.js",
 			"profile.js",
 			"home.js",
 			"lang.js",
-			"theme.js"
+			"theme.js",
+			"weather.js"
 		]
 	},
 	"locales": {
@@ -148,18 +149,29 @@
 				"social.css",
 				"tokens.css",
 				"ui-bar.css"
+			],
+			"weather": ["main.css"]
+		},
+		"favicons": {
+			"dark": [
+				"android-chrome-192x192.png",
+				"android-chrome-512x512.png",
+				"apple-touch-icon.png",
+				"favicon-16x16.png",
+				"favicon-32x32.png",
+				"favicon.ico",
+				"site.webmanifest"
+			],
+			"light": [
+				"android-chrome-192x192.png",
+				"android-chrome-512x512.png",
+				"apple-touch-icon.png",
+				"favicon-16x16.png",
+				"favicon-32x32.png",
+				"favicon.ico",
+				"site.webmanifest"
 			]
 		},
-		"favicons": [
-			"about.txt",
-			"android-chrome-192x192.png",
-			"android-chrome-512x512.png",
-			"apple-touch-icon.png",
-			"favicon-16x16.png",
-			"favicon-32x32.png",
-			"favicon.ico",
-			"site.webmanifest"
-		],
 		"images": {
 			"flags": ["ca.svg", "qc.svg", "sy.svg"],
 			"logos": [
@@ -197,7 +209,15 @@
 					"under_construction": ["ar.png", "en.png", "fr.png"]
 				},
 				"~": ["canada-flag.png", "maple-coder-about.png", "overlay.png"]
-			}
+			},
+			"weather": [
+				"maple-coder-weather-cloudy.png",
+				"maple-coder-weather-default.png",
+				"maple-coder-weather-rainy.png",
+				"maple-coder-weather-snowy.png",
+				"maple-coder-weather-stormy.png",
+				"maple-coder-weather-sunny.png"
+			]
 		},
 		"js": {
 			"profile": ["account.js", "avatar.js"],
@@ -209,7 +229,8 @@
 				"social.js",
 				"theme.js",
 				"tooltips.js"
-			]
+			],
+			"weather": ["main.js"]
 		}
 	},
 	"routes": [
@@ -219,7 +240,8 @@
 		"home.js",
 		"lang.js",
 		"social.js",
-		"theme.js"
+		"theme.js",
+		"weather.js"
 	],
 	"services": {
 		"auth": [
@@ -238,7 +260,7 @@
 		"avatar": ["dicebear.js"],
 		"contact": ["email.js"],
 		"country": ["list.js"],
-		"profile": ["account.js", "preferences.js"],
+		"profile": ["account.js", "deletion.js", "preferences.js"],
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],
 		"social": ["live.js"],
@@ -326,6 +348,7 @@
 			"_notifications.ejs",
 			"main.ejs"
 		],
+		"weather": ["main.ejs"],
 		"~": ["error.ejs"]
 	},
 	"~": [
