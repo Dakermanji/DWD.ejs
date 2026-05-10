@@ -33,6 +33,8 @@
 
 		<form class="weather-search" action="/weather" method="get">
 			<label class="visually-hidden" for="weather-city">City</label>
+			<input type="hidden" name="latitude" data-weather-latitude />
+			<input type="hidden" name="longitude" data-weather-longitude />
 			<div class="input-group">
 				<span class="input-group-text"><i class="bi bi-search"></i></span>
 				<input
@@ -44,6 +46,15 @@
 					placeholder="Search city"
 					autocomplete="address-level2"
 				/>
+				<button
+					class="btn btn-action-outline weather-current-location has-tooltip"
+					type="button"
+					data-weather-current-location
+					data-bs-title="Use current location"
+					aria-label="Use current location"
+				>
+					<i class="bi bi-crosshair" aria-hidden="true"></i>
+				</button>
 				<button class="btn btn-action" type="submit">Search</button>
 			</div>
 

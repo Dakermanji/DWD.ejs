@@ -3,7 +3,6 @@
 main.container:has(.weather-page) {
 	width: 100%;
 	max-width: none;
-	/* margin-top: 0; */
 	padding: 0;
 }
 
@@ -106,6 +105,12 @@ main.container:has(.weather-page) {
 	border-color: var(--border-soft);
 }
 
+.weather-current-location {
+	width: 2.75rem;
+	flex: 0 0 auto;
+	padding-inline: 0;
+}
+
 .weather-units {
 	display: inline-flex;
 	gap: 0.5rem;
@@ -163,7 +168,10 @@ main.container:has(.weather-page) {
 	box-shadow: var(--shadow-card);
 	background:
 		var(--weather-panel-bg-overlay),
-		var(--weather-panel-bg-image, linear-gradient(135deg, #fff7e4, #ffcf7a)),
+		var(
+			--weather-panel-bg-image,
+			linear-gradient(135deg, #fff7e4, #ffcf7a)
+		),
 		#ffdf9d;
 	background-size: cover;
 	background-position: center;
@@ -268,6 +276,7 @@ main.container:has(.weather-page) {
 @media (max-width: 767.98px) {
 	.weather-page {
 		padding: 1rem;
+		padding-bottom: 5.5rem;
 	}
 
 	.weather-shell {
