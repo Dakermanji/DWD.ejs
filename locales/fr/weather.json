@@ -1,0 +1,34 @@
+{
+	"title": "Météo",
+	"kicker": "Météo",
+	"search": {
+		"city": "Ville",
+		"placeholder": "Rechercher une ville",
+		"currentLocation": "Utiliser la position actuelle",
+		"results": "Résultats de villes"
+	},
+	"units": {
+		"label": "Unité de température",
+		"metric": "Métrique",
+		"imperial": "Impérial"
+	},
+	"metrics": {
+		"temperature": "Température",
+		"feelsLike": "Ressenti",
+		"minMax": "Min / max",
+		"humidity": "Humidité",
+		"pressure": "Pression",
+		"wind": "Vent",
+		"directionGusts": "Direction / rafales",
+		"cloudiness": "Nuages",
+		"visibility": "Visibilité",
+		"sunrise": "Lever du soleil",
+		"sunset": "Coucher du soleil",
+		"condition": "Condition",
+		"precipitation": "Précipitations"
+	},
+	"empty": "Recherchez une ville pour voir les prévisions sur cinq jours.",
+	"error": {
+		"invalid_location": "Veuillez choisir une position valide."
+	}
+}

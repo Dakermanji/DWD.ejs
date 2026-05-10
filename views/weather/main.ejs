@@ -10,7 +10,7 @@
 	<div class="weather-shell">
 		<div class="weather-hero">
 			<div>
-				<p class="weather-kicker">Weather</p>
+				<p class="weather-kicker"><%= t('weather:kicker') %></p>
 				<h1 id="weather-title" class="weather-location">
 					<span
 						class="fi fi-<%= location.countryCode.toLowerCase() %> weather-location__flag"
@@ -32,7 +32,7 @@
 		</div>
 
 		<form class="weather-search" action="/weather" method="get">
-			<label class="visually-hidden" for="weather-city">City</label>
+			<label class="visually-hidden" for="weather-city"><%= t('weather:search.city') %></label>
 			<input type="hidden" name="latitude" data-weather-latitude />
 			<input type="hidden" name="longitude" data-weather-longitude />
 			<div class="input-group">
@@ -41,7 +41,7 @@
 					id="weather-city"
 					class="form-control"
 					type="search"
-					placeholder="Search city"
+					placeholder="<%= t('weather:search.placeholder') %>"
 					autocomplete="address-level2"
 					aria-autocomplete="list"
 					aria-controls="weather-city-results"
@@ -52,8 +52,8 @@
 					class="btn btn-action-outline weather-current-location has-tooltip"
 					type="button"
 					data-weather-current-location
-					data-bs-title="Use current location"
-					aria-label="Use current location"
+					data-bs-title="<%= t('weather:search.currentLocation') %>"
+					aria-label="<%= t('weather:search.currentLocation') %>"
 				>
 					<i class="bi bi-crosshair" aria-hidden="true"></i>
 				</button>
@@ -62,12 +62,12 @@
 				id="weather-city-results"
 				class="weather-city-results"
 				role="listbox"
-				aria-label="City results"
+				aria-label="<%= t('weather:search.results') %>"
 				data-weather-city-results
 				hidden
 			></div>
 
-			<div class="weather-units" role="group" aria-label="Temperature unit">
+			<div class="weather-units" role="group" aria-label="<%= t('weather:units.label') %>">
 				<input
 					class="btn-check"
 					type="radio"
@@ -76,7 +76,7 @@
 					value="metric"
 					<%= unit === 'metric' ? 'checked' : '' %>
 				/>
-				<label class="btn btn-action-outline" for="weather-unit-metric">Metric</label>
+				<label class="btn btn-action-outline" for="weather-unit-metric"><%= t('weather:units.metric') %></label>
 
 				<input
 					class="btn-check"
@@ -86,7 +86,7 @@
 					value="imperial"
 					<%= unit === 'imperial' ? 'checked' : '' %>
 				/>
-				<label class="btn btn-action-outline" for="weather-unit-imperial">Imperial</label>
+				<label class="btn btn-action-outline" for="weather-unit-imperial"><%= t('weather:units.imperial') %></label>
 			</div>
 		</form>
 
@@ -121,24 +121,24 @@
 							? `${day.precipitation.volume} mm ${day.precipitation.type}`
 							: null;
 						const weatherMetrics = [
-							{ icon: 'bi-thermometer-half', label: 'Temperature', value: `${day.temp}°` },
-							{ icon: 'bi-thermometer-sun', label: 'Feels like', value: `${day.feelsLike}°` },
-							{ icon: 'bi-thermometer-high', label: 'Min / max', value: `${day.low}° / ${day.high}°` },
-							{ icon: 'bi-droplet-fill', label: 'Humidity', value: `${day.humidity}%` },
-							{ icon: 'bi-speedometer2', label: 'Pressure', value: `${day.pressure} hPa` },
-							{ icon: 'bi-wind', label: 'Wind', value: `${day.wind} km/h` },
-							{ icon: 'bi-compass', label: 'Direction / gusts', value: `${day.windDirection}, ${day.windGust} km/h` },
-							{ icon: 'bi-clouds-fill', label: 'Cloudiness', value: `${day.cloudiness}%` },
-							{ icon: 'bi-eye-fill', label: 'Visibility', value: `${day.visibility} km` },
-							{ icon: 'bi-sunrise-fill', label: 'Sunrise', value: day.sunrise },
-							{ icon: 'bi-sunset-fill', label: 'Sunset', value: day.sunset },
-							{ icon: 'bi-cloud-fill', label: 'Condition', value: day.condition },
+							{ icon: 'bi-thermometer-half', label: t('weather:metrics.temperature'), value: `${day.temp}°` },
+							{ icon: 'bi-thermometer-sun', label: t('weather:metrics.feelsLike'), value: `${day.feelsLike}°` },
+							{ icon: 'bi-thermometer-high', label: t('weather:metrics.minMax'), value: `${day.low}° / ${day.high}°` },
+							{ icon: 'bi-droplet-fill', label: t('weather:metrics.humidity'), value: `${day.humidity}%` },
+							{ icon: 'bi-speedometer2', label: t('weather:metrics.pressure'), value: `${day.pressure} hPa` },
+							{ icon: 'bi-wind', label: t('weather:metrics.wind'), value: `${day.wind} km/h` },
+							{ icon: 'bi-compass', label: t('weather:metrics.directionGusts'), value: `${day.windDirection}, ${day.windGust} km/h` },
+							{ icon: 'bi-clouds-fill', label: t('weather:metrics.cloudiness'), value: `${day.cloudiness}%` },
+							{ icon: 'bi-eye-fill', label: t('weather:metrics.visibility'), value: `${day.visibility} km` },
+							{ icon: 'bi-sunrise-fill', label: t('weather:metrics.sunrise'), value: day.sunrise },
+							{ icon: 'bi-sunset-fill', label: t('weather:metrics.sunset'), value: day.sunset },
+							{ icon: 'bi-cloud-fill', label: t('weather:metrics.condition'), value: day.condition },
 						];
 
 						if (precipitationLabel) {
 							weatherMetrics.push({
 								icon: day.precipitation.type === 'snow' ? 'bi-cloud-snow-fill' : 'bi-cloud-rain-heavy-fill',
-								label: 'Precipitation',
+								label: t('weather:metrics.precipitation'),
 								value: precipitationLabel,
 							});
 						}
@@ -179,7 +179,7 @@
 		<% } else { %>
 			<div class="weather-empty">
 				<i class="bi bi-cloud"></i>
-				<p>Search for a city to see the five-day forecast.</p>
+				<p><%= t('weather:empty') %></p>
 			</div>
 		<% } %>
 	</div>

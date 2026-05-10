@@ -195,11 +195,11 @@ function formatCityResult(city) {
 
 export function renderWeather(req, res) {
 	res.render('weather/main', {
-		titleKey: 'Weather',
+		titleKey: 'weather:title',
 		styles: ['weather/main'],
 		scripts: ['weather/main'],
 		location,
-		unit: 'metric',
+		unit: req.weather?.unit || 'metric',
 		forecastDays,
 	});
 }

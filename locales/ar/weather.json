@@ -1,0 +1,34 @@
+{
+	"title": "الطقس",
+	"kicker": "الطقس",
+	"search": {
+		"city": "المدينة",
+		"placeholder": "ابحث عن مدينة",
+		"currentLocation": "استخدم الموقع الحالي",
+		"results": "نتائج المدن"
+	},
+	"units": {
+		"label": "وحدة الحرارة",
+		"metric": "متري",
+		"imperial": "إمبراطوري"
+	},
+	"metrics": {
+		"temperature": "درجة الحرارة",
+		"feelsLike": "الإحساس الفعلي",
+		"minMax": "الصغرى / العظمى",
+		"humidity": "الرطوبة",
+		"pressure": "الضغط",
+		"wind": "الرياح",
+		"directionGusts": "الاتجاه / الهبات",
+		"cloudiness": "الغيوم",
+		"visibility": "الرؤية",
+		"sunrise": "الشروق",
+		"sunset": "الغروب",
+		"condition": "الحالة",
+		"precipitation": "الهطول"
+	},
+	"empty": "ابحث عن مدينة لرؤية توقعات الطقس لخمسة أيام.",
+	"error": {
+		"invalid_location": "يرجى اختيار موقع صالح."
+	}
+}

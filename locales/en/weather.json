@@ -1,0 +1,34 @@
+{
+	"title": "Weather",
+	"kicker": "Weather",
+	"search": {
+		"city": "City",
+		"placeholder": "Search city",
+		"currentLocation": "Use current location",
+		"results": "City results"
+	},
+	"units": {
+		"label": "Temperature unit",
+		"metric": "Metric",
+		"imperial": "Imperial"
+	},
+	"metrics": {
+		"temperature": "Temperature",
+		"feelsLike": "Feels like",
+		"minMax": "Min / max",
+		"humidity": "Humidity",
+		"pressure": "Pressure",
+		"wind": "Wind",
+		"directionGusts": "Direction / gusts",
+		"cloudiness": "Cloudiness",
+		"visibility": "Visibility",
+		"sunrise": "Sunrise",
+		"sunset": "Sunset",
+		"condition": "Condition",
+		"precipitation": "Precipitation"
+	},
+	"empty": "Search for a city to see the five-day forecast.",
+	"error": {
+		"invalid_location": "Please choose a valid location."
+	}
+}

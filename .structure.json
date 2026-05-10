@@ -70,7 +70,8 @@
 			"home.json",
 			"layout.json",
 			"profile.json",
-			"social.json"
+			"social.json",
+			"weather.json"
 		],
 		"en": [
 			"auth.json",
@@ -78,7 +79,8 @@
 			"home.json",
 			"layout.json",
 			"profile.json",
-			"social.json"
+			"social.json",
+			"weather.json"
 		],
 		"fr": [
 			"auth.json",
@@ -86,12 +88,13 @@
 			"home.json",
 			"layout.json",
 			"profile.json",
-			"social.json"
+			"social.json",
+			"weather.json"
 		]
 	},
 	"middlewares": {
 		"profanity": ["customWords.js", "index.js"],
-		"validators": ["auth.js", "common.js", "social.js", "token.js"],
+		"validators": ["auth.js", "common.js", "social.js", "token.js", "weather.js"],
 		"~": [
 			"errorHandler.js",
 			"flash.js",

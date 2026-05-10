@@ -14,6 +14,24 @@ let citySearchController = null;
 let activeCityIndex = -1;
 let renderedCities = [];
 
+function parseCoordinate(value) {
+	const coordinate = Number(value);
+
+	return Number.isFinite(coordinate) ? coordinate : null;
+}
+
+function isValidLatitude(value) {
+	return value !== null && value >= -90 && value <= 90;
+}
+
+function isValidLongitude(value) {
+	return value !== null && value >= -180 && value <= 180;
+}
+
+function hasValidCoordinates(latitude, longitude) {
+	return isValidLatitude(latitude) && isValidLongitude(longitude);
+}
+
 function getWeatherForm() {
 	return cityInput?.closest('form') || currentLocationButton?.closest('form');
 }
@@ -64,8 +82,13 @@ function selectCity(city) {
 
 	cityInput.value = city.city || '';
 
-	if (inputs.latitude) inputs.latitude.value = city.latitude || '';
-	if (inputs.longitude) inputs.longitude.value = city.longitude || '';
+	const latitude = parseCoordinate(city.latitude);
+	const longitude = parseCoordinate(city.longitude);
+
+	if (!hasValidCoordinates(latitude, longitude)) return;
+
+	if (inputs.latitude) inputs.latitude.value = latitude;
+	if (inputs.longitude) inputs.longitude.value = longitude;
 
 	hideCityResults();
 	form.requestSubmit();
@@ -198,8 +221,17 @@ if (currentLocationButton) {
 
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
-				latitudeInput.value = position.coords.latitude;
-				longitudeInput.value = position.coords.longitude;
+				const latitude = parseCoordinate(position.coords.latitude);
+				const longitude = parseCoordinate(position.coords.longitude);
+
+				if (!hasValidCoordinates(latitude, longitude)) {
+					currentLocationButton.disabled = false;
+					currentLocationButton.removeAttribute('aria-busy');
+					return;
+				}
+
+				latitudeInput.value = latitude;
+				longitudeInput.value = longitude;
 				form.requestSubmit();
 			},
 			() => {
