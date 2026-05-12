@@ -65,7 +65,7 @@ export async function sendRecoveryIntentEmail({
 		contentMap = emailContent.signupEmailContent;
 		url = `${env.CLIENT_URL}/auth/verify-email?token=${encodeURIComponent(token)}&lang=${locale}`;
 	} else {
-		logger.warn('Invalid recovery email type', {
+		logger.warning('Invalid recovery email type', {
 			type: 'mail',
 			recoveryType: type,
 			email,

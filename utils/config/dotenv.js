@@ -59,7 +59,7 @@ export function optionalEnv(key, defaultValue) {
 	const isMissing = value === undefined || value === '';
 
 	if (isMissing && process.env.NODE_ENV !== 'production') {
-		logger.warn(`Environment variable not set: ${key}`, {
+		logger.warning(`Environment variable not set: ${key}`, {
 			type: 'env',
 		});
 	}

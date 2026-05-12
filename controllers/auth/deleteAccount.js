@@ -27,10 +27,13 @@ export async function deleteAccount(req, res, next) {
 
 				req.session.destroy((destroyError) => {
 					if (destroyError) {
-						logger.warn('Session destroy after account deletion failed', {
-							type: 'auth',
-							err: destroyError.message,
-						});
+						logger.warning(
+							'Session destroy after account deletion failed',
+							{
+								type: 'auth',
+								err: destroyError.message,
+							},
+						);
 					}
 
 					return res.redirect(DELETED_REDIRECT);
