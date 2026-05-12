@@ -4,6 +4,8 @@ import env from '../../config/dotenv.js';
 
 const OPENWEATHER_FORECAST_URL =
 	'https://api.openweathermap.org/data/2.5/forecast';
+const OPENWEATHER_REVERSE_GEOCODING_URL =
+	'https://api.openweathermap.org/geo/1.0/reverse';
 const FORECAST_DAYS = 5;
 
 export class OpenWeatherConfigError extends Error {
@@ -39,6 +41,30 @@ function getCountryName(countryCode, locale) {
 	} catch {
 		return countryCode;
 	}
+}
+
+function getLocalizedName(place, locale) {
+	const language = getLanguage(locale);
+
+	return (
+		place?.local_names?.[language] ||
+		place?.local_names?.en ||
+		place?.local_names?.ascii ||
+		place?.local_names?.feature_name ||
+		place?.name ||
+		''
+	);
+}
+
+function serializeLocation(place, locale) {
+	const countryCode = place?.country || '';
+
+	return {
+		city: getLocalizedName(place, locale),
+		state: place?.state || '',
+		country: getCountryName(countryCode, locale),
+		countryCode,
+	};
 }
 
 function getLocalDateKey(timestamp, timezoneOffset) {
@@ -197,7 +223,7 @@ function serializeDay(entries, index, { locale, unit, timezoneOffset, sunrise, s
 	};
 }
 
-function serializeForecast(data, { locale, unit }) {
+function serializeForecast(data, { locale, unit, location = null }) {
 	const timezoneOffset = Number(data.city?.timezone) || 0;
 	const groupedEntries = new Map();
 
@@ -221,17 +247,42 @@ function serializeForecast(data, { locale, unit }) {
 			}),
 		);
 
-	const countryCode = data.city?.country || '';
-
 	return {
-		location: {
-			city: data.city?.name || '',
-			state: '',
-			country: getCountryName(countryCode, locale),
-			countryCode,
-		},
+		location:
+			location ||
+			serializeLocation(
+				{
+					name: data.city?.name,
+					country: data.city?.country,
+				},
+				locale,
+			),
 		forecastDays,
 	};
+}
+
+async function getReverseGeocodingLocation({ latitude, longitude, locale }) {
+	try {
+		const params = new URLSearchParams({
+			lat: String(latitude),
+			lon: String(longitude),
+			limit: '1',
+			appid: env.OPENWEATHER_API_KEY,
+		});
+
+		const response = await fetch(`${OPENWEATHER_REVERSE_GEOCODING_URL}?${params}`);
+
+		if (!response.ok) {
+			return null;
+		}
+
+		const data = await response.json();
+		const place = Array.isArray(data) ? data[0] : null;
+
+		return place ? serializeLocation(place, locale) : null;
+	} catch {
+		return null;
+	}
 }
 
 export async function getWeatherForecast({ latitude, longitude, unit, locale }) {
@@ -247,7 +298,10 @@ export async function getWeatherForecast({ latitude, longitude, unit, locale }) 
 		appid: env.OPENWEATHER_API_KEY,
 	});
 
-	const response = await fetch(`${OPENWEATHER_FORECAST_URL}?${params}`);
+	const [response, location] = await Promise.all([
+		fetch(`${OPENWEATHER_FORECAST_URL}?${params}`),
+		getReverseGeocodingLocation({ latitude, longitude, locale }),
+	]);
 
 	if (response.status === 429) {
 		throw new OpenWeatherRateLimitError();
@@ -257,5 +311,5 @@ export async function getWeatherForecast({ latitude, longitude, unit, locale }) 
 		throw new Error(`OpenWeather forecast failed: ${response.status}`);
 	}
 
-	return serializeForecast(await response.json(), { locale, unit });
+	return serializeForecast(await response.json(), { locale, unit, location });
 }
