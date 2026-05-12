@@ -6,13 +6,11 @@
  *
  * Why this table exists:
  * - support rate limits across multiple windows
- * - track usage by signed-in user when available
- * - track anonymous usage by IP while weather remains public
+ * - track usage by signed-in user
  * - keep provider/API usage auditable before paid API integration
  *
  * Notes:
- * - user_id is nullable because some routes may remain public
- * - ip_address is stored as INET for efficient filtering
+ * - user_id is required because API-backed routes are user-only
  * - provider groups API families such as weather, geolocation, or unsplash
  * - request_key can group actions such as forecast, city_search, or background
  * - response_status and error_code are nullable because requests may fail before
@@ -42,8 +40,7 @@ CREATE TABLE IF NOT EXISTS "external_api_request_logs" (
 	"id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
 	-- caller identity
-	"user_id" UUID NULL,
-	"ip_address" INET NULL,
+	"user_id" UUID NOT NULL,
 
 	-- API target
 	"provider" external_api_provider NOT NULL,
@@ -64,12 +61,9 @@ CREATE TABLE IF NOT EXISTS "external_api_request_logs" (
 	CONSTRAINT "external_api_request_logs_user_fk"
 		FOREIGN KEY ("user_id")
 		REFERENCES "users" ("id")
-		ON DELETE SET NULL,
+		ON DELETE CASCADE,
 
 	-- sanity checks
-	CONSTRAINT "external_api_request_logs_actor_check"
-		CHECK ("user_id" IS NOT NULL OR "ip_address" IS NOT NULL),
-
 	CONSTRAINT "external_api_request_logs_response_status_check"
 		CHECK (
 			"response_status" IS NULL
@@ -82,7 +76,6 @@ CREATE TABLE IF NOT EXISTS "external_api_request_logs" (
  * -------
  * Optimized for:
  * - counting requests by user/provider/key over time windows
- * - counting public requests by IP/provider/key over time windows
  * - pruning old logs
  * - auditing provider usage
  */
@@ -92,17 +85,7 @@ CREATE INDEX IF NOT EXISTS "IDX_external_api_request_logs_user_window"
 		"provider",
 		"request_key",
 		"created_at"
-	)
-	WHERE "user_id" IS NOT NULL;
-
-CREATE INDEX IF NOT EXISTS "IDX_external_api_request_logs_ip_window"
-	ON "external_api_request_logs" (
-		"ip_address",
-		"provider",
-		"request_key",
-		"created_at"
-	)
-	WHERE "ip_address" IS NOT NULL;
+	);
 
 CREATE INDEX IF NOT EXISTS "IDX_external_api_request_logs_provider_created_at"
 	ON "external_api_request_logs" ("provider", "created_at");

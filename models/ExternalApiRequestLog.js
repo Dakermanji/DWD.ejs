@@ -23,7 +23,6 @@ async function countRecentByActor({
 
 async function insert({
 	userId = null,
-	ipAddress = null,
 	provider,
 	requestKey,
 	route = null,
@@ -34,7 +33,6 @@ async function insert({
 	const q = `
 		INSERT INTO external_api_request_logs (
 			user_id,
-			ip_address,
 			provider,
 			request_key,
 			route,
@@ -42,12 +40,11 @@ async function insert({
 			response_status,
 			error_code
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+		VALUES ($1, $2, $3, $4, $5, $6, $7);
 	`;
 
 	await query(q, [
 		userId,
-		ipAddress,
 		provider,
 		requestKey,
 		route,
