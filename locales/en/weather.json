@@ -36,6 +36,8 @@
 	"error": {
 		"invalid_location": "Please choose a valid location.",
 		"city_search_failed": "City search is unavailable right now.",
-		"api_limit_reached": "City search is busy right now. Please try again later."
+		"api_limit_reached": "Weather services are busy right now. Please try again later.",
+		"api_not_configured": "Weather forecasts are not configured yet.",
+		"forecast_failed": "Weather forecast is unavailable right now."
 	}
 }

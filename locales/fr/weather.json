@@ -36,6 +36,8 @@
 	"error": {
 		"invalid_location": "Veuillez choisir une position valide.",
 		"city_search_failed": "La recherche de villes est indisponible pour le moment.",
-		"api_limit_reached": "La recherche de villes est occupée pour le moment. Veuillez réessayer plus tard."
+		"api_limit_reached": "Les services météo sont occupés pour le moment. Veuillez réessayer plus tard.",
+		"api_not_configured": "Les prévisions météo ne sont pas encore configurées.",
+		"forecast_failed": "Les prévisions météo sont indisponibles pour le moment."
 	}
 }
