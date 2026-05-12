@@ -5,10 +5,6 @@
 	flex: 1;
 }
 
-[dir='rtl'] img:not(.brand-logo-img):not(.avatar-img) {
-	transform: scaleX(-1);
-}
-
 /* Main Container */
 main.container {
 	flex: 1;

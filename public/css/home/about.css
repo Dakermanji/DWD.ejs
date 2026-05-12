@@ -12,6 +12,10 @@
 	filter: drop-shadow(var(--shadow-mascot));
 }
 
+[dir='rtl'] #about img {
+	transform: scaleX(-1);
+}
+
 .about-intro p {
 	margin-bottom: 1rem;
 	line-height: 1.8;
