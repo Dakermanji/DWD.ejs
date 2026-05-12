@@ -48,6 +48,10 @@ main.container:has(.weather-page) {
 	gap: 1rem;
 }
 
+.weather-hero > div:first-child {
+	min-width: 0;
+}
+
 .weather-kicker {
 	margin: 0 0 0.25rem;
 	color: var(--color-primary);
@@ -64,7 +68,9 @@ main.container:has(.weather-page) {
 .weather-location {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 0.75rem;
+	overflow-wrap: anywhere;
 }
 
 .weather-location__flag {
@@ -125,6 +131,11 @@ main.container:has(.weather-page) {
 	border-radius: var(--radius-sm);
 	background-color: var(--bg-section);
 	box-shadow: var(--shadow-card);
+}
+
+[dir='rtl'] .weather-city-results {
+	right: 0;
+	left: auto;
 }
 
 .weather-city-option {
@@ -330,7 +341,13 @@ main.container:has(.weather-page) {
 	}
 
 	.weather-hero {
-		align-items: flex-start;
+		align-items: center;
+		flex-direction: column-reverse;
+		text-align: center;
+	}
+
+	.weather-location {
+		justify-content: center;
 	}
 
 	.weather-mascot {

@@ -4,6 +4,10 @@
 	const activeDay = hasForecast ? forecastDays[0] : null;
 	const pageBackgroundImage = activeDay?.backgroundImage || '';
 	const pageStyle = pageBackgroundImage ? ` style="--weather-bg-image: url('${pageBackgroundImage}')"` : '';
+	const localizedComma = t('common:comma');
+	const locationLabel = [location.city, location.state, location.country]
+		.filter(Boolean)
+		.join(localizedComma);
 %>
 
 <section class="weather-page" aria-labelledby="weather-title"<%- pageStyle %>>
@@ -17,9 +21,7 @@
 						role="img"
 						aria-label="<%= location.country %>"
 					></span>
-					<span>
-						<%= location.city %>, <%= location.state %>, <%= location.country %>
-					</span>
+					<span><%= locationLabel %></span>
 				</h1>
 			</div>
 

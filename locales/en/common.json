@@ -1,5 +1,6 @@
 {
 	"or": "or",
+	"comma": ", ",
 	"account": "Account",
 	"close": "Close",
 	"identifier": "Username or email",

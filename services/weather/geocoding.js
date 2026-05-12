@@ -4,6 +4,14 @@ const OPEN_METEO_GEOCODING_URL =
 	'https://geocoding-api.open-meteo.com/v1/search';
 const MAX_GEOCODING_RESULTS = 10;
 
+export class GeocodingRateLimitError extends Error {
+	constructor(message = 'Open-Meteo geocoding rate limit reached') {
+		super(message);
+		this.name = 'GeocodingRateLimitError';
+		this.status = 429;
+	}
+}
+
 function normalizeLimit(limit) {
 	const normalizedLimit = Number(limit);
 
@@ -47,6 +55,8 @@ function getStateName(city) {
 function serializeCity(city, locale) {
 	const state = getStateName(city);
 	const country = getCountryName(city.country_code, locale);
+	const language = String(locale).split('-')[0];
+	const comma = language === 'ar' ? '، ' : ', ';
 
 	return {
 		city: city.name || '',
@@ -57,7 +67,7 @@ function serializeCity(city, locale) {
 		longitude: city.longitude,
 		population: city.population || 0,
 		timezone: city.timezone || '',
-		label: [city.name, state, country].filter(Boolean).join(', '),
+		label: [city.name, state, country].filter(Boolean).join(comma),
 	};
 }
 
@@ -94,6 +104,10 @@ export async function searchGeocodingCities(
 	});
 
 	const response = await fetch(`${OPEN_METEO_GEOCODING_URL}?${params}`);
+
+	if (response.status === 429) {
+		throw new GeocodingRateLimitError();
+	}
 
 	if (!response.ok) {
 		throw new Error(`Open-Meteo geocoding failed: ${response.status}`);

@@ -35,6 +35,7 @@
 	"empty": "Search for a city to see the five-day forecast.",
 	"error": {
 		"invalid_location": "Please choose a valid location.",
-		"city_search_failed": "City search is unavailable right now."
+		"city_search_failed": "City search is unavailable right now.",
+		"api_limit_reached": "City search is busy right now. Please try again later."
 	}
 }

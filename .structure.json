@@ -112,6 +112,7 @@
 			"AuthSecurity.js",
 			"AuthSecurityEvent.js",
 			"AuthToken.js",
+			"ExternalApiRequestLog.js",
 			"SignupSecurity.js",
 			"User.js",
 			"UserBlocks.js",
@@ -241,6 +242,7 @@
 		"weather.js"
 	],
 	"services": {
+		"apiUsage": ["limits.js", "quota.js"],
 		"auth": [
 			"email.js",
 			"emailContent.js",
