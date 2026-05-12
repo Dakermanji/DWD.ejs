@@ -1,7 +1,8 @@
 //! routes/weather.js
 
 import { Router } from 'express';
-import { renderWeather, searchCities } from '../controllers/weather.js';
+import { renderWeather } from '../controllers/weather/main.js';
+import { searchCities } from '../controllers/weather/searchCities.js';
 import { validateWeatherQuery } from '../middlewares/validators/weather.js';
 
 const router = Router();

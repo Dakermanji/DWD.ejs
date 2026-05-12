@@ -54,14 +54,8 @@
 			"followRequest.js",
 			"notifications.js"
 		],
-		"~": [
-			"avatar.js",
-			"profile.js",
-			"home.js",
-			"lang.js",
-			"theme.js",
-			"weather.js"
-		]
+		"weather": ["main.js", "searchCities.js"],
+		"~": ["avatar.js", "profile.js", "home.js", "lang.js", "theme.js"]
 	},
 	"locales": {
 		"ar": [
@@ -267,7 +261,8 @@
 		"http": ["requestMeta.js", "response.js"],
 		"i18n": ["locale.js"],
 		"social": ["live.js"],
-		"theme": ["preference.js"]
+		"theme": ["preference.js"],
+		"weather": ["geocoding.js"]
 	},
 	"sql": [
 		"01_session.sql",

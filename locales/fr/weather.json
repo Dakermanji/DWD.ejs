@@ -34,6 +34,7 @@
 	},
 	"empty": "Recherchez une ville pour voir les prévisions sur cinq jours.",
 	"error": {
-		"invalid_location": "Veuillez choisir une position valide."
+		"invalid_location": "Veuillez choisir une position valide.",
+		"city_search_failed": "La recherche de villes est indisponible pour le moment."
 	}
 }
