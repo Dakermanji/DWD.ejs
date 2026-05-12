@@ -9,6 +9,21 @@
 		.filter(Boolean)
 		.join(localizedComma);
 	const hasLocation = Boolean(locationLabel);
+	const isArabic = currentLang === 'ar';
+	const formatTemperature = (value) => isArabic ? `°${value}` : `${value}°`;
+	const formatPercent = (value) => isArabic ? `%${value}` : `${value}%`;
+	const formatSpeed = (value, unit) => `${value} ${t(`weather:measurementUnits.${unit}`)}`;
+	const formatDistance = (value, unit) => `${value} ${t(`weather:measurementUnits.${unit}`)}`;
+	const formatPressure = (value) => isArabic ? `hPa ${value}` : `${value} hPa`;
+	const formatCondition = (condition) => t(`weather:conditions.${condition}`);
+	const formatDirectionGusts = (direction, gust, unit) => {
+		const directionLabel = t(`weather:directions.${direction}`);
+		const gustLabel = formatSpeed(gust, unit);
+
+		return isArabic
+			? `${gustLabel} - ${directionLabel}`
+			: `${directionLabel}${localizedComma}${gustLabel}`;
+	};
 %>
 
 <section class="weather-page" aria-labelledby="weather-title"<%- pageStyle %>>
@@ -134,18 +149,18 @@
 							? `${day.precipitation.volume} mm ${day.precipitation.type}`
 							: null;
 						const weatherMetrics = [
-							{ icon: 'bi-thermometer-half', label: t('weather:metrics.temperature'), value: `${day.temp}°` },
-							{ icon: 'bi-thermometer-sun', label: t('weather:metrics.feelsLike'), value: `${day.feelsLike}°` },
-							{ icon: 'bi-thermometer-high', label: t('weather:metrics.minMax'), value: `${day.low}° / ${day.high}°` },
-							{ icon: 'bi-droplet-fill', label: t('weather:metrics.humidity'), value: `${day.humidity}%` },
-							{ icon: 'bi-speedometer2', label: t('weather:metrics.pressure'), value: `${day.pressure} hPa` },
-							{ icon: 'bi-wind', label: t('weather:metrics.wind'), value: `${day.wind} ${day.windUnit}` },
-							{ icon: 'bi-compass', label: t('weather:metrics.directionGusts'), value: `${day.windDirection}${localizedComma}${day.windGust} ${day.windUnit}` },
-							{ icon: 'bi-clouds-fill', label: t('weather:metrics.cloudiness'), value: `${day.cloudiness}%` },
-							{ icon: 'bi-eye-fill', label: t('weather:metrics.visibility'), value: `${day.visibility} ${day.visibilityUnit}` },
+							{ icon: 'bi-thermometer-half', label: t('weather:metrics.temperature'), value: formatTemperature(day.temp) },
+							{ icon: 'bi-thermometer-sun', label: t('weather:metrics.feelsLike'), value: formatTemperature(day.feelsLike) },
+							{ icon: 'bi-thermometer-high', label: t('weather:metrics.minMax'), value: `${formatTemperature(day.low)} / ${formatTemperature(day.high)}` },
+							{ icon: 'bi-droplet-fill', label: t('weather:metrics.humidity'), value: formatPercent(day.humidity) },
+							{ icon: 'bi-speedometer2', label: t('weather:metrics.pressure'), value: formatPressure(day.pressure) },
+							{ icon: 'bi-wind', label: t('weather:metrics.wind'), value: formatSpeed(day.wind, day.windUnit) },
+							{ icon: 'bi-compass', label: t('weather:metrics.directionGusts'), value: formatDirectionGusts(day.windDirection, day.windGust, day.windUnit) },
+							{ icon: 'bi-clouds-fill', label: t('weather:metrics.cloudiness'), value: formatPercent(day.cloudiness) },
+							{ icon: 'bi-eye-fill', label: t('weather:metrics.visibility'), value: formatDistance(day.visibility, day.visibilityUnit) },
 							{ icon: 'bi-sunrise-fill', label: t('weather:metrics.sunrise'), value: day.sunrise },
 							{ icon: 'bi-sunset-fill', label: t('weather:metrics.sunset'), value: day.sunset },
-							{ icon: 'bi-cloud-fill', label: t('weather:metrics.condition'), value: day.condition },
+							{ icon: 'bi-cloud-fill', label: t('weather:metrics.condition'), value: formatCondition(day.condition) },
 						];
 
 						if (precipitationLabel) {
@@ -167,12 +182,12 @@
 						<div class="weather-panel__main">
 							<i
 								class="has-tooltip bi <%= day.icon %>"
-								data-bs-title="<%= day.condition %>: <%= day.description %>"
+								data-bs-title="<%= formatCondition(day.condition) %>: <%= day.description %>"
 								data-bs-toggle="tooltip"
 							></i>
 							<div>
 								<p class="weather-panel__day"><%= dayLabel %></p>
-								<p class="weather-panel__temp"><%= day.temp %>°</p>
+								<p class="weather-panel__temp"><%= formatTemperature(day.temp) %></p>
 								<p class="weather-panel__summary"><%= day.summary %></p>
 							</div>
 						</div>

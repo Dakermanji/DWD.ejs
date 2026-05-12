@@ -166,7 +166,7 @@ function serializeDay(entries, index, { locale, unit, timezoneOffset, sunrise, s
 	return {
 		id: label.labelKey === 'day' ? `day-${label.dayNumber}` : label.labelKey,
 		...label,
-		condition: weather.main || condition,
+		condition,
 		icon: getWeatherIcon(weather.main, weather.id),
 		temp: round(representative.main?.temp),
 		feelsLike: round(representative.main?.feels_like),

@@ -12,6 +12,31 @@
 		"metric": "Metric",
 		"imperial": "Imperial"
 	},
+	"measurementUnits": {
+		"km/h": "km/h",
+		"mph": "mph",
+		"km": "km",
+		"mi": "mi"
+	},
+	"directions": {
+		"N": "N",
+		"NE": "NE",
+		"E": "E",
+		"SE": "SE",
+		"S": "S",
+		"SW": "SW",
+		"W": "W",
+		"NW": "NW"
+	},
+	"conditions": {
+		"sunny": "Sunny",
+		"cloudy": "Cloudy",
+		"rainy": "Rainy",
+		"stormy": "Stormy",
+		"snowy": "Snowy",
+		"foggy": "Foggy",
+		"weather": "Weather"
+	},
 	"days": {
 		"today": "Today",
 		"tomorrow": "Tomorrow",
