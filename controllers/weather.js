@@ -3,7 +3,7 @@
 const forecastDays = [
 	{
 		id: 'today',
-		label: 'Today',
+		labelKey: 'today',
 		condition: 'sunny',
 		icon: 'bi-sun-fill',
 		temp: 24,
@@ -27,7 +27,7 @@ const forecastDays = [
 	},
 	{
 		id: 'tomorrow',
-		label: 'Tomorrow',
+		labelKey: 'tomorrow',
 		condition: 'cloudy',
 		icon: 'bi-cloud-sun-fill',
 		temp: 21,
@@ -51,7 +51,8 @@ const forecastDays = [
 	},
 	{
 		id: 'day-3',
-		label: 'Day 3',
+		labelKey: 'day',
+		dayNumber: 3,
 		condition: 'rainy',
 		icon: 'bi-cloud-rain-heavy-fill',
 		temp: 18,
@@ -78,7 +79,8 @@ const forecastDays = [
 	},
 	{
 		id: 'day-4',
-		label: 'Day 4',
+		labelKey: 'day',
+		dayNumber: 4,
 		condition: 'stormy',
 		icon: 'bi-cloud-lightning-rain-fill',
 		temp: 19,
@@ -105,7 +107,8 @@ const forecastDays = [
 	},
 	{
 		id: 'day-5',
-		label: 'Day 5',
+		labelKey: 'day',
+		dayNumber: 5,
 		condition: 'snowy',
 		icon: 'bi-cloud-snow-fill',
 		temp: 2,
@@ -183,7 +186,9 @@ const cityResults = [
 ];
 
 function normalizeSearch(value) {
-	return String(value || '').trim().toLocaleLowerCase();
+	return String(value || '')
+		.trim()
+		.toLocaleLowerCase();
 }
 
 function formatCityResult(city) {
@@ -215,7 +220,9 @@ export function searchCities(req, res) {
 	}
 
 	const cities = cityResults
-		.filter((city) => formatCityResult(city).label.toLocaleLowerCase().includes(query))
+		.filter((city) =>
+			formatCityResult(city).label.toLocaleLowerCase().includes(query),
+		)
 		.slice(0, 6)
 		.map(formatCityResult);
 

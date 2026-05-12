@@ -12,6 +12,11 @@
 		"metric": "Metric",
 		"imperial": "Imperial"
 	},
+	"days": {
+		"today": "Today",
+		"tomorrow": "Tomorrow",
+		"day": "Day {{number}}"
+	},
 	"metrics": {
 		"temperature": "Temperature",
 		"feelsLike": "Feels like",

@@ -93,6 +93,11 @@
 		<% if (hasForecast) { %>
 			<ul class="nav nav-tabs weather-tabs" id="weatherForecastTabs" role="tablist">
 				<% forecastDays.forEach((day, index) => { %>
+					<%
+						const dayLabel = day.labelKey === 'day'
+							? t('weather:days.day', { number: day.dayNumber })
+							: t(`weather:days.${day.labelKey}`);
+					%>
 					<li class="nav-item" role="presentation">
 						<button
 							class="nav-link <%= index === 0 ? 'active' : '' %>"
@@ -105,7 +110,7 @@
 							aria-selected="<%= index === 0 ? 'true' : 'false' %>"
 						>
 							<i class="bi <%= day.icon %>"></i>
-							<span><%= day.label %></span>
+							<span><%= dayLabel %></span>
 						</button>
 					</li>
 				<% }) %>
@@ -114,6 +119,9 @@
 			<div class="tab-content weather-panels" id="weatherForecastTabContent">
 				<% forecastDays.forEach((day, index) => { %>
 					<%
+						const dayLabel = day.labelKey === 'day'
+							? t('weather:days.day', { number: day.dayNumber })
+							: t(`weather:days.${day.labelKey}`);
 						const panelStyle = day.backgroundImage
 							? ` style="--weather-panel-bg-image: url('${day.backgroundImage}')"`
 							: '';
@@ -158,7 +166,7 @@
 								data-bs-toggle="tooltip"
 							></i>
 							<div>
-								<p class="weather-panel__day"><%= day.label %></p>
+								<p class="weather-panel__day"><%= dayLabel %></p>
 								<p class="weather-panel__temp"><%= day.temp %>°</p>
 								<p class="weather-panel__summary"><%= day.summary %></p>
 							</div>

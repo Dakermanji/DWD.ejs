@@ -12,6 +12,11 @@
 		"metric": "متري",
 		"imperial": "إمبراطوري"
 	},
+	"days": {
+		"today": "اليوم",
+		"tomorrow": "غدًا",
+		"day": "اليوم {{number}}"
+	},
 	"metrics": {
 		"temperature": "درجة الحرارة",
 		"feelsLike": "الإحساس الفعلي",

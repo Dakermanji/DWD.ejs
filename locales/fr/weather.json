@@ -12,6 +12,11 @@
 		"metric": "Métrique",
 		"imperial": "Impérial"
 	},
+	"days": {
+		"today": "Aujourd’hui",
+		"tomorrow": "Demain",
+		"day": "Jour {{number}}"
+	},
 	"metrics": {
 		"temperature": "Température",
 		"feelsLike": "Ressenti",
