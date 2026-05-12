@@ -37,6 +37,9 @@ const env = {
 	/** Sentry Data Source Name used for remote error monitoring */
 	SENTRY_DSN: optionalEnv('SENTRY_DSN', ''),
 
+	/** OpenWeather API key used for weather forecast data */
+	OPENWEATHER_API_KEY: optionalEnv('OPENWEATHER_API_KEY', ''),
+
 	/** Secret used to sign session cookies */
 	SESSION_SECRET: requireEnv('SESSION_SECRET'),
 

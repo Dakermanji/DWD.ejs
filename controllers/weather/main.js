@@ -1,148 +1,30 @@
 //! controllers/weather/main.js
 
-const forecastDays = [
-	{
-		id: 'today',
-		labelKey: 'today',
-		condition: 'sunny',
-		icon: 'bi-sun-fill',
-		temp: 24,
-		feelsLike: 25,
-		high: 26,
-		low: 17,
-		pressure: 1016,
-		cloudiness: 8,
-		visibility: 10,
-		sunrise: '5:22 AM',
-		sunset: '8:18 PM',
-		windDirection: 'SW',
-		windGust: 21,
-		precipitation: null,
-		description: 'clear sky',
-		summary: 'Clear sky with a light afternoon breeze.',
-		humidity: 42,
-		wind: 12,
-		backgroundImage: '',
-		mascotImage: '/images/weather/maple-coder-weather-sunny.png',
-	},
-	{
-		id: 'tomorrow',
-		labelKey: 'tomorrow',
-		condition: 'cloudy',
-		icon: 'bi-cloud-sun-fill',
-		temp: 21,
-		feelsLike: 20,
-		high: 23,
-		low: 15,
-		pressure: 1012,
-		cloudiness: 64,
-		visibility: 9,
-		sunrise: '5:21 AM',
-		sunset: '8:19 PM',
-		windDirection: 'W',
-		windGust: 25,
-		precipitation: null,
-		description: 'broken clouds',
-		summary: 'Mostly cloudy, with brighter breaks near noon.',
-		humidity: 55,
-		wind: 16,
-		backgroundImage: '',
-		mascotImage: '/images/weather/maple-coder-weather-cloudy.png',
-	},
-	{
-		id: 'day-3',
-		labelKey: 'day',
-		dayNumber: 3,
-		condition: 'rainy',
-		icon: 'bi-cloud-rain-heavy-fill',
-		temp: 18,
-		feelsLike: 18,
-		high: 20,
-		low: 13,
-		pressure: 1007,
-		cloudiness: 88,
-		visibility: 7,
-		sunrise: '5:20 AM',
-		sunset: '8:20 PM',
-		windDirection: 'NE',
-		windGust: 29,
-		precipitation: {
-			type: 'rain',
-			volume: 5.4,
-		},
-		description: 'light rain',
-		summary: 'Steady showers likely through the morning.',
-		humidity: 76,
-		wind: 18,
-		backgroundImage: '',
-		mascotImage: '/images/weather/maple-coder-weather-rainy.png',
-	},
-	{
-		id: 'day-4',
-		labelKey: 'day',
-		dayNumber: 4,
-		condition: 'stormy',
-		icon: 'bi-cloud-lightning-rain-fill',
-		temp: 19,
-		feelsLike: 20,
-		high: 22,
-		low: 14,
-		pressure: 1003,
-		cloudiness: 92,
-		visibility: 6,
-		sunrise: '5:19 AM',
-		sunset: '8:21 PM',
-		windDirection: 'S',
-		windGust: 38,
-		precipitation: {
-			type: 'rain',
-			volume: 8.1,
-		},
-		description: 'thunderstorm with rain',
-		summary: 'Chance of evening thunderstorms.',
-		humidity: 70,
-		wind: 22,
-		backgroundImage: '',
-		mascotImage: '/images/weather/maple-coder-weather-stormy.png',
-	},
-	{
-		id: 'day-5',
-		labelKey: 'day',
-		dayNumber: 5,
-		condition: 'snowy',
-		icon: 'bi-cloud-snow-fill',
-		temp: 2,
-		feelsLike: -2,
-		high: 4,
-		low: -3,
-		pressure: 1021,
-		cloudiness: 79,
-		visibility: 5,
-		sunrise: '5:18 AM',
-		sunset: '8:22 PM',
-		windDirection: 'NW',
-		windGust: 24,
-		precipitation: {
-			type: 'snow',
-			volume: 2.7,
-		},
-		description: 'light snow',
-		summary: 'Light snow tapering off late in the day.',
-		humidity: 81,
-		wind: 14,
-		backgroundImage: '',
-		mascotImage: '/images/weather/maple-coder-weather-snowy.png',
-	},
-];
+import logger from '../../config/logger.js';
+import {
+	checkExternalApiQuota,
+	recordExternalApiRequest,
+} from '../../services/apiUsage/quota.js';
+import { fail } from '../../services/http/response.js';
+import { getLocale } from '../../services/i18n/locale.js';
+import {
+	getWeatherForecast,
+	OpenWeatherConfigError,
+	OpenWeatherRateLimitError,
+} from '../../services/weather/forecast.js';
 
-const location = {
-	city: 'Montreal',
-	state: 'Quebec',
-	country: 'Canada',
-	countryCode: 'CA',
+const WEATHER_PROVIDER = 'weather';
+const WEATHER_REQUEST_KEY = 'forecast';
+const WEATHER_REDIRECT = '/weather';
+
+const emptyLocation = {
+	city: '',
+	state: '',
+	country: '',
+	countryCode: '',
 };
 
-export function renderWeather(req, res) {
+function renderWeatherView(req, res, { location = emptyLocation, forecastDays = [] } = {}) {
 	res.render('weather/main', {
 		titleKey: 'weather:title',
 		styles: ['weather/main'],
@@ -151,4 +33,68 @@ export function renderWeather(req, res) {
 		unit: req.weather?.unit || 'metric',
 		forecastDays,
 	});
+}
+
+export async function renderWeather(req, res) {
+	if (
+		typeof req.weather?.latitude !== 'number' ||
+		typeof req.weather?.longitude !== 'number'
+	) {
+		return renderWeatherView(req, res);
+	}
+
+	try {
+		const quota = await checkExternalApiQuota(req, {
+			provider: WEATHER_PROVIDER,
+			requestKey: WEATHER_REQUEST_KEY,
+		});
+
+		if (!quota.allowed) {
+			return fail(req, res, 'weather:error.api_limit_reached', {
+				to: WEATHER_REDIRECT,
+			});
+		}
+
+		const forecast = await getWeatherForecast({
+			latitude: req.weather.latitude,
+			longitude: req.weather.longitude,
+			unit: req.weather.unit,
+			locale: getLocale(req),
+		});
+
+		await recordExternalApiRequest(req, {
+			provider: WEATHER_PROVIDER,
+			requestKey: WEATHER_REQUEST_KEY,
+			responseStatus: 200,
+		});
+
+		return renderWeatherView(req, res, forecast);
+	} catch (error) {
+		if (error instanceof OpenWeatherRateLimitError) {
+			await recordExternalApiRequest(req, {
+				provider: WEATHER_PROVIDER,
+				requestKey: WEATHER_REQUEST_KEY,
+				responseStatus: 429,
+				errorCode: 'upstream_rate_limit',
+			});
+
+			return fail(req, res, 'weather:error.api_limit_reached', {
+				to: WEATHER_REDIRECT,
+			});
+		}
+
+		const flashKey =
+			error instanceof OpenWeatherConfigError
+				? 'weather:error.api_not_configured'
+				: 'weather:error.forecast_failed';
+
+		logger.error('Weather forecast failed', {
+			type: 'weather',
+			error: error.message,
+		});
+
+		return fail(req, res, flashKey, {
+			to: WEATHER_REDIRECT,
+		});
+	}
 }
