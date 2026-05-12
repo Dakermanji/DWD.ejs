@@ -1,6 +1,7 @@
 //! services/weather/forecast.js
 
 import env from '../../config/dotenv.js';
+import { findGeocodingCityByCoordinates } from './geocoding.js';
 
 const OPENWEATHER_FORECAST_URL =
 	'https://api.openweathermap.org/data/2.5/forecast';
@@ -285,6 +286,30 @@ async function getReverseGeocodingLocation({ latitude, longitude, locale }) {
 	}
 }
 
+async function getLocalizedGeocodingLocation({
+	latitude,
+	longitude,
+	locale,
+	location,
+}) {
+	if (!location?.city) {
+		return location;
+	}
+
+	try {
+		const geocodingLocation = await findGeocodingCityByCoordinates(location.city, {
+			latitude,
+			longitude,
+			locale,
+			countryCode: location.countryCode,
+		});
+
+		return geocodingLocation || location;
+	} catch {
+		return location;
+	}
+}
+
 export async function getWeatherForecast({ latitude, longitude, unit, locale }) {
 	if (!env.OPENWEATHER_API_KEY) {
 		throw new OpenWeatherConfigError();
@@ -298,7 +323,7 @@ export async function getWeatherForecast({ latitude, longitude, unit, locale }) 
 		appid: env.OPENWEATHER_API_KEY,
 	});
 
-	const [response, location] = await Promise.all([
+	const [response, reverseLocation] = await Promise.all([
 		fetch(`${OPENWEATHER_FORECAST_URL}?${params}`),
 		getReverseGeocodingLocation({ latitude, longitude, locale }),
 	]);
@@ -310,6 +335,13 @@ export async function getWeatherForecast({ latitude, longitude, unit, locale }) 
 	if (!response.ok) {
 		throw new Error(`OpenWeather forecast failed: ${response.status}`);
 	}
+
+	const location = await getLocalizedGeocodingLocation({
+		latitude,
+		longitude,
+		locale,
+		location: reverseLocation,
+	});
 
 	return serializeForecast(await response.json(), { locale, unit, location });
 }

@@ -91,6 +91,20 @@ function sortCities(cities, query) {
 	});
 }
 
+function getDistanceScore(city, latitude, longitude) {
+	const cityLatitude = Number(city.latitude);
+	const cityLongitude = Number(city.longitude);
+
+	if (
+		!Number.isFinite(cityLatitude) ||
+		!Number.isFinite(cityLongitude)
+	) {
+		return Number.POSITIVE_INFINITY;
+	}
+
+	return Math.abs(cityLatitude - latitude) + Math.abs(cityLongitude - longitude);
+}
+
 export async function searchGeocodingCities(
 	query,
 	{ locale = 'en', limit = 5 } = {},
@@ -120,4 +134,25 @@ export async function searchGeocodingCities(
 		cities.map((city) => serializeCity(city, locale)),
 		query,
 	).slice(0, normalizedLimit);
+}
+
+export async function findGeocodingCityByCoordinates(
+	query,
+	{ latitude, longitude, locale = 'en', countryCode = '' } = {},
+) {
+	const cities = await searchGeocodingCities(query, {
+		locale,
+		limit: MAX_GEOCODING_RESULTS,
+	});
+	const normalizedCountryCode = String(countryCode || '').toLocaleUpperCase();
+	const matchingCountryCities = normalizedCountryCode
+		? cities.filter((city) => city.countryCode === normalizedCountryCode)
+		: cities;
+	const candidates = matchingCountryCities.length ? matchingCountryCities : cities;
+
+	return [...candidates].sort(
+		(a, b) =>
+			getDistanceScore(a, latitude, longitude) -
+			getDistanceScore(b, latitude, longitude),
+	)[0] || null;
 }
