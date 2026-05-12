@@ -1,7 +1,7 @@
 //! public/js/weather/main.js
 
 const CITY_SEARCH_MIN_LENGTH = 3;
-const CITY_SEARCH_DEBOUNCE_MS = 300;
+const CITY_SEARCH_DEBOUNCE_MS = 1000;
 
 const currentLocationButton = document.querySelector(
 	'[data-weather-current-location]',
