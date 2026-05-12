@@ -86,6 +86,7 @@ main.container:has(.weather-page) {
 	display: block;
 	object-fit: contain;
 	filter: drop-shadow(var(--shadow-mascot));
+	border-radius: var(--radius-lg);
 }
 
 .weather-search {
