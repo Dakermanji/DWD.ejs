@@ -280,7 +280,8 @@
 		"08_user_follow_requests.sql",
 		"09_user_follows.sql",
 		"10_user_blocks.sql",
-		"11_user_social_notifications.sql"
+		"11_user_social_notifications.sql",
+		"12_external_api_request_logs.sql"
 	],
 	"utils": { "config": ["dotenv.js"] },
 	"views": {
