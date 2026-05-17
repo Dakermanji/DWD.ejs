@@ -94,6 +94,37 @@ function selectCity(city) {
 	form.requestSubmit();
 }
 
+function getLocaleComma() {
+	return document.documentElement.dir === 'rtl' ? '، ' : ', ';
+}
+
+function createCityLabelPart(value) {
+	const part = document.createElement('span');
+
+	part.className = 'weather-city-option__label-part';
+	part.dir = 'auto';
+	part.textContent = value;
+
+	return part;
+}
+
+function appendCityLabel(label, city) {
+	const parts = [city.city, city.state, city.country].filter(Boolean);
+
+	if (!parts.length) {
+		label.textContent = city.label || city.city || '';
+		return;
+	}
+
+	parts.forEach((part, index) => {
+		if (index > 0) {
+			label.append(document.createTextNode(getLocaleComma()));
+		}
+
+		label.append(createCityLabelPart(part));
+	});
+}
+
 function createCityOption(city, index) {
 	const option = document.createElement('button');
 	const flag = document.createElement('span');
@@ -108,7 +139,7 @@ function createCityOption(city, index) {
 	flag.setAttribute('aria-hidden', 'true');
 
 	label.className = 'weather-city-option__label';
-	label.textContent = city.label || city.city || '';
+	appendCityLabel(label, city);
 
 	option.append(flag, label);
 

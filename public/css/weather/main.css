@@ -1,9 +1,11 @@
 /*! public/css/weather/main.css */
 
 main.container:has(.weather-page) {
+	/* --bs-gutter-x: 0; */
 	width: 100%;
 	max-width: none;
 	padding: 0;
+	/* overflow-x: clip; */
 }
 
 .weather-page {
@@ -13,6 +15,7 @@ main.container:has(.weather-page) {
 		rgb(255 255 255 / 50%)
 	);
 
+	/* width: 100%; */
 	min-height: calc(100vh - 6.5rem);
 	display: grid;
 	place-items: center;
@@ -36,6 +39,7 @@ main.container:has(.weather-page) {
 
 .weather-shell {
 	width: min(100%, 980px);
+	min-width: 0;
 	display: grid;
 	gap: 1.25rem;
 	padding: clamp(1rem, 2.5vw, 1.5rem);
@@ -166,6 +170,10 @@ main.container:has(.weather-page) {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.weather-city-option__label-part {
+	unicode-bidi: isolate;
 }
 
 .weather-units {
@@ -330,10 +338,11 @@ main.container:has(.weather-page) {
 	color: var(--color-secondary);
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 575.98px) {
 	.weather-page {
+		min-height: calc(100svh - 3.5rem);
 		padding: 1rem;
-		padding-bottom: 5.5rem;
+		padding-bottom: 6rem;
 	}
 
 	.weather-shell {
@@ -370,11 +379,6 @@ main.container:has(.weather-page) {
 		flex: 1;
 	}
 
-	.weather-tabs {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
 	.weather-tabs .nav-link {
 		width: 100%;
 		justify-content: center;
@@ -391,15 +395,5 @@ main.container:has(.weather-page) {
 
 	.weather-metrics {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-}
-
-@media (max-width: 480px) {
-	.weather-tabs {
-		grid-template-columns: 1fr;
-	}
-
-	.weather-metrics {
-		grid-template-columns: 1fr;
 	}
 }
