@@ -187,8 +187,17 @@ footer a:hover {
 	}
 }
 
-@media (max-width: 395px) {
+@media (max-width: 497.98px) {
 	#rights {
 		font-size: 0.8rem;
+	}
+}
+
+@media (max-width: 399.98px) {
+	.navbar-brand .brand {
+		font-size: 1.1rem;
+	}
+	#rights {
+		font-size: 0.7rem;
 	}
 }

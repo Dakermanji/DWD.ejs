@@ -1,5 +1,14 @@
 /*! public/css/root/tokens.css */
 
+/*
+* break-points:
+- x-small: 399.98px;
+- small: 479.98px;
+- medium: 575.98px;
+- large: 767.98px;
+- x-large: 991.98px;
+*/
+
 :root {
 	--color-primary: #ff7f27;
 	--color-primary-hover: #eead7f;
