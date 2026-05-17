@@ -4,6 +4,12 @@ const OPEN_METEO_GEOCODING_URL =
 	'https://geocoding-api.open-meteo.com/v1/search';
 const MAX_GEOCODING_RESULTS = 10;
 
+import {
+	cleanPlaceName,
+	getCountryName,
+	getSubdivisionName,
+} from './locations.js';
+
 export class GeocodingRateLimitError extends Error {
 	constructor(message = 'Open-Meteo geocoding rate limit reached') {
 		super(message);
@@ -28,20 +34,6 @@ function normalizeLanguage(locale) {
 		.toLocaleLowerCase();
 }
 
-function getCountryName(countryCode, locale) {
-	if (!countryCode) return '';
-
-	try {
-		return (
-			new Intl.DisplayNames([locale || 'en'], { type: 'region' }).of(
-				countryCode,
-			) || countryCode
-		);
-	} catch {
-		return countryCode;
-	}
-}
-
 function getStateName(city) {
 	return (
 		city.admin1 ||
@@ -53,7 +45,7 @@ function getStateName(city) {
 }
 
 function serializeCity(city, locale) {
-	const state = getStateName(city);
+	const state = getSubdivisionName(city.country_code, getStateName(city), locale);
 	const country = getCountryName(city.country_code, locale);
 	const language = String(locale).split('-')[0];
 	const comma = language === 'ar' ? '، ' : ', ';
@@ -72,11 +64,11 @@ function serializeCity(city, locale) {
 }
 
 function sortCities(cities, query) {
-	const normalizedQuery = String(query || '').toLocaleLowerCase();
+	const normalizedQuery = cleanPlaceName(query).toLocaleLowerCase();
 
 	return [...cities].sort((a, b) => {
-		const aName = String(a.city || '').toLocaleLowerCase();
-		const bName = String(b.city || '').toLocaleLowerCase();
+		const aName = cleanPlaceName(a.city).toLocaleLowerCase();
+		const bName = cleanPlaceName(b.city).toLocaleLowerCase();
 		const aExact = aName === normalizedQuery ? 1 : 0;
 		const bExact = bName === normalizedQuery ? 1 : 0;
 		const aPrefix = aName.startsWith(normalizedQuery) ? 1 : 0;
@@ -91,6 +83,14 @@ function sortCities(cities, query) {
 	});
 }
 
+function getAdministrativeRecordPenalty(city) {
+	const name = String(city.city || '').toLocaleLowerCase();
+
+	return /\([^)]*(administrative|region|county|district)[^)]*\)/i.test(name)
+		? 1000
+		: 0;
+}
+
 function getDistanceScore(city, latitude, longitude) {
 	const cityLatitude = Number(city.latitude);
 	const cityLongitude = Number(city.longitude);
@@ -102,7 +102,11 @@ function getDistanceScore(city, latitude, longitude) {
 		return Number.POSITIVE_INFINITY;
 	}
 
-	return Math.abs(cityLatitude - latitude) + Math.abs(cityLongitude - longitude);
+	return (
+		getAdministrativeRecordPenalty(city) +
+		Math.abs(cityLatitude - latitude) +
+		Math.abs(cityLongitude - longitude)
+	);
 }
 
 export async function searchGeocodingCities(
@@ -140,7 +144,8 @@ export async function findGeocodingCityByCoordinates(
 	query,
 	{ latitude, longitude, locale = 'en', countryCode = '' } = {},
 ) {
-	const cities = await searchGeocodingCities(query, {
+	const normalizedQuery = cleanPlaceName(query);
+	const cities = await searchGeocodingCities(normalizedQuery || query, {
 		locale,
 		limit: MAX_GEOCODING_RESULTS,
 	});

@@ -2,6 +2,12 @@
 
 import env from '../../config/dotenv.js';
 import { findGeocodingCityByCoordinates } from './geocoding.js';
+import {
+	cleanPlaceName,
+	getCountryName,
+	getLanguage,
+	getSubdivisionName,
+} from './locations.js';
 
 const OPENWEATHER_FORECAST_URL =
 	'https://api.openweathermap.org/data/2.5/forecast';
@@ -24,24 +30,9 @@ export class OpenWeatherRateLimitError extends Error {
 	}
 }
 
-function getLanguage(locale) {
-	return String(locale || 'en').split('-')[0];
-}
-
 function round(value) {
 	const number = Number(value);
 	return Number.isFinite(number) ? Math.round(number) : null;
-}
-
-function getCountryName(countryCode, locale) {
-	if (!countryCode) return '';
-
-	try {
-		const displayNames = new Intl.DisplayNames([locale], { type: 'region' });
-		return displayNames.of(countryCode) || countryCode;
-	} catch {
-		return countryCode;
-	}
 }
 
 function getLocalizedName(place, locale) {
@@ -61,11 +52,26 @@ function serializeLocation(place, locale) {
 	const countryCode = place?.country || '';
 
 	return {
-		city: getLocalizedName(place, locale),
-		state: place?.state || '',
+		city: cleanPlaceName(getLocalizedName(place, locale)),
+		state: getSubdivisionName(countryCode, place?.state, locale),
 		country: getCountryName(countryCode, locale),
 		countryCode,
 	};
+}
+
+function hasArabicText(value) {
+	return /[\u0600-\u06ff]/.test(String(value || ''));
+}
+
+function chooseCityName({ currentName, geocodingName, locale }) {
+	const current = cleanPlaceName(currentName);
+	const geocoding = cleanPlaceName(geocodingName);
+
+	if (getLanguage(locale) === 'ar' && hasArabicText(current)) {
+		return current;
+	}
+
+	return geocoding || current;
 }
 
 function getLocalDateKey(timestamp, timezoneOffset) {
@@ -304,7 +310,16 @@ async function getLocalizedGeocodingLocation({
 			countryCode: location.countryCode,
 		});
 
-		return geocodingLocation || location;
+		return geocodingLocation
+			? {
+					...geocodingLocation,
+					city: chooseCityName({
+						currentName: location.city,
+						geocodingName: geocodingLocation.city,
+						locale,
+					}),
+				}
+			: location;
 	} catch {
 		return location;
 	}

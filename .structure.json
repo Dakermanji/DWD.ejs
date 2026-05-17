@@ -264,7 +264,7 @@
 		"i18n": ["locale.js"],
 		"social": ["live.js"],
 		"theme": ["preference.js"],
-		"weather": ["forecast.js", "geocoding.js"]
+		"weather": ["forecast.js", "geocoding.js", "locations.js"]
 	},
 	"sql": [
 		"01_session.sql",

@@ -39,7 +39,9 @@
 							aria-label="<%= location.country %>"
 						></span>
 					<% } %>
-					<span><%= hasLocation ? locationLabel : t('weather:title') %></span>
+					<% if (hasLocation) { %>
+						<span><%= locationLabel %></span>
+					<% } %>
 				</h1>
 			</div>
 
