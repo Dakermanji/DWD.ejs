@@ -5,12 +5,16 @@
 		"city": "المدينة",
 		"placeholder": "ابحث عن مدينة",
 		"currentLocation": "استخدم الموقع الحالي",
-		"results": "نتائج المدن"
+		"results": "نتائج المدن",
+		"noResults": "لم يتم العثور على مدن."
 	},
 	"units": {
 		"label": "وحدة الحرارة",
 		"metric": "متري",
 		"imperial": "إمبراطوري"
+	},
+	"clock": {
+		"localTime": "الوقت المحلي"
 	},
 	"measurementUnits": {
 		"km/h": "كم/ساعة",

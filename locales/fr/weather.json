@@ -5,12 +5,16 @@
 		"city": "Ville",
 		"placeholder": "Rechercher une ville",
 		"currentLocation": "Utiliser la position actuelle",
-		"results": "Résultats de villes"
+		"results": "Résultats de villes",
+		"noResults": "Aucune ville trouvée."
 	},
 	"units": {
 		"label": "Unité de température",
 		"metric": "Métrique",
 		"imperial": "Impérial"
+	},
+	"clock": {
+		"localTime": "Heure locale"
 	},
 	"measurementUnits": {
 		"km/h": "km/h",

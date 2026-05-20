@@ -5,12 +5,16 @@
 		"city": "City",
 		"placeholder": "Search city",
 		"currentLocation": "Use current location",
-		"results": "City results"
+		"results": "City results",
+		"noResults": "No cities found."
 	},
 	"units": {
 		"label": "Temperature unit",
 		"metric": "Metric",
 		"imperial": "Imperial"
+	},
+	"clock": {
+		"localTime": "Local time"
 	},
 	"measurementUnits": {
 		"km/h": "km/h",

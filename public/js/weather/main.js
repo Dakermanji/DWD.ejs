@@ -8,11 +8,16 @@ const currentLocationButton = document.querySelector(
 );
 const cityInput = document.querySelector('[data-weather-city-input]');
 const cityResults = document.querySelector('[data-weather-city-results]');
+const weatherClocks = document.querySelectorAll('[data-weather-clock]');
 
 let citySearchTimer = null;
 let citySearchController = null;
 let activeCityIndex = -1;
 let renderedCities = [];
+
+function getLocale() {
+	return document.documentElement.lang || 'en';
+}
 
 function parseCoordinate(value) {
 	const coordinate = Number(value);
@@ -51,6 +56,13 @@ function hideCityResults() {
 	cityInput.setAttribute('aria-expanded', 'false');
 	activeCityIndex = -1;
 	renderedCities = [];
+}
+
+function showCityResults() {
+	if (!cityResults || !cityInput) return;
+
+	cityResults.hidden = false;
+	cityInput.setAttribute('aria-expanded', 'true');
 }
 
 function clearSelectedLocation() {
@@ -109,10 +121,10 @@ function createCityLabelPart(value) {
 }
 
 function appendCityLabel(label, city) {
-	const parts = [city.city, city.state, city.country].filter(Boolean);
+	const parts = [city?.city, city?.state, city?.country].filter(Boolean);
 
 	if (!parts.length) {
-		label.textContent = city.label || city.city || '';
+		label.textContent = city?.label || city?.city || '';
 		return;
 	}
 
@@ -123,6 +135,22 @@ function appendCityLabel(label, city) {
 
 		label.append(createCityLabelPart(part));
 	});
+}
+
+function renderNoCityResults() {
+	if (!cityResults || !cityInput) return;
+
+	const message = document.createElement('div');
+
+	message.className = 'weather-city-empty';
+	message.setAttribute('role', 'status');
+	message.textContent = cityResults.dataset.emptyLabel || 'No cities found.';
+
+	cityResults.replaceChildren(message);
+	activeCityIndex = -1;
+	renderedCities = [];
+	cityResults.hidden = false;
+	cityInput.setAttribute('aria-expanded', 'true');
 }
 
 function createCityOption(city, index) {
@@ -153,17 +181,24 @@ function createCityOption(city, index) {
 function renderCityResults(cities) {
 	if (!cityResults || !cityInput) return;
 
-	renderedCities = Array.isArray(cities) ? cities : [];
+	renderedCities = Array.isArray(cities)
+		? cities.filter(Boolean)
+		: [];
 	activeCityIndex = -1;
 
 	if (!renderedCities.length) {
+		renderNoCityResults();
+		return;
+	}
+
+	try {
+		cityResults.replaceChildren(...renderedCities.map(createCityOption));
+	} catch {
 		hideCityResults();
 		return;
 	}
 
-	cityResults.replaceChildren(...renderedCities.map(createCityOption));
-	cityResults.hidden = false;
-	cityInput.setAttribute('aria-expanded', 'true');
+	showCityResults();
 }
 
 async function searchCities(query) {
@@ -185,7 +220,14 @@ async function searchCities(query) {
 	}
 
 	const data = await response.json();
-	renderCityResults(data?.cities);
+	const cities = Array.isArray(data?.cities) ? data.cities : [];
+
+	if (!cities.length) {
+		renderNoCityResults();
+		return;
+	}
+
+	renderCityResults(cities);
 }
 
 if (cityInput) {
@@ -276,4 +318,62 @@ if (currentLocationButton) {
 			},
 		);
 	});
+}
+
+function getOffsetDate(timezoneOffset) {
+	return new Date(Date.now() + timezoneOffset * 1000);
+}
+
+function formatClockTime(date) {
+	return cleanBidiText(new Intl.DateTimeFormat(getLocale(), {
+		hour: '2-digit',
+		minute: '2-digit',
+		second: '2-digit',
+		hour12: false,
+		timeZone: 'UTC',
+	}).format(date));
+}
+
+function formatClockDate(date) {
+	const year = date.getUTCFullYear();
+	const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+	const day = String(date.getUTCDate()).padStart(2, '0');
+
+	return `${year}/${month}/${day}`;
+}
+
+function cleanBidiText(value) {
+	return String(value).replace(/[\u061c\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, '');
+}
+
+function formatTimezoneOffset(timezoneOffset) {
+	const sign = timezoneOffset >= 0 ? '+' : '-';
+	const absoluteOffset = Math.abs(timezoneOffset);
+	const hours = String(Math.floor(absoluteOffset / 3600)).padStart(2, '0');
+	const minutes = String(Math.floor((absoluteOffset % 3600) / 60)).padStart(2, '0');
+
+	return `UTC${sign}${hours}:${minutes}`;
+}
+
+function updateWeatherClock(clock) {
+	const timezoneOffset = Number(clock.dataset.timezoneOffset);
+	const time = clock.querySelector('[data-weather-clock-time]');
+	const date = clock.querySelector('[data-weather-clock-date]');
+	const offset = clock.querySelector('[data-weather-clock-offset]');
+
+	if (!Number.isFinite(timezoneOffset) || !time || !date || !offset) return;
+
+	const now = getOffsetDate(timezoneOffset);
+	time.textContent = formatClockTime(now);
+	date.textContent = formatClockDate(now);
+	offset.textContent = formatTimezoneOffset(timezoneOffset);
+}
+
+if (weatherClocks.length) {
+	const updateWeatherClocks = () => {
+		weatherClocks.forEach(updateWeatherClock);
+	};
+
+	updateWeatherClocks();
+	window.setInterval(updateWeatherClocks, 1000);
 }

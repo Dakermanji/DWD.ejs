@@ -209,6 +209,7 @@ function serializeDay(entries, index, { locale, unit, timezoneOffset, sunrise, s
 		cloudiness: round(representative.clouds?.all),
 		visibility: getVisibility(representative.visibility, unit),
 		visibilityUnit: unit === 'metric' ? 'km' : 'mi',
+		timezoneOffset,
 		sunrise: formatTime(sunrise, timezoneOffset, locale),
 		sunset: formatTime(sunset, timezoneOffset, locale),
 		windDirection: getDirection(representative.wind?.deg),

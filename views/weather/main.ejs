@@ -79,15 +79,16 @@
 				>
 					<i class="bi bi-crosshair" aria-hidden="true"></i>
 				</button>
+				<div
+					id="weather-city-results"
+					class="weather-city-results"
+					role="listbox"
+					aria-label="<%= t('weather:search.results') %>"
+					data-weather-city-results
+					data-empty-label="<%= t('weather:search.noResults') %>"
+					hidden
+				></div>
 			</div>
-			<div
-				id="weather-city-results"
-				class="weather-city-results"
-				role="listbox"
-				aria-label="<%= t('weather:search.results') %>"
-				data-weather-city-results
-				hidden
-			></div>
 
 			<div class="weather-units" role="group" aria-label="<%= t('weather:units.label') %>">
 				<input
@@ -191,6 +192,17 @@
 								<p class="weather-panel__day"><%= dayLabel %></p>
 								<p class="weather-panel__temp"><%= formatTemperature(day.temp) %></p>
 								<p class="weather-panel__summary"><%= day.summary %></p>
+							</div>
+							<div
+								class="weather-clock"
+								data-weather-clock
+								data-timezone-offset="<%= day.timezoneOffset %>"
+								aria-label="<%= t('weather:clock.localTime') %>"
+							>
+								<i class="bi bi-clock" aria-hidden="true"></i>
+								<span class="weather-clock__time" data-weather-clock-time>--:--</span>
+								<span class="weather-clock__date" data-weather-clock-date>--/--/----</span>
+								<span class="weather-clock__offset" data-weather-clock-offset>UTC</span>
 							</div>
 						</div>
 
