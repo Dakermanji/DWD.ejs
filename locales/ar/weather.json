@@ -16,6 +16,10 @@
 	"clock": {
 		"localTime": "الوقت المحلي"
 	},
+	"background": {
+		"photoBy": "صورة بواسطة",
+		"on": "على"
+	},
 	"measurementUnits": {
 		"km/h": "كم/ساعة",
 		"mph": "ميل/ساعة",

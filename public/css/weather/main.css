@@ -7,7 +7,14 @@ main.container:has(.weather-page) {
 }
 
 .weather-page {
+	--weather-bg-overlay: linear-gradient(
+		135deg,
+		rgb(255 255 255 / 78%),
+		rgb(255 255 255 / 46%)
+	);
+
 	min-height: calc(100vh - 6.5rem);
+	position: relative;
 	display: grid;
 	place-items: center;
 	padding: clamp(1rem, 4vw, 3rem);
@@ -224,8 +231,8 @@ main.container:has(.weather-page) {
 .weather-panel {
 	--weather-panel-bg-overlay: linear-gradient(
 		135deg,
-		rgb(255 250 236 / 92%),
-		rgb(255 189 89 / 40%)
+		rgb(238 240 242 / 82%),
+		rgb(205 211 216 / 72%)
 	);
 
 	min-height: 20rem;
@@ -237,9 +244,9 @@ main.container:has(.weather-page) {
 		var(--weather-panel-bg-overlay),
 		var(
 			--weather-panel-bg-image,
-			linear-gradient(135deg, #fff7e4, #ffcf7a)
+			linear-gradient(135deg, #eef0f2, #cdd3d8)
 		),
-		#ffdf9d;
+		#d8dde1;
 	background-size: cover;
 	background-position: center;
 }
@@ -354,6 +361,14 @@ main.container:has(.weather-page) {
 	background-color: rgb(12 17 23 / 22%);
 }
 
+[data-theme='dark'] .weather-panel {
+	--weather-panel-bg-overlay: linear-gradient(
+		135deg,
+		rgb(18 24 31 / 82%),
+		rgb(43 51 60 / 72%)
+	);
+}
+
 .weather-metric span {
 	grid-area: label;
 	color: var(--color-text-muted);
@@ -381,6 +396,24 @@ main.container:has(.weather-page) {
 .weather-empty .bi {
 	font-size: 3rem;
 	color: var(--color-secondary);
+}
+
+.weather-attribution {
+	position: absolute;
+	right: 1rem;
+	bottom: 0.75rem;
+	left: 1rem;
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: 0.8rem;
+	text-align: end;
+	text-shadow: 0 0.1rem 0.4rem rgb(0 0 0 / 18%);
+}
+
+.weather-attribution a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
 }
 
 @media (max-width: 575.98px) {

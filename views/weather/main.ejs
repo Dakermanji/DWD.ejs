@@ -3,7 +3,9 @@
 	const hasForecast = Array.isArray(forecastDays) && forecastDays.length > 0;
 	const activeDay = hasForecast ? forecastDays[0] : null;
 	const pageBackgroundImage = activeDay?.backgroundImage || '';
-	const pageStyle = pageBackgroundImage ? ` style="--weather-bg-image: url('${pageBackgroundImage}')"` : '';
+	const pageBackgroundCredit = activeDay?.backgroundCredit || null;
+	const formatCssImage = (imageUrl) => `url('${String(imageUrl).replace(/\\/g, '\\\\').replace(/'/g, "\\'")}')`;
+	const pageStyle = pageBackgroundImage ? ` style="--weather-bg-image: ${formatCssImage(pageBackgroundImage)}"` : '';
 	const localizedComma = t('common:comma');
 	const locationLabel = [location.city, location.state, location.country]
 		.filter(Boolean)
@@ -57,6 +59,8 @@
 			<label class="visually-hidden" for="weather-city"><%= t('weather:search.city') %></label>
 			<input type="hidden" name="latitude" data-weather-latitude />
 			<input type="hidden" name="longitude" data-weather-longitude />
+			<input type="hidden" name="viewportWidth" data-weather-viewport-width />
+			<input type="hidden" name="viewportHeight" data-weather-viewport-height />
 			<div class="input-group">
 				<span class="input-group-text"><i class="bi bi-search"></i></span>
 				<input
@@ -146,7 +150,7 @@
 							? t('weather:days.day', { number: day.dayNumber })
 							: t(`weather:days.${day.labelKey}`);
 						const panelStyle = day.backgroundImage
-							? ` style="--weather-panel-bg-image: url('${day.backgroundImage}')"`
+							? ` style="--weather-panel-bg-image: ${formatCssImage(day.backgroundImage)}"`
 							: '';
 						const precipitationLabel = day.precipitation
 							? `${day.precipitation.volume} mm ${day.precipitation.type}`
@@ -225,4 +229,17 @@
 			</div>
 		<% } %>
 	</div>
+
+	<% if (pageBackgroundCredit) { %>
+		<p class="weather-attribution">
+			<%= t('weather:background.photoBy') %>
+			<a href="<%= pageBackgroundCredit.photographerUrl %>" target="_blank" rel="noopener noreferrer">
+				<%= pageBackgroundCredit.photographerName %>
+			</a>
+			<%= t('weather:background.on') %>
+			<a href="<%= pageBackgroundCredit.unsplashUrl %>" target="_blank" rel="noopener noreferrer">
+				Unsplash
+			</a>
+		</p>
+	<% } %>
 </section>

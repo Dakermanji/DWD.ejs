@@ -45,7 +45,16 @@ function getLocationInputs(form) {
 	return {
 		latitude: form?.querySelector('[data-weather-latitude]'),
 		longitude: form?.querySelector('[data-weather-longitude]'),
+		viewportWidth: form?.querySelector('[data-weather-viewport-width]'),
+		viewportHeight: form?.querySelector('[data-weather-viewport-height]'),
 	};
+}
+
+function setViewportInputs(form) {
+	const { viewportWidth, viewportHeight } = getLocationInputs(form);
+
+	if (viewportWidth) viewportWidth.value = String(window.innerWidth || '');
+	if (viewportHeight) viewportHeight.value = String(window.innerHeight || '');
 }
 
 function hideCityResults() {
@@ -101,6 +110,7 @@ function selectCity(city) {
 
 	if (inputs.latitude) inputs.latitude.value = latitude;
 	if (inputs.longitude) inputs.longitude.value = longitude;
+	setViewportInputs(form);
 
 	hideCityResults();
 	form.requestSubmit();
@@ -305,6 +315,7 @@ if (currentLocationButton) {
 
 				latitudeInput.value = latitude;
 				longitudeInput.value = longitude;
+				setViewportInputs(form);
 				form.requestSubmit();
 			},
 			() => {
@@ -317,6 +328,14 @@ if (currentLocationButton) {
 				timeout: 10000,
 			},
 		);
+	});
+}
+
+const weatherForm = getWeatherForm();
+
+if (weatherForm) {
+	weatherForm.addEventListener('submit', () => {
+		setViewportInputs(weatherForm);
 	});
 }
 

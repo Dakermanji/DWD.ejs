@@ -4,6 +4,7 @@ import { fail } from '../../services/http/response.js';
 
 const WEATHER_REDIRECT = '/weather';
 const WEATHER_UNITS = new Set(['metric', 'imperial']);
+const MAX_VIEWPORT_SIZE = 3840;
 
 function parseCoordinate(value) {
 	if (value === undefined || value === null || value === '') {
@@ -27,6 +28,16 @@ function normalizeUnit(value) {
 	return WEATHER_UNITS.has(value) ? value : 'metric';
 }
 
+function normalizeViewportSize(value) {
+	const size = Number(value);
+
+	if (!Number.isFinite(size) || size <= 0) {
+		return null;
+	}
+
+	return Math.min(Math.round(size), MAX_VIEWPORT_SIZE);
+}
+
 export function validateWeatherQuery(req, res, next) {
 	const latitude = parseCoordinate(req.query?.latitude);
 	const longitude = parseCoordinate(req.query?.longitude);
@@ -34,9 +45,13 @@ export function validateWeatherQuery(req, res, next) {
 	const hasLongitude =
 		req.query?.longitude !== undefined && req.query?.longitude !== '';
 	const unit = normalizeUnit(req.query?.unit);
+	const viewport = {
+		width: normalizeViewportSize(req.query?.viewportWidth),
+		height: normalizeViewportSize(req.query?.viewportHeight),
+	};
 
 	if (!hasLatitude && !hasLongitude) {
-		req.weather = { unit };
+		req.weather = { unit, viewport };
 		return next();
 	}
 
@@ -57,6 +72,7 @@ export function validateWeatherQuery(req, res, next) {
 		latitude,
 		longitude,
 		unit,
+		viewport,
 	};
 
 	return next();

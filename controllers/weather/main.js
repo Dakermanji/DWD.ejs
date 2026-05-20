@@ -8,6 +8,10 @@ import {
 import { fail } from '../../services/http/response.js';
 import { getLocale } from '../../services/i18n/locale.js';
 import {
+	getWeatherBackground,
+	UnsplashRateLimitError,
+} from '../../services/weather/background.js';
+import {
 	getWeatherForecast,
 	OpenWeatherConfigError,
 	OpenWeatherRateLimitError,
@@ -15,6 +19,8 @@ import {
 
 const WEATHER_PROVIDER = 'weather';
 const WEATHER_REQUEST_KEY = 'forecast';
+const BACKGROUND_PROVIDER = 'unsplash';
+const BACKGROUND_REQUEST_KEY = 'background';
 const WEATHER_REDIRECT = '/weather';
 
 const emptyLocation = {
@@ -33,6 +39,70 @@ function renderWeatherView(req, res, { location = emptyLocation, forecastDays = 
 		unit: req.weather?.unit || 'metric',
 		forecastDays,
 	});
+}
+
+async function attachWeatherBackground(req, forecast) {
+	const activeDay = forecast.forecastDays?.[0];
+
+	if (!activeDay) {
+		return forecast;
+	}
+
+	const quota = await checkExternalApiQuota(req, {
+		provider: BACKGROUND_PROVIDER,
+		requestKey: BACKGROUND_REQUEST_KEY,
+	});
+
+	if (!quota.allowed) {
+		return forecast;
+	}
+
+	try {
+		const background = await getWeatherBackground({
+			condition: activeDay.condition,
+			viewport: req.weather?.viewport,
+		});
+
+		if (!background?.imageUrl) {
+			logger.info('Weather background image unavailable', {
+				type: 'weather',
+				condition: activeDay.condition,
+			});
+			return forecast;
+		}
+
+		await recordExternalApiRequest(req, {
+			provider: BACKGROUND_PROVIDER,
+			requestKey: BACKGROUND_REQUEST_KEY,
+			responseStatus: 200,
+		});
+
+		return {
+			...forecast,
+			forecastDays: forecast.forecastDays.map((day, index) => ({
+				...day,
+				backgroundImage: index === 0 ? background.imageUrl : day.backgroundImage,
+				backgroundCredit:
+					index === 0 ? background.credit : day.backgroundCredit,
+			})),
+		};
+	} catch (error) {
+		if (error instanceof UnsplashRateLimitError) {
+			await recordExternalApiRequest(req, {
+				provider: BACKGROUND_PROVIDER,
+				requestKey: BACKGROUND_REQUEST_KEY,
+				responseStatus: 429,
+				errorCode: 'upstream_rate_limit',
+			});
+		} else {
+			logger.warning('Weather background lookup failed', {
+				type: 'weather',
+				error: error.message,
+			});
+		}
+
+		return forecast;
+	}
 }
 
 export async function renderWeather(req, res) {
@@ -61,6 +131,7 @@ export async function renderWeather(req, res) {
 			unit: req.weather.unit,
 			locale: getLocale(req),
 		});
+		const enrichedForecast = await attachWeatherBackground(req, forecast);
 
 		await recordExternalApiRequest(req, {
 			provider: WEATHER_PROVIDER,
@@ -68,7 +139,7 @@ export async function renderWeather(req, res) {
 			responseStatus: 200,
 		});
 
-		return renderWeatherView(req, res, forecast);
+		return renderWeatherView(req, res, enrichedForecast);
 	} catch (error) {
 		if (error instanceof OpenWeatherRateLimitError) {
 			await recordExternalApiRequest(req, {

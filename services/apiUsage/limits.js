@@ -25,4 +25,13 @@ export const API_USAGE_LIMITS = {
 			{ key: 'month', max: 12000, durationMs: month },
 		],
 	},
+	unsplash: {
+		background: [
+			{ key: 'minute', max: 20, durationMs: minute },
+			{ key: 'hour', max: 300, durationMs: hour },
+			{ key: 'day', max: 1000, durationMs: day },
+			{ key: 'week', max: 4000, durationMs: week },
+			{ key: 'month', max: 12000, durationMs: month },
+		],
+	},
 };

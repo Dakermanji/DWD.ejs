@@ -40,6 +40,9 @@ const env = {
 	/** OpenWeather API key used for weather forecast data */
 	OPENWEATHER_API_KEY: optionalEnv('OPENWEATHER_API_KEY', ''),
 
+	/** Unsplash access key used for weather background images */
+	UNSPLASH_ACCESS_KEY: optionalEnv('UNSPLASH_ACCESS_KEY', ''),
+
 	/** Secret used to sign session cookies */
 	SESSION_SECRET: requireEnv('SESSION_SECRET'),
 
