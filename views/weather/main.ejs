@@ -149,9 +149,6 @@
 						const dayLabel = day.labelKey === 'day'
 							? t('weather:days.day', { number: day.dayNumber })
 							: t(`weather:days.${day.labelKey}`);
-						const panelStyle = day.backgroundImage
-							? ` style="--weather-panel-bg-image: ${formatCssImage(day.backgroundImage)}"`
-							: '';
 						const precipitationLabel = day.precipitation
 							? `${day.precipitation.volume} mm ${day.precipitation.type}`
 							: null;
@@ -184,7 +181,6 @@
 						role="tabpanel"
 						aria-labelledby="<%= day.id %>-tab"
 						tabindex="0"
-						<%- panelStyle %>
 					>
 						<div class="weather-panel__main row g-3 align-items-center">
 							<div class="weather-panel__summary-block col-12 col-sm-8">

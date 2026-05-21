@@ -253,15 +253,7 @@ main.container:has(.weather-page) {
 	border-radius: var(--radius-sm);
 	color: var(--color-text-body);
 	box-shadow: var(--shadow-card);
-	background:
-		var(--weather-panel-bg-overlay),
-		var(
-			--weather-panel-bg-image,
-			linear-gradient(135deg, #eef0f2, #cdd3d8)
-		),
-		#d8dde1;
-	background-size: cover;
-	background-position: center;
+	background: var(--weather-panel-bg-overlay);
 }
 
 .weather-clock {
