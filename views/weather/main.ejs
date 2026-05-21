@@ -186,36 +186,44 @@
 						tabindex="0"
 						<%- panelStyle %>
 					>
-						<div class="weather-panel__main">
-							<i
-								class="has-tooltip bi <%= day.icon %>"
-								data-bs-title="<%= formatCondition(day.condition) %>: <%= day.description %>"
-								data-bs-toggle="tooltip"
-							></i>
-							<div>
-								<p class="weather-panel__day"><%= dayLabel %></p>
-								<p class="weather-panel__temp"><%= formatTemperature(day.temp) %></p>
-								<p class="weather-panel__summary"><%= day.summary %></p>
+						<div class="weather-panel__main row g-3 align-items-center">
+							<div class="weather-panel__summary-block col-12 col-sm-8">
+								<i
+									class="has-tooltip bi <%= day.icon %>"
+									data-bs-title="<%= formatCondition(day.condition) %>: <%= day.description %>"
+									data-bs-toggle="tooltip"
+								></i>
+								<div>
+									<p class="weather-panel__day"><%= dayLabel %></p>
+									<p class="weather-panel__temp"><%= formatTemperature(day.temp) %></p>
+									<p class="weather-panel__summary"><%= day.summary %></p>
+								</div>
 							</div>
-							<div
-								class="weather-clock"
-								data-weather-clock
-								data-timezone-offset="<%= day.timezoneOffset %>"
-								aria-label="<%= t('weather:clock.localTime') %>"
-							>
-								<i class="bi bi-clock" aria-hidden="true"></i>
-								<span class="weather-clock__time" data-weather-clock-time>--:--</span>
-								<span class="weather-clock__date" data-weather-clock-date>--/--/----</span>
-								<span class="weather-clock__offset" data-weather-clock-offset>UTC</span>
+							<div class="col-12 col-sm-4 d-flex justify-content-sm-end">
+								<div
+									class="weather-clock"
+									data-weather-clock
+									data-timezone-offset="<%= day.timezoneOffset %>"
+									aria-label="<%= t('weather:clock.localTime') %>"
+								>
+									<i class="bi bi-clock" aria-hidden="true"></i>
+									<span class="weather-clock__time" data-weather-clock-time>--:--</span>
+									<span class="weather-clock__date" data-weather-clock-date>--/--/----</span>
+									<span class="weather-clock__offset" data-weather-clock-offset>UTC</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="weather-metrics">
+						<div class="weather-metrics row g-3">
 							<% weatherMetrics.forEach((metric) => { %>
-								<div class="weather-metric">
-									<i class="bi <%= metric.icon %>" aria-hidden="true"></i>
-									<span><%= metric.label %></span>
-									<strong><%= metric.value %></strong>
+								<div class="col-12 col-sm-6 col-lg-3">
+									<div class="weather-metric">
+										<span>
+											<i class="bi <%= metric.icon %>" aria-hidden="true"></i>
+											<%= metric.label %>
+										</span>
+										<strong><%= metric.value %></strong>
+									</div>
 								</div>
 							<% }) %>
 						</div>
